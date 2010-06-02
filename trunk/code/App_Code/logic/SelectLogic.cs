@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 
+using System.Data;
 using System.Web.Services;
 using System.Web.Services.Protocols;
 using System.Reflection;
@@ -52,11 +53,13 @@ public abstract class SelectLogic
         }
     }
 
-    public SelectLogic()
+    public SelectLogic(DataSet dataSet)
     {
         //
         // TODO: 在此处添加构造函数逻辑
         //
+
+        myDst = dataSet;
     }
 
     public DataBase InitDatabaseProc(string className)

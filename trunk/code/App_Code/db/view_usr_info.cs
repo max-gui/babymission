@@ -37,9 +37,9 @@ public class view_usr_info : DataBase
         sqlCmd.CommandText = strSQL;
 
         sqlParaName = new SqlParameter("@usrName", SqlDbType.Char, 10);
-        sqlParaName.Value = dataSet.Tables["userTable"].Rows[0]["userName"].ToString().Trim();
+        sqlParaName.Value = dataSet.Tables["view_usr_info"].Rows[0]["usrName"].ToString().Trim();
         sqlParaPassWord = new SqlParameter("@usrPassWord", SqlDbType.Char, 10);
-        sqlParaPassWord.Value = dataSet.Tables["userTable"].Rows[0]["userPassWord"].ToString().Trim();
+        sqlParaPassWord.Value = dataSet.Tables["view_usr_info"].Rows[0]["usrPassWord"].ToString().Trim();
         sqlCmd.Parameters.Add(sqlParaName);
         sqlCmd.Parameters.Add(sqlParaPassWord);
 

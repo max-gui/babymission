@@ -4,6 +4,7 @@ using System.Linq;
 using System.Web;
 
 using System.Configuration;
+using System.Data;
 using System.Web.Security;
 using System.Web.UI;
 using System.Web.UI.WebControls;
@@ -14,7 +15,8 @@ using System.Web.UI.HtmlControls;
 /// </summary>
 public class UserProcess : SelectLogic
 {
-    public UserProcess()
+    public UserProcess(DataSet dataSet)
+        :base(dataSet)
     {
         //
         // TODO: 在此处添加构造函数逻辑
@@ -27,12 +29,12 @@ public class UserProcess : SelectLogic
 
     public override void DoLogin()
     {
-        view_usr_info db = (view_usr_info)InitDatabaseProc("DataBase.view_usr_info");
+        view_usr_info db = (view_usr_info)InitDatabaseProc("view_usr_info");
         MyDst = db.SelectLogin(MyDst);
 
-        if (MyDst.Tables["userTable"].Rows.Count != 0)
+        if (MyDst.Tables["view_usr_info"].Rows.Count != 0)
         {
-            StrRtn = MyDst.Tables["userTable"].Rows[0]["customer"].ToString().Trim();
+            IntRtn = int.Parse(MyDst.Tables["view_usr_info"].Rows[0]["totleAuthority"].ToString().Trim());
         }
         else
         {
