@@ -28,7 +28,7 @@ public partial class Account_Login : System.Web.UI.Page
         DataTable userTable = new DataTable("view_usr_info");
 
         colName.DataType = System.Type.GetType("System.String");
-        colAuth.DataType = System.Type.GetType("System.Boolean");
+        colAuth.DataType = System.Type.GetType("System.Int32");
         colPwd.DataType = System.Type.GetType("System.String");
         colId.DataType = System.Type.GetType("System.Int32");
 
@@ -51,7 +51,7 @@ public partial class Account_Login : System.Web.UI.Page
         #endregion
 
         string aspxName = string.Empty;
-        UserProcess myLogin = new UserProcess();
+        UserProcess myLogin = new UserProcess(dataSet);
 
         myLogin.DoLogin();
         aspxName = myLogin.StrRtn;
@@ -64,7 +64,7 @@ public partial class Account_Login : System.Web.UI.Page
             Session["usrId"] =
                 myLogin.MyDst.Tables["view_usr_info"].Rows[0]["usrId"].ToString().Trim();
 
-            string continueUrl = "~/Account/Default.aspx";//Request.QueryString["ReturnUrl"];
+            string continueUrl = "~/Default.aspx";//Request.QueryString["ReturnUrl"];
             if (String.IsNullOrEmpty(continueUrl))
             {
                 continueUrl = "~/";
