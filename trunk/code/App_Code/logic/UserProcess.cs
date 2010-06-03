@@ -38,7 +38,7 @@ public class UserProcess : SelectLogic
         }
         else
         {
-            StrRtn = string.Empty;
+            IntRtn = 0;
         }
     }
 
