@@ -60,9 +60,13 @@ public partial class SelfDepartment : System.Web.UI.Page
 
     protected void SelfDepartGV_RowEditing(object sender, GridViewEditEventArgs e)
     {
-        SelfDepartGV.EditIndex = e.NewEditIndex;
+        int index = Convert.ToInt32(e.NewEditIndex);
+        SelfDepartGV.EditIndex = index;
         //Bind data to the GridView control.
         //BindData();
+        SelfDepartGV.Columns[0].Visible = false;
+
+        
 
         SelfDepartGV.DataSource = Session["dtSources"];//["dtSources"] as DataTable;
         SelfDepartGV.DataBind();
@@ -75,28 +79,37 @@ public partial class SelfDepartment : System.Web.UI.Page
         if ( "Add" == e.CommandName)
         {
             int index = Convert.ToInt32(e.CommandArgument);
+            index++;
 
             // Retrieve the row that contains the button clicked 
             // by the user from the Rows collection.
-            GridViewRow row = SelfDepartGV.Rows[index];
+            //GridViewRow row = new GridViewRow(index, index, DataControlRowType.EmptyDataRow, DataControlRowState.Edit);
+            DataTable dt = Session["dtSources"] as DataTable;
+            DataRow dr = dt.NewRow();
+            dr["isDel"] = bool.FalseString.ToString().Trim();
+            dt.Rows.Add(dr);
 
-            
-            // Create a new ListItem object for the product in the row.     
-            //ListItem item = new ListItem();
-            //item.Text = Server.HtmlDecode(row.Cells[1].Text);
+            SelfDepartGV.EditIndex = index;
+            SelfDepartGV.Columns[0].Visible = false;
 
-            // If the product is not already in the ListBox, add the ListItem 
-            // object to the Items collection of the ListBox control. 
-            //if (!ProductsListBox.Items.Contains(item))
-            //{
-            //    ProductsListBox.Items.Add(item);
-            //}
-
+            Session["dtSources"] = dt;
+            SelfDepartGV.DataSource = Session["dtSources"];//["dtSources"] as DataTable;
+            SelfDepartGV.DataBind();            
         }
     }
     protected void SelfDepartGV_RowDeleting(object sender, GridViewDeleteEventArgs e)
     {
+        DataTable dt = (DataTable)Session["dtSources"];
 
+        //Update the values.
+        GridViewRow row = SelfDepartGV.Rows[e.RowIndex];
+        dt.Rows[row.DataItemIndex]["isDel"] = bool.TrueString.ToString().Trim();
+                
+
+        SelfDepartGV.DataSource = Session["dtSources"] as DataTable;
+        SelfDepartGV.DataBind();
+
+        //数据库更新；
     }
     protected void SelfDepartGV_RowUpdating(object sender, GridViewUpdateEventArgs e)
     {
@@ -109,13 +122,26 @@ public partial class SelfDepartment : System.Web.UI.Page
 
         //Reset the edit index.
         SelfDepartGV.EditIndex = -1;
+        SelfDepartGV.Columns[0].Visible = true;
 
         SelfDepartGV.DataSource = Session["dtSources"] as DataTable;
         SelfDepartGV.DataBind();
     }
     protected void SelfDepartGV_RowCancelingEdit(object sender, GridViewCancelEditEventArgs e)
     {
+        DataTable dt = (DataTable)Session["dtSources"];
+
+        GridViewRow row = SelfDepartGV.Rows[e.RowIndex];
+        string str = dt.Rows[row.DataItemIndex]["departmentName"].ToString().Trim();
+
+        if (string.IsNullOrWhiteSpace(str))
+        {
+            dt.Rows[row.DataItemIndex].Delete();
+        }
+
         SelfDepartGV.EditIndex = -1;
+        SelfDepartGV.Columns[0].Visible = true;
+
         //Bind data to the GridView control.
         SelfDepartGV.DataSource = Session["dtSources"] as DataTable;
         SelfDepartGV.DataBind();
@@ -153,4 +179,5 @@ public partial class SelfDepartment : System.Web.UI.Page
         }
 
     }
+ 
 }
