@@ -50,12 +50,12 @@ public partial class Account_Login : System.Web.UI.Page
         dataSet.Tables.Add(userTable);
         #endregion
 
-        string aspxName = string.Empty;
+        int usrAuth = 0;
         UserProcess myLogin = new UserProcess(dataSet);
 
         myLogin.DoLogin();
-        aspxName = myLogin.StrRtn;
-        if (String.IsNullOrEmpty(aspxName))
+        usrAuth = myLogin.IntRtn;
+        if (0 != usrAuth)
         {
             Session["totleAuthority"] =
                 myLogin.MyDst.Tables["view_usr_info"].Rows[0]["totleAuthority"].ToString().Trim();
@@ -75,6 +75,7 @@ public partial class Account_Login : System.Web.UI.Page
         }
         else
         {
+            
         }
     }
 }
