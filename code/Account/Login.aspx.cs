@@ -64,7 +64,7 @@ public partial class Account_Login : System.Web.UI.Page
             Session["usrId"] =
                 myLogin.MyDst.Tables["view_usr_info"].Rows[0]["usrId"].ToString().Trim();
 
-            string continueUrl = "~/Default.aspx";//Request.QueryString["ReturnUrl"];
+            string continueUrl = "~/Main/DefaultMainSite.aspx";//Request.QueryString["ReturnUrl"];
             if (String.IsNullOrEmpty(continueUrl))
             {
                 continueUrl = "~/";
