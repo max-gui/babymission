@@ -30,7 +30,7 @@
             </asp:MenuItem>
             <asp:MenuItem Text="公司结构管理" Value="公司结构管理">
                 <asp:MenuItem Text="公司部门管理" Value="departEdit"></asp:MenuItem>
-                <asp:MenuItem Text="公司职位管理" Value="公司职位管理"></asp:MenuItem>
+                <asp:MenuItem Text="公司职位管理" Value="titleEdit"></asp:MenuItem>
             </asp:MenuItem>
         </Items>
         <StaticHoverStyle BackColor="#7C6F57" ForeColor="White" />
