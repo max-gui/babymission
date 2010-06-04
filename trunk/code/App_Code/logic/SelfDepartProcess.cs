@@ -21,10 +21,18 @@ public class SelfDepartProcess :SelectLogic
 		//
 		//TODO: 在此处添加构造函数逻辑
 		//
+        tdDB = (tbl_department)InitDatabaseProc("tbl_department");
+        
 	}
 
+    private tbl_department tdDB = null;
     public override void Process()
     {
+    }
+
+    public void commit()
+    {
+        tdDB.SelectSelfDepatCommit(MyDst);
     }
 
     public override void Add()
@@ -58,8 +66,7 @@ public class SelfDepartProcess :SelectLogic
 
     public override void View()
     {
-        tbl_department db = (tbl_department)InitDatabaseProc("tbl_department");
-        MyDst = db.SelectSelfDepatView(MyDst);
+        MyDst = tdDB.SelectSelfDepatView(MyDst);
         //TAB_DATA_USERDatabase db = (TAB_DATA_USERDatabase)InitDatabaseProc("Database", "DataBase.TAB_DATA_USERDatabase");
         //MyDst = db.SelectView();
         //StrRtn = db.selectNum().ToString();

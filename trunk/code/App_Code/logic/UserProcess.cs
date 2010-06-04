@@ -21,16 +21,17 @@ public class UserProcess : SelectLogic
         //
         // TODO: 在此处添加构造函数逻辑
         //
+        vuiDB = (view_usr_info)InitDatabaseProc("view_usr_info");
     }
 
+    private view_usr_info vuiDB = null;
     public override void Process()
     {
     }
 
     public override void DoLogin()
     {
-        view_usr_info db = (view_usr_info)InitDatabaseProc("view_usr_info");
-        MyDst = db.SelectLogin(MyDst);
+        MyDst = vuiDB.SelectLogin(MyDst);
 
         if (MyDst.Tables["view_usr_info"].Rows.Count != 0)
         {
