@@ -37,9 +37,10 @@ public partial class SelfDepartment : System.Web.UI.Page
 
             myView.View();
             DataTable taskTable = myView.MyDst.Tables["tbl_department"];
-
+            taskTable.DefaultView.RowFilter = 
+                "isDel = " + bool.FalseString.ToString().Trim();
             Session["SelfDepartProcess"] = myView;
-            Session["dtSources"] = myView.MyDst.Tables["tbl_department"];
+            Session["dtSources"] = taskTable;
             //if (Session["PAGESIZE"] != null)
             //{
             //    SelfDepartGV.DataSource = Session["dtSources"];//["dtSources"] as DataTable;
@@ -108,8 +109,8 @@ public partial class SelfDepartment : System.Web.UI.Page
 
         //Update the values.
         GridViewRow row = SelfDepartGV.Rows[e.RowIndex];
-        dt.Rows[row.DataItemIndex].Delete();
-        //dt.Rows[row.DataItemIndex]["isDel"] = bool.TrueString.ToString().Trim();
+        //dt.Rows[row.DataItemIndex].Delete();
+        dt.Rows[row.DataItemIndex]["isDel"] = bool.TrueString.ToString().Trim();
         
 
         SelfDepartGV.DataSource = Session["dtSources"] as DataTable;
@@ -121,15 +122,32 @@ public partial class SelfDepartment : System.Web.UI.Page
     {
         //Retrieve the table from the session object.
         DataTable dt = (DataTable)Session["dtSources"];
+        int index = e.RowIndex;
 
         //Update the values.
-        GridViewRow row = SelfDepartGV.Rows[e.RowIndex];
-        dt.Rows[row.DataItemIndex]["departmentName"] = ((TextBox)(row.Cells[2].Controls[0])).Text;
+        GridViewRow row = SelfDepartGV.Rows[index];
+        string strTxt = ((TextBox)(row.Cells[2].Controls[0])).Text.ToString().Trim();
 
-        //Reset the edit index.
-        SelfDepartGV.EditIndex = -1;
-        SelfDepartGV.Columns[0].Visible = true;
-
+        if (string.IsNullOrWhiteSpace(strTxt)) 
+        {
+            Session["error"] = bool.TrueString.ToString().Trim();
+            dt.Rows[row.DataItemIndex]["departmentName"] = "部门名称不能为空！";
+            SelfDepartGV.EditIndex = index;
+        }
+        else if (strTxt.Length > 25)
+        {
+            Session["error"] = bool.TrueString.ToString().Trim();
+            dt.Rows[row.DataItemIndex]["departmentName"] = "部门名称不能超过25个字！";
+            SelfDepartGV.EditIndex = index;
+        }
+        else
+        {
+            Session["error"] = bool.FalseString.ToString().Trim();
+            dt.Rows[row.DataItemIndex]["departmentName"] = strTxt;
+            SelfDepartGV.EditIndex = -1;
+            SelfDepartGV.Columns[0].Visible = true;
+        }
+        
         SelfDepartGV.DataSource = Session["dtSources"] as DataTable;
         SelfDepartGV.DataBind();
     }
@@ -140,7 +158,8 @@ public partial class SelfDepartment : System.Web.UI.Page
         GridViewRow row = SelfDepartGV.Rows[e.RowIndex];
         string str = dt.Rows[row.DataItemIndex]["departmentName"].ToString().Trim();
 
-        if (string.IsNullOrWhiteSpace(str))
+        if (string.IsNullOrWhiteSpace(str) ||
+            bool.Parse(Session["error"].ToString().Trim()))
         {
             dt.Rows[row.DataItemIndex].Delete();
         }
@@ -195,18 +214,6 @@ public partial class SelfDepartment : System.Web.UI.Page
     protected void btnOk_Click(object sender, EventArgs e)
     {
 
-        DataTable dt = Session["dtSources"] as DataTable;
-
-        int count = dt.Rows.Count;
-        for (int i = 0; i < count; i ++ )
-        {
-            if (dt.Rows[i].RowState == DataRowState.Deleted)
-            {
-                dt.Rows[i].RejectChanges();
-                dt.Rows[i]["isDel"] = bool.TrueString.ToString().Trim();
-            }
-        }
-        
         SelfDepartProcess sdp = Session["SelfDepartProcess"] as SelfDepartProcess;
         
         sdp.commit();
