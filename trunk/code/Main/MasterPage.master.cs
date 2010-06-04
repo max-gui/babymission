@@ -19,7 +19,9 @@ public partial class MasterPage : System.Web.UI.MasterPage
             case ("departEdit"):
                 Response.Redirect("~/Main/self_depart_title/SelfDepartment.aspx");
                 break;
-            
+            case ("titleEdit"):
+                Response.Redirect("~/Main/self_depart_title/SelfTitle.aspx");
+                break;
         
         
         

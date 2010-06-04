@@ -8,27 +8,27 @@ using System.Web.Services.Protocols;
 using System.Data.SqlClient;
 using System.Data;
 /// <summary>
-///tbl_department 的摘要说明
+///tbl_title 的摘要说明
 /// </summary>
-public class tbl_department :DataBase
+public class tbl_title : DataBase
 {
-	public tbl_department()
+	public tbl_title()
 	{
 		//
 		//TODO: 在此处添加构造函数逻辑
 		//
 	}
 
-    public DataSet SelectSelfDepatView(DataSet dataSet)
+    public DataSet SelectSelfTitleatView(DataSet dataSet)
     {
- //       SqlParameter sqlParaName = null;
+        //       SqlParameter sqlParaName = null;
         SqlParameter sqlParaIsDel = null;
         SqlCommand sqlCmd = null;
 
         string strSQL =
             "SELECT " +
-            "departmentId , departmentName , isDel " +
-            "FROM tbl_department " +
+            "titleId , titleName , isDel " +
+            "FROM tbl_title " +
             "WHERE " +
             "isDel = @isDel ";
 
@@ -47,12 +47,12 @@ public class tbl_department :DataBase
 
         //SqlCommandBuilder userScb = new SqlCommandBuilder(userDataAdapter);
         DataSet myDataSet = new DataSet();
-        userDataAdapter.Fill(myDataSet, "tbl_department");
+        userDataAdapter.Fill(myDataSet, "tbl_title");
 
         return myDataSet;
     }
 
-    public void SelectSelfDepatCommit(DataSet dataSet)
+    public void SelectSelfTitleatCommit(DataSet dataSet)
     {
         //sqlParaName = new SqlParameter("@usrName", SqlDbType.Char, 10);
         //sqlParaName.Value = dataSet.Tables["view_usr_info"].Rows[0]["usrName"].ToString().Trim();
@@ -64,7 +64,7 @@ public class tbl_department :DataBase
         SqlDataAdapter da = this.SqlDA;
         SqlCommandBuilder scb = new SqlCommandBuilder(da);
         //SqlCommandBuilder userScb = new SqlCommandBuilder(userDataAdapter);
-        da.Update(dataSet, "tbl_department");
+        da.Update(dataSet, "tbl_title");
         dataSet.AcceptChanges();
     }
 }
