@@ -15,25 +15,34 @@ using System.Data.SqlClient;
 abstract public class DataBase
 {
 	private SqlCommand sqlCom = null;
-    private DbTransaction dbTrans = null;
+    private SqlTransaction sqlTrans = null;
+    private SqlDataAdapter sqlDA = null;
 
     public DataBase( )
     {
         SQLServConnection mySqlConn = new SQLServConnection();
-        sqlCom = mySqlConn.SqlCom;
+        sqlCom = mySqlConn.DBCom as SqlCommand;
 
-        dbTrans = mySqlConn.DBTrans;
+        sqlDA = new SqlDataAdapter(sqlCom);
+
+        sqlTrans = mySqlConn.DBTrans as SqlTransaction;
     }
 
-    public DbTransaction DBTrans
+    public SqlTransaction SqlTrans
     {
-        set { dbTrans = value; }
-        get { return dbTrans; }
+        set { sqlTrans = value; }
+        get { return sqlTrans; }
     }
 
     public SqlCommand SqlCom
     {
         set { sqlCom = value; }
         get { return sqlCom; }
+    }
+
+    public SqlDataAdapter SqlDA
+    {
+        set { sqlDA = value; }
+        get { return sqlDA; }
     }
 }

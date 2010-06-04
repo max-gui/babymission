@@ -27,7 +27,7 @@ public class tbl_department :DataBase
 
         string strSQL =
             "SELECT " +
-            "departmentName , isDel " +
+            "departmentId , departmentName , isDel " +
             "FROM tbl_department " +
             "WHERE " +
             "isDel = @isDel ";
@@ -40,13 +40,30 @@ public class tbl_department :DataBase
         sqlParaIsDel = new SqlParameter("@isDel", SqlDbType.Char, 10);
         sqlParaIsDel.Value = bool.FalseString.ToString().Trim();
         //sqlCmd.Parameters.Add(sqlParaName);
+        sqlCmd.Parameters.Clear();
         sqlCmd.Parameters.Add(sqlParaIsDel);
 
-        SqlDataAdapter userDataAdapter = new SqlDataAdapter(sqlCmd);
+        SqlDataAdapter userDataAdapter = this.SqlDA;
+
         //SqlCommandBuilder userScb = new SqlCommandBuilder(userDataAdapter);
         DataSet myDataSet = new DataSet();
         userDataAdapter.Fill(myDataSet, "tbl_department");
 
         return myDataSet;
+    }
+
+    public void SelectSelfDepatCommit(DataSet dataSet)
+    {
+        //sqlParaName = new SqlParameter("@usrName", SqlDbType.Char, 10);
+        //sqlParaName.Value = dataSet.Tables["view_usr_info"].Rows[0]["usrName"].ToString().Trim();
+        //       sqlParaIsDel = new SqlParameter("@isDel", SqlDbType.Char, 10);
+        //       sqlParaIsDel.Value = bool.FalseString.ToString().Trim();
+        //sqlCmd.Parameters.Add(sqlParaName);
+        //       sqlCmd.Parameters.Add(sqlParaIsDel);
+
+        SqlDataAdapter da = this.SqlDA;
+        SqlCommandBuilder scb = new SqlCommandBuilder(da);
+        //SqlCommandBuilder userScb = new SqlCommandBuilder(userDataAdapter);
+        da.Update(dataSet, "tbl_department");
     }
 }

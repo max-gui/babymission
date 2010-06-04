@@ -26,24 +26,28 @@ public partial class SelfDepartment : System.Web.UI.Page
                 Response.Redirect("~/Login.aspx");
         }
 
-        DataSet MyDst = new DataSet();
-        SelfDepartProcess myView = new SelfDepartProcess(MyDst);
+        //DataSet MyDst = new DataSet();
+        //SelfDepartProcess myView = new SelfDepartProcess(MyDst);
 
-        DataTable taskTable = null;
+        
         if (!IsPostBack)
         {
+            DataSet MyDst = new DataSet();
+            SelfDepartProcess myView = new SelfDepartProcess(MyDst);
+
             myView.View();
-            taskTable = myView.MyDst.Tables["tbl_department"];
-            
+            DataTable taskTable = myView.MyDst.Tables["tbl_department"];
+
+            Session["SelfDepartProcess"] = myView;
             Session["dtSources"] = myView.MyDst.Tables["tbl_department"];
-            if (Session["PAGESIZE"] != null)
-            {
-                SelfDepartGV.DataSource = Session["dtSources"];//["dtSources"] as DataTable;
-                SelfDepartGV.DataBind();
-            }
-            else
-            {
-            }
+            //if (Session["PAGESIZE"] != null)
+            //{
+            //    SelfDepartGV.DataSource = Session["dtSources"];//["dtSources"] as DataTable;
+            //    SelfDepartGV.DataBind();
+            //}
+            //else
+            //{
+            //}
             SelfDepartGV.DataSource = Session["dtSources"];//["dtSources"] as DataTable;
             //string[] strKeyNames = new string[1];
             //strKeyNames[0] = "departmentName";
@@ -78,8 +82,8 @@ public partial class SelfDepartment : System.Web.UI.Page
     {
         if ( "Add" == e.CommandName)
         {
-            int index = Convert.ToInt32(e.CommandArgument);
-            index++;
+            //int index = Convert.ToInt32(e.CommandArgument);
+            //index++;
 
             // Retrieve the row that contains the button clicked 
             // by the user from the Rows collection.
@@ -88,13 +92,14 @@ public partial class SelfDepartment : System.Web.UI.Page
             DataRow dr = dt.NewRow();
             dr["isDel"] = bool.FalseString.ToString().Trim();
             dt.Rows.Add(dr);
-
-            SelfDepartGV.EditIndex = index;
+            
+            //SelfDepartGV.EditIndex = index;
             SelfDepartGV.Columns[0].Visible = false;
 
             Session["dtSources"] = dt;
             SelfDepartGV.DataSource = Session["dtSources"];//["dtSources"] as DataTable;
-            SelfDepartGV.DataBind();            
+            SelfDepartGV.DataBind();
+            SelfDepartGV.DataBind();
         }
     }
     protected void SelfDepartGV_RowDeleting(object sender, GridViewDeleteEventArgs e)
@@ -103,8 +108,9 @@ public partial class SelfDepartment : System.Web.UI.Page
 
         //Update the values.
         GridViewRow row = SelfDepartGV.Rows[e.RowIndex];
-        dt.Rows[row.DataItemIndex]["isDel"] = bool.TrueString.ToString().Trim();
-                
+        dt.Rows[row.DataItemIndex].Delete();
+        //dt.Rows[row.DataItemIndex]["isDel"] = bool.TrueString.ToString().Trim();
+        
 
         SelfDepartGV.DataSource = Session["dtSources"] as DataTable;
         SelfDepartGV.DataBind();
@@ -150,6 +156,12 @@ public partial class SelfDepartment : System.Web.UI.Page
     {
         if (e.Row.RowType == DataControlRowType.DataRow)
         {
+            System.Data.DataRowView drv = (System.Data.DataRowView)e.Row.DataItem;
+            if (string.IsNullOrWhiteSpace(drv["departmentName"].ToString().Trim()))
+            {
+                SelfDepartGV.EditIndex = e.Row.RowIndex;
+                //rbl.Items.FindByValue("del").Enabled = false;
+            }
             //gridview嵌套控件
             //System.Data.DataRowView drv = (System.Data.DataRowView)e.Row.DataItem;
             //RadioButtonList rbl = (RadioButtonList)e.Row.FindControl("RblIsDel");
@@ -179,5 +191,30 @@ public partial class SelfDepartment : System.Web.UI.Page
         }
 
     }
- 
+
+    protected void btnOk_Click(object sender, EventArgs e)
+    {
+
+        DataTable dt = Session["dtSources"] as DataTable;
+
+        int count = dt.Rows.Count;
+        for (int i = 0; i < count; i ++ )
+        {
+            if (dt.Rows[i].RowState == DataRowState.Deleted)
+            {
+                dt.Rows[i].RejectChanges();
+                dt.Rows[i]["isDel"] = bool.TrueString.ToString().Trim();
+            }
+        }
+        
+        SelfDepartProcess sdp = Session["SelfDepartProcess"] as SelfDepartProcess;
+        
+        sdp.commit();
+        sdp.View();
+
+        Session["dtSources"] = sdp.MyDst.Tables["tbl_department"] as DataTable;
+        SelfDepartGV.DataSource = Session["dtSources"];//["dtSources"] as DataTable;
+        
+        SelfDepartGV.DataBind();
+    }
 }

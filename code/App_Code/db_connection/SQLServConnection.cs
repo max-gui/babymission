@@ -21,16 +21,12 @@ public class SQLServConnection
 
     private DbCommand dbCom = null;
 
-    private SqlCommand sqlCom = null;
-
     private DbTransaction dbTrans = null;
 
     #region constructor
     public SQLServConnection()
     {
         ConnectInit();
-
-        sqlCom = dbCom as SqlCommand;
     }
     #endregion
 
@@ -51,9 +47,9 @@ public class SQLServConnection
             dbConn;
     }
 
-    public SqlCommand SqlCom
+    public DbCommand DBCom
     {
-        get { return sqlCom; }
+        get { return dbCom; }
     }
 
     public DbTransaction DBTrans
