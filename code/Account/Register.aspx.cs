@@ -17,6 +17,13 @@ public partial class Account_Register : System.Web.UI.Page
     protected void Page_Load(object sender, EventArgs e)
     {
 //        txtName.ContinueDestinationPageUrl = Request.QueryString["ReturnUrl"];
+        if (!IsPostBack)
+        {
+            Session["flagName"] = bool.FalseString.ToString().Trim();
+            Session["flagUsrName"] = bool.FalseString.ToString().Trim();
+            Session["flagPassWord"] = bool.FalseString.ToString().Trim();
+            Session["flagContact"] = bool.FalseString.ToString().Trim();
+        }
     }
 
     /*
@@ -34,6 +41,11 @@ public partial class Account_Register : System.Web.UI.Page
     */
     protected void btnReg_Click(object sender, EventArgs e)
     {
+        string sn = txtName.Text.ToString().Trim();
+        string sun = txtUsrName.Text.ToString().Trim();
+        string spw = txtPassWord.Text.ToString().Trim();
+        int sc = int.Parse(txtContact.Text.ToString().Trim());
+        
         FormsAuthentication.SetAuthCookie(this.txtUsrName.Text.ToString().Trim(), false /* createPersistentCookie */);
 
         DataSet dSet = new DataSet();
@@ -77,5 +89,96 @@ public partial class Account_Register : System.Web.UI.Page
             continueUrl = "~/";
         }
         Response.Redirect(continueUrl);
+    }
+    protected void txtName_TextChanged(object sender, EventArgs e)
+    {
+        if (string.IsNullOrWhiteSpace(txtName.Text.ToString().Trim()))
+        {
+            lblName.Text = "*必填项";
+        }
+        else
+        {
+            lblName.Text = string.Empty;
+            Session["flagName"] = bool.TrueString.ToString().Trim();
+            btnOk();
+        }
+    }
+    protected void txtUsrName_TextChanged(object sender, EventArgs e)
+    {
+        if (string.IsNullOrWhiteSpace(txtUsrName.Text.ToString().Trim()))
+        {
+            txtUsrName.Text = "*必填项";
+        }
+        else
+        {
+            lblUsrName.Text = string.Empty;
+            Session["flagUsrName"] = bool.TrueString.ToString().Trim();
+            btnOk();
+        }
+    }
+    protected void txtPassWord_TextChanged(object sender, EventArgs e)
+    {
+        if (string.IsNullOrWhiteSpace(txtPassWord.Text.ToString().Trim()))
+        {
+            txtPassWord.Text = "*必填项";
+        }
+        else
+        {
+            lblPassWord.Text = string.Empty;
+            Session["flagPassWord"] = bool.TrueString.ToString().Trim();
+            btnOk();
+        }
+    }
+    protected void txtContact_TextChanged(object sender, EventArgs e)
+    {
+        if (string.IsNullOrWhiteSpace(txtContact.Text.ToString().Trim()))
+        {
+            txtContact.Text = "*必填项";
+            Session["flagContact"] = bool.FalseString.ToString().Trim();
+        }
+        else if (txtContact.Text.ToString().Trim().Length < 11)
+        {
+            lblContact.Text = "手机号码不能短于11位";
+            Session["flagContact"] = bool.FalseString.ToString().Trim();
+        }
+        else if (txtContact.Text.ToString().Trim().Length < 11)
+        {
+            lblContact.Text = "手机号码不能超过11位";
+            Session["flagContact"] = bool.FalseString.ToString().Trim();
+        }
+        else
+        {
+            try
+            {
+                int sc = int.Parse(txtContact.Text.ToString().Trim());
+                lblContact.Text = string.Empty;
+                Session["flagContact"] = bool.TrueString.ToString().Trim();
+            }
+            catch (FormatException fe)
+            {
+                lblContact.Text = "手机号码只能包含数字";
+                Session["flagContact"] = bool.FalseString.ToString().Trim();
+            }            
+        }
+
+        btnOk();
+    }
+    protected void btnOk()
+    {
+        btnReg.Enabled = false;
+
+        if (Session["flagName"].Equals(bool.FalseString.ToString().Trim()))
+        {            
+        }
+        else if (Session["flagUsrName"].Equals(bool.FalseString.ToString().Trim()))
+        {
+        }
+        else if (Session["flagPassWord"].Equals(bool.FalseString.ToString().Trim()))
+        {
+        }
+        else if (Session["flagContact"].Equals(bool.FalseString.ToString().Trim()))
+        {
+            btnReg.Enabled = true;
+        }
     }
 }
