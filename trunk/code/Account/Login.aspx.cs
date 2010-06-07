@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using System.Web.Security;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 
@@ -20,22 +21,22 @@ public partial class Account_Login : System.Web.UI.Page
         DataSet dataSet = new DataSet();
         DataRow userRow = null;
 
-        DataColumn colName = new DataColumn();
-        DataColumn colAuth = new DataColumn();
-        DataColumn colPwd = new DataColumn();
-        DataColumn colId = new DataColumn();
+        DataColumn colName = new DataColumn("usrName", System.Type.GetType("System.String"));
+        DataColumn colAuth = new DataColumn("totleAuthority", System.Type.GetType("System.Int32"));
+        DataColumn colPwd = new DataColumn("usrPassWord", System.Type.GetType("System.String"));
+        DataColumn colId = new DataColumn("usrId", System.Type.GetType("System.Int32"));
 
         DataTable userTable = new DataTable("view_usr_info");
 
-        colName.DataType = System.Type.GetType("System.String");
-        colAuth.DataType = System.Type.GetType("System.Int32");
-        colPwd.DataType = System.Type.GetType("System.String");
-        colId.DataType = System.Type.GetType("System.Int32");
+        //colName.DataType = System.Type.GetType("System.String");
+        //colAuth.DataType = System.Type.GetType("System.Int32");
+        //colPwd.DataType = System.Type.GetType("System.String");
+        //colId.DataType = System.Type.GetType("System.Int32");
 
-        colName.ColumnName = "usrName";
-        colPwd.ColumnName = "usrPassWord";
-        colId.ColumnName = "usrId";
-        colAuth.ColumnName = "totleAuthority";
+        //colName.ColumnName = "usrName";
+        //colPwd.ColumnName = "usrPassWord";
+        //colId.ColumnName = "usrId";
+        //colAuth.ColumnName = "totleAuthority";
 
         userTable.Columns.Add(colId);
         userTable.Columns.Add(colName);
@@ -50,6 +51,9 @@ public partial class Account_Login : System.Web.UI.Page
         dataSet.Tables.Add(userTable);
         #endregion
 
+        
+
+
         int usrAuth = 0;
         UserProcess myLogin = new UserProcess(dataSet);
 
@@ -57,6 +61,8 @@ public partial class Account_Login : System.Web.UI.Page
         usrAuth = myLogin.IntRtn;
         if (0 != usrAuth)
         {
+            FormsAuthentication.SetAuthCookie(this.loginCon.UserName.ToString().Trim(), false /* createPersistentCookie */);
+
             Session["totleAuthority"] =
                 myLogin.MyDst.Tables["view_usr_info"].Rows[0]["totleAuthority"].ToString().Trim();
             Session["usrName"] =

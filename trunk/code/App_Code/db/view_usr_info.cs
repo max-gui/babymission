@@ -44,6 +44,7 @@ public class view_usr_info : DataBase
         sqlCmd.Parameters.Add(sqlParaPassWord);
 
         SqlDataAdapter userDataAdapter = this.SqlDA;
+        SqlDA.InsertCommand = sqlCmd;
         //SqlCommandBuilder userScb = new SqlCommandBuilder(userDataAdapter);
         DataSet myDataSet = new DataSet();
         userDataAdapter.Fill(myDataSet, "view_usr_info");

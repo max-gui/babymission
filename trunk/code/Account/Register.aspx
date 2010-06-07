@@ -22,8 +22,7 @@
         <span class="style1">请用以下表单填写注册信息</span></p>
     <p>
         真实姓名：&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-        <asp:TextBox ID="txtName" runat="server" AutoPostBack="True" 
-            ontextchanged="txtName_TextChanged"></asp:TextBox>
+        <asp:TextBox ID="txtName" runat="server"></asp:TextBox>
         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
         <asp:Label ID="lblName" runat="server" Font-Size="Large" ForeColor="Red" 
             Text="*必填项"></asp:Label>
@@ -31,24 +30,21 @@
     </p>
     <p>
         用户名：&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
-        <asp:TextBox ID="txtUsrName" runat="server" AutoPostBack="True" 
-            ontextchanged="txtUsrName_TextChanged"></asp:TextBox>
+        <asp:TextBox ID="txtUsrName" runat="server"></asp:TextBox>
     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
         <asp:Label ID="lblUsrName" runat="server" Font-Size="Large" ForeColor="Red" 
             Text="*必填项"></asp:Label>
     </p>
     <p>
         密码：&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-        <asp:TextBox ID="txtPassWord" runat="server" AutoPostBack="True" 
-            ontextchanged="txtPassWord_TextChanged"></asp:TextBox>
+        <asp:TextBox ID="txtPassWord" runat="server"></asp:TextBox>
         &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;<asp:Label ID="lblPassWord" runat="server" 
             Font-Size="Large" ForeColor="Red" Text="*必填项"></asp:Label>
         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
     </p>
     <p>
         联系方式：&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-        <asp:TextBox ID="txtContact" runat="server" AutoPostBack="True" 
-            ontextchanged="txtContact_TextChanged"></asp:TextBox>
+        <asp:TextBox ID="txtContact" runat="server"></asp:TextBox>
     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
         <asp:Label ID="lblContact" runat="server" Font-Size="Large" ForeColor="Red" 
             Text="*必填项"></asp:Label>
@@ -56,7 +52,7 @@
     <p>
         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
         <asp:Button ID="btnReg" runat="server" onclick="btnReg_Click" Text="注册" 
-            Enabled="False" />
+            style="height: 21px" />
         <br />
         <br />
     </p>

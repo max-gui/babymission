@@ -11,19 +11,19 @@ public partial class SelfDepartment : System.Web.UI.Page
 {
     protected void Page_Load(object sender, EventArgs e)
     {
-        int usrAuth = 0;
-        string strUsrAuth = Session["totleAuthority"].ToString().Trim();
-        if (String.IsNullOrEmpty(strUsrAuth))
+        if (!(null == Session["totleAuthority"]))
         {
-            Response.Redirect("~/Login.aspx");
+            int usrAuth = 0;
+            string strUsrAuth = Session["totleAuthority"].ToString().Trim();
+            usrAuth = int.Parse(strUsrAuth);
+            int flag = 0x1 << 3;
+
+            if ((usrAuth & flag) == 0)
+                Response.Redirect("~/Main/NoAuthority");
         }
         else
         {
-            usrAuth = int.Parse(strUsrAuth);
-            int flag = 0x1 << 3;
-            
-            if ((usrAuth & flag) == 0)
-                Response.Redirect("~/Login.aspx");
+            Response.Redirect("~/Login.aspx");
         }
 
         //DataSet MyDst = new DataSet();

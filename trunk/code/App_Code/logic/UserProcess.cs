@@ -22,9 +22,11 @@ public class UserProcess : SelectLogic
         // TODO: 在此处添加构造函数逻辑
         //
         vuiDB = (view_usr_info)InitDatabaseProc("view_usr_info");
+        tu = (tbl_usr)InitDatabaseProc("tbl_usr");
     }
 
     private view_usr_info vuiDB = null;
+    private tbl_usr tu = null;
     public override void Process()
     {
     }
@@ -41,6 +43,25 @@ public class UserProcess : SelectLogic
         {
             IntRtn = 0;
         }
+    }
+
+    public void DoCheckUsrName()
+    {
+        MyDst = tu.SelectUsr(MyDst);
+
+        if (MyDst.Tables["tbl_usr"].Rows.Count == 0)
+        {
+            StrRtn = bool.TrueString.ToString().Trim();
+        }
+        else
+        {
+            StrRtn = bool.FalseString.ToString().Trim();
+        }
+    }
+
+    public void commit()
+    {
+        tu.SelecttUsrCommit(MyDst);
     }
 
     public override void Add()
