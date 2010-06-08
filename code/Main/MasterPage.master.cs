@@ -22,6 +22,12 @@ public partial class MasterPage : System.Web.UI.MasterPage
             case ("titleEdit"):
                 Response.Redirect("~/Main/self_depart_title/SelfTitle.aspx");
                 break;
+            case ("usrAuth"):
+                Response.Redirect("~/Main/usrManagerment/usrAuthManagerment.aspx");
+                break;
+            case ("usrDepartTitle"):
+            Response.Redirect("~/Main/usrManagerment/usrAuthManagerment.aspx");
+            break;
         
         
         

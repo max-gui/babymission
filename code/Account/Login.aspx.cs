@@ -54,12 +54,12 @@ public partial class Account_Login : System.Web.UI.Page
         
 
 
-        int usrAuth = 0;
+        int rowRtn = 0;
         UserProcess myLogin = new UserProcess(dataSet);
 
         myLogin.DoLogin();
-        usrAuth = myLogin.IntRtn;
-        if (0 != usrAuth)
+        rowRtn = myLogin.IntRtn;
+        if (0 != rowRtn)
         {
             FormsAuthentication.SetAuthCookie(this.loginCon.UserName.ToString().Trim(), false /* createPersistentCookie */);
 

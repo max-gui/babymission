@@ -24,9 +24,9 @@
         <Items>
             <asp:MenuItem Text="个人信息更改" Value="个人信息更改"></asp:MenuItem>
             <asp:MenuItem Text="用户管理" Value="用户管理">
-                <asp:MenuItem Text="用户权限管理" Value="用户权限管理"></asp:MenuItem>
+                <asp:MenuItem Text="用户权限管理" Value="usrAuth"></asp:MenuItem>
                 <asp:MenuItem Text="删除用户信息" Value="删除用户信息"></asp:MenuItem>
-                <asp:MenuItem Text="更改用户所属部门和职务" Value="更改用户所属部门和职务"></asp:MenuItem>
+                <asp:MenuItem Text="更改用户所属部门和职务" Value="usrDepartTitle"></asp:MenuItem>
             </asp:MenuItem>
             <asp:MenuItem Text="公司结构管理" Value="公司结构管理">
                 <asp:MenuItem Text="公司部门管理" Value="departEdit"></asp:MenuItem>

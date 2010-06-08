@@ -8,81 +8,82 @@ using System.Web.Services.Protocols;
 using System.Data.SqlClient;
 using System.Data;
 /// <summary>
-///tbl_department 的摘要说明
+///tbl_usr_authority 的摘要说明
 /// </summary>
-public class tbl_department :DataBase
+public class tbl_usr_authority : DataBase
 {
-	public tbl_department()
+	public tbl_usr_authority()
 	{
 		//
 		//TODO: 在此处添加构造函数逻辑
 		//
 	}
 
-    public int SelectNull()
+    public void SelectAdd(int usrId, int auth)
     {
-        int selId = -1;
+        SqlParameter sqlParaUid = null;
+        SqlParameter sqlParaAu = null;
         SqlCommand sqlCmd = null;
 
         string strSQL =
-            "SELECT " +
-            "departmentId " +
-            "FROM tbl_department " +
-            "WHERE " +
-            "departmentName = '无'";//@titleName";
+            "insert into " +
+            "tbl_usr_authority " +
+            "(usrId , authority) " +
+            "values(@usrId , @authority) ";
+        //"WHERE " +
+        //"isDel = @isDel ";
 
         sqlCmd = this.SqlCom;
         sqlCmd.CommandText = strSQL;
 
+        sqlParaUid = new SqlParameter("@usrId", usrId);
+        sqlParaAu = new SqlParameter("@authority", auth);
+
+        sqlCmd.Parameters.Clear();
+        sqlCmd.Parameters.Add(sqlParaUid);
+        sqlCmd.Parameters.Add(sqlParaAu);
+
         sqlCmd.Connection.Open();
-        
-        using (SqlDataReader sdr = sqlCmd.ExecuteReader())
-        {
-            while (sdr.Read())
-            {
-                selId = sdr.GetInt32(0);
-            }
-        }
+
+        sqlCmd.ExecuteNonQuery();
 
         sqlCmd.Connection.Close();
-
-        return selId;
     }
 
-    public DataSet SelectSelfDepatView(DataSet dataSet)
+    public DataSet SelectUsrAuthView(DataSet dataSet)
     {
- //       SqlParameter sqlParaName = null;
-        SqlParameter sqlParaIsDel = null;
+        //       SqlParameter sqlParaName = null;
+        //SqlParameter sqlParaIsDel = null;
         SqlCommand sqlCmd = null;
 
         string strSQL =
             "SELECT " +
-            "departmentId , departmentName , isDel " +
-            "FROM tbl_department " +
+            "* " +
+            "FROM tbl_usr_authority " +
             "WHERE " +
-            "isDel = @isDel and departmentName != '无'";
+            "authority != 0 ";
 
         sqlCmd = this.SqlCom;
         sqlCmd.CommandText = strSQL;
 
         //sqlParaName = new SqlParameter("@usrName", SqlDbType.Char, 10);
         //sqlParaName.Value = dataSet.Tables["view_usr_info"].Rows[0]["usrName"].ToString().Trim();
-        sqlParaIsDel = new SqlParameter("@isDel", SqlDbType.Char, 10);
-        sqlParaIsDel.Value = bool.FalseString.ToString().Trim();
+        //sqlParaIsDel = new SqlParameter("@isDel", SqlDbType.Char, 10);
+        //sqlParaIsDel.Value = bool.FalseString.ToString().Trim();
         //sqlCmd.Parameters.Add(sqlParaName);
-        sqlCmd.Parameters.Clear();
-        sqlCmd.Parameters.Add(sqlParaIsDel);
+        //sqlCmd.Parameters.Clear();
+        //sqlCmd.Parameters.Add(sqlParaIsDel);
 
         SqlDataAdapter userDataAdapter = this.SqlDA;
 
         //SqlCommandBuilder userScb = new SqlCommandBuilder(userDataAdapter);
         DataSet myDataSet = new DataSet();
-        userDataAdapter.Fill(myDataSet, "tbl_department");
+        userDataAdapter.Fill(myDataSet, "tbl_usr_authority");
 
         return myDataSet;
     }
 
-    public void SelectSelfDepatCommit(DataSet dataSet)
+    public void SelectUsrAuthCommit(DataSet dataSet)
     {
         //sqlParaName = new SqlParameter("@usrName", SqlDbType.Char, 10);
         //sqlParaName.Value = dataSet.Tables["view_usr_info"].Rows[0]["usrName"].ToString().Trim();
@@ -94,7 +95,7 @@ public class tbl_department :DataBase
         SqlDataAdapter da = this.SqlDA;
         SqlCommandBuilder scb = new SqlCommandBuilder(da);
         //SqlCommandBuilder userScb = new SqlCommandBuilder(userDataAdapter);
-        da.Update(dataSet, "tbl_department");
+        da.Update(dataSet, "tbl_usr_authority");
         dataSet.AcceptChanges();
     }
 }
