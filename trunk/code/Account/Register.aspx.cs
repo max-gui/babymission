@@ -97,7 +97,8 @@ public partial class Account_Register : System.Web.UI.Page
 
                 up.MyDst.Tables["tbl_usr"].Rows.Add(dr);
 
-                up.commit();
+                up.Add();
+                //up.commit();
 
                 int nullAuth = 0;
                 Session["totleAuthority"] = nullAuth;

@@ -51,4 +51,36 @@ public class view_usr_info : DataBase
 
         return myDataSet;
     }
+
+    public DataSet SelectUsrView(DataSet dataSet)
+    {
+        //SqlParameter sqlParaName = null;
+        //SqlParameter sqlParaPassWord = null;
+        SqlCommand sqlCmd = null;
+
+        string strSQL =
+            "SELECT " +
+            "* " +
+            "FROM view_usr_info ";// +
+            //"WHERE " +
+            //"usrName = @usrName and usrPassWord = @usrPassWord";
+
+        sqlCmd = this.SqlCom;
+        sqlCmd.CommandText = strSQL;
+
+        //sqlParaName = new SqlParameter("@usrName", SqlDbType.Char, 10);
+        //sqlParaName.Value = dataSet.Tables["view_usr_info"].Rows[0]["usrName"].ToString().Trim();
+        //sqlParaPassWord = new SqlParameter("@usrPassWord", SqlDbType.Char, 10);
+        //sqlParaPassWord.Value = dataSet.Tables["view_usr_info"].Rows[0]["usrPassWord"].ToString().Trim();
+        //sqlCmd.Parameters.Add(sqlParaName);
+        //sqlCmd.Parameters.Add(sqlParaPassWord);
+
+        SqlDataAdapter userDataAdapter = this.SqlDA;
+        SqlDA.InsertCommand = sqlCmd;
+        //SqlCommandBuilder userScb = new SqlCommandBuilder(userDataAdapter);
+        DataSet myDataSet = new DataSet();
+        userDataAdapter.Fill(myDataSet, "view_usr_info");
+
+        return myDataSet;
+    }
 }

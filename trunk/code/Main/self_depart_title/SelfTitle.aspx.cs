@@ -19,11 +19,11 @@ public partial class SelfTitle : System.Web.UI.Page
             int flag = 0x1 << 3;
 
             if ((usrAuth & flag) == 0)
-                Response.Redirect("~/Main/NoAuthority");
+                Response.Redirect("~/Main/NoAuthority.aspx");
         }
         else
         {
-            Response.Redirect("~/Login.aspx");
+            Response.Redirect("~/Account/Login.aspx");
         }
 
         if (!IsPostBack)

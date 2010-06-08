@@ -19,9 +19,39 @@ public class tbl_title : DataBase
 		//
 	}
 
+    public int SelectNull()
+    {
+        int selId = -1;
+        SqlCommand sqlCmd = null;
+
+        string strSQL =
+            "SELECT " +
+            "titleId " +
+            "FROM tbl_title " +
+            "WHERE " +
+            "titleName = '无'";//@titleName";
+
+        sqlCmd = this.SqlCom;
+        sqlCmd.CommandText = strSQL;
+
+        sqlCmd.Connection.Open();
+        
+        using (SqlDataReader sdr = sqlCmd.ExecuteReader())
+        {
+            while (sdr.Read())
+            {
+                selId = sdr.GetInt32(0);
+            }
+        }
+
+        sqlCmd.Connection.Close();
+
+        return selId;
+    }
+
     public DataSet SelectSelfTitleatView(DataSet dataSet)
     {
-        //       SqlParameter sqlParaName = null;
+        //SqlParameter sqlParaTName = null;
         SqlParameter sqlParaIsDel = null;
         SqlCommand sqlCmd = null;
 
@@ -30,17 +60,17 @@ public class tbl_title : DataBase
             "titleId , titleName , isDel " +
             "FROM tbl_title " +
             "WHERE " +
-            "isDel = @isDel ";
+            "isDel = @isDel and titleName != '无'";//@titleName";
 
         sqlCmd = this.SqlCom;
         sqlCmd.CommandText = strSQL;
 
-        //sqlParaName = new SqlParameter("@usrName", SqlDbType.Char, 10);
-        //sqlParaName.Value = dataSet.Tables["view_usr_info"].Rows[0]["usrName"].ToString().Trim();
+        //sqlParaTName = new SqlParameter("@titleName", SqlDbType.Char, 10);
+        //sqlParaTName.Value = "无职位";
         sqlParaIsDel = new SqlParameter("@isDel", SqlDbType.Char, 10);
         sqlParaIsDel.Value = bool.FalseString.ToString().Trim();
-        //sqlCmd.Parameters.Add(sqlParaName);
         sqlCmd.Parameters.Clear();
+        //sqlCmd.Parameters.Add(sqlParaTName);
         sqlCmd.Parameters.Add(sqlParaIsDel);
 
         SqlDataAdapter userDataAdapter = this.SqlDA;
