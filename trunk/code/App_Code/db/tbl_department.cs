@@ -52,26 +52,26 @@ public class tbl_department :DataBase
     public DataSet SelectSelfDepatView(DataSet dataSet)
     {
  //       SqlParameter sqlParaName = null;
-        SqlParameter sqlParaIsDel = null;
+        //SqlParameter sqlParaIsDel = null;
         SqlCommand sqlCmd = null;
 
         string strSQL =
             "SELECT " +
             "departmentId , departmentName , isDel " +
-            "FROM tbl_department " +
-            "WHERE " +
-            "isDel = @isDel and departmentName != '无'";
+            "FROM tbl_department ";// +
+            //"WHERE " +
+            //"isDel = @isDel";
 
         sqlCmd = this.SqlCom;
         sqlCmd.CommandText = strSQL;
 
         //sqlParaName = new SqlParameter("@usrName", SqlDbType.Char, 10);
         //sqlParaName.Value = dataSet.Tables["view_usr_info"].Rows[0]["usrName"].ToString().Trim();
-        sqlParaIsDel = new SqlParameter("@isDel", SqlDbType.Char, 10);
-        sqlParaIsDel.Value = bool.FalseString.ToString().Trim();
+        //sqlParaIsDel = new SqlParameter("@isDel", SqlDbType.Char, 10);
+        //sqlParaIsDel.Value = bool.FalseString.ToString().Trim();
         //sqlCmd.Parameters.Add(sqlParaName);
         sqlCmd.Parameters.Clear();
-        sqlCmd.Parameters.Add(sqlParaIsDel);
+        //sqlCmd.Parameters.Add(sqlParaIsDel);
 
         SqlDataAdapter userDataAdapter = this.SqlDA;
 

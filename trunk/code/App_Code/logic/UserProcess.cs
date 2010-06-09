@@ -74,6 +74,11 @@ public class UserProcess : SelectLogic
         }
     }
 
+    public void usrDepartTitleView()
+    {
+        MyDst = vuiDB.SelectUsrDepartTitleView(MyDst);
+    }
+
     //public void commit()
     //{
     //    int titleId = tt.SelectNull();
@@ -102,6 +107,16 @@ public class UserProcess : SelectLogic
         tud.SelectAdd(usrId, depId);
         tut.SelectAdd(usrId, titleId);
         tua.SelectAdd(usrId, auth);
+    }
+
+    public void usrDepModify(int usrId , int depId)
+    {
+        tud.SelectUpdate(usrId, depId);
+    }
+
+    public void usrTitleModify(int usrId, int titleId)
+    {
+        tut.SelectUpdate(usrId, titleId);
     }
 
     public override void Del()

@@ -49,4 +49,36 @@ public class tbl_usr_title : DataBase
 
         sqlCmd.Connection.Close();
     }
+
+    public void SelectUpdate(int usrId, int titleId)
+    {
+        SqlParameter sqlParaUid = null;
+        SqlParameter sqlParaTid = null;
+        SqlCommand sqlCmd = null;
+
+        string strSQL =
+            "update " +
+            "tbl_usr_title " +
+            "set " +
+            "titleId = @titleId " +
+            "where usrId = @usrId ";
+        //"WHERE " +
+        //"isDel = @isDel ";
+
+        sqlCmd = this.SqlCom;
+        sqlCmd.CommandText = strSQL;
+
+        sqlParaUid = new SqlParameter("@usrId", usrId);
+        sqlParaTid = new SqlParameter("@titleId", titleId);
+
+        sqlCmd.Parameters.Clear();
+        sqlCmd.Parameters.Add(sqlParaUid);
+        sqlCmd.Parameters.Add(sqlParaTid);
+
+        sqlCmd.Connection.Open();
+
+        sqlCmd.ExecuteNonQuery();
+
+        sqlCmd.Connection.Close();
+    }
 }

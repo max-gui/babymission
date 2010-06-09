@@ -6,15 +6,32 @@
     </p>
         <asp:GridView ID="usrGV" runat="server" AllowPaging="True" 
             AllowSorting="True" AutoGenerateColumns="False" 
-            AutoGenerateSelectButton="True" 
-            onselectedindexchanging="usrGV_SelectedIndexChanging" 
             HorizontalAlign="Center" onrowupdating="usrGV_RowUpdating" 
-            onsorting="usrGV_Sorting">
+            onsorting="usrGV_Sorting" onrowdatabound="usrGV_RowDataBound" 
+        onselectedindexchanging="usrGV_SelectedIndexChanging">
             <Columns>
+                <asp:CommandField SelectText="修改" ShowSelectButton="True" />
                 <asp:BoundField HeaderText="员工名字" DataField="realName" />
-                <asp:BoundField DataField="departmentName" HeaderText="所属部门" />
-                <asp:BoundField DataField="titleName" HeaderText="职位" />
+                <asp:TemplateField HeaderText="所属部门">
+                    <ItemTemplate>
+                        <asp:DropDownList ID="ddlDep" runat="server" Enabled="False">
+                        </asp:DropDownList>
+                    </ItemTemplate>
+                </asp:TemplateField>
+                <asp:TemplateField HeaderText="职位">
+                    <ItemTemplate>
+                        <asp:DropDownList ID="ddlTitle" runat="server" Enabled="False">
+                        </asp:DropDownList>
+                    </ItemTemplate>
+                </asp:TemplateField>
+                <asp:TemplateField>
+                    <ItemTemplate>
+                        <asp:Button ID="btnOk" runat="server" onclick="btnOk_Click" Text="更新" 
+                            Visible="False" />
+                    </ItemTemplate>
+                </asp:TemplateField>
             </Columns>
+            <SelectedRowStyle BackColor="#339966" />
         </asp:GridView>
     <p>
     </p>
