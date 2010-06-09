@@ -9,7 +9,7 @@ public partial class MasterPage : System.Web.UI.MasterPage
 {
     protected void Page_Load(object sender, EventArgs e)
     {
-
+        
     }
     protected void MainMenu_MenuItemClick(object sender, MenuEventArgs e)
     {
@@ -26,11 +26,8 @@ public partial class MasterPage : System.Web.UI.MasterPage
                 Response.Redirect("~/Main/usrManagerment/usrAuthManagerment.aspx");
                 break;
             case ("usrDepartTitle"):
-            Response.Redirect("~/Main/usrManagerment/usrAuthManagerment.aspx");
-            break;
-        
-        
-        
+                Response.Redirect("~/Main/usrManagerment/usrDepartTitleManagerment.aspx");
+                break;
         }
     }
 }

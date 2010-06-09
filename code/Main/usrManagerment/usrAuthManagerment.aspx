@@ -32,6 +32,7 @@
                 <asp:BoundField DataField="departmentName" HeaderText="所属部门" />
                 <asp:BoundField DataField="titleName" HeaderText="职位" />
             </Columns>
+            <SelectedRowStyle BackColor="#339966" />
         </asp:GridView>
     
     <p>

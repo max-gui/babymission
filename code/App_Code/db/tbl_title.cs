@@ -52,26 +52,26 @@ public class tbl_title : DataBase
     public DataSet SelectSelfTitleatView(DataSet dataSet)
     {
         //SqlParameter sqlParaTName = null;
-        SqlParameter sqlParaIsDel = null;
+        //SqlParameter sqlParaIsDel = null;
         SqlCommand sqlCmd = null;
 
         string strSQL =
             "SELECT " +
             "titleId , titleName , isDel " +
-            "FROM tbl_title " +
-            "WHERE " +
-            "isDel = @isDel and titleName != '无'";//@titleName";
+            "FROM tbl_title ";// +
+            //"WHERE " +
+            //"isDel = @isDel";//@titleName";
 
         sqlCmd = this.SqlCom;
         sqlCmd.CommandText = strSQL;
 
         //sqlParaTName = new SqlParameter("@titleName", SqlDbType.Char, 10);
         //sqlParaTName.Value = "无职位";
-        sqlParaIsDel = new SqlParameter("@isDel", SqlDbType.Char, 10);
-        sqlParaIsDel.Value = bool.FalseString.ToString().Trim();
+        //sqlParaIsDel = new SqlParameter("@isDel", SqlDbType.Char, 10);
+        //sqlParaIsDel.Value = bool.FalseString.ToString().Trim();
         sqlCmd.Parameters.Clear();
         //sqlCmd.Parameters.Add(sqlParaTName);
-        sqlCmd.Parameters.Add(sqlParaIsDel);
+        //sqlCmd.Parameters.Add(sqlParaIsDel);
 
         SqlDataAdapter userDataAdapter = this.SqlDA;
 

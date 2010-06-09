@@ -50,6 +50,37 @@ public class tbl_usr_department : DataBase
         sqlCmd.Connection.Close();
     }
 
+    public void SelectUpdate(int usrId, int depId)
+    {
+        SqlParameter sqlParaUid = null;
+        SqlParameter sqlParaDid = null;
+        SqlCommand sqlCmd = null;
+
+        string strSQL =
+            "update " +
+            "tbl_usr_department " +
+            "set " +
+            "departmentId = @departmentId " +
+            "where usrId = @usrId ";
+        //"WHERE " +
+        //"isDel = @isDel ";
+
+        sqlCmd = this.SqlCom;
+        sqlCmd.CommandText = strSQL;
+
+        sqlParaUid = new SqlParameter("@usrId", usrId);
+        sqlParaDid = new SqlParameter("@departmentId", depId);
+
+        sqlCmd.Parameters.Clear();
+        sqlCmd.Parameters.Add(sqlParaUid);
+        sqlCmd.Parameters.Add(sqlParaDid);
+
+        sqlCmd.Connection.Open();
+
+        sqlCmd.ExecuteNonQuery();
+
+        sqlCmd.Connection.Close();
+    }
     //public void SelectUsrAuthCommit(DataSet dataSet)
     //{
     //    //sqlParaName = new SqlParameter("@usrName", SqlDbType.Char, 10);

@@ -41,6 +41,11 @@ public partial class Main_usrManagerment_usrAuthManagerment : System.Web.UI.Page
             DataTable usrTable = upView.MyDst.Tables["view_usr_info"];
             DataTable usrAuTable = uapView.MyDst.Tables["tbl_usr_authority"];
 
+            DataColumn[] keys = new DataColumn[2];
+            keys[0] = usrAuTable.Columns[0];
+            keys[1] = usrAuTable.Columns[1];
+
+            usrAuTable.PrimaryKey = keys;
             //taskTable.DefaultView.RowFilter =
             //    "isDel = " + bool.FalseString.ToString().Trim();
             Session["UsrAuthProcess"] = uapView;
@@ -91,6 +96,8 @@ public partial class Main_usrManagerment_usrAuthManagerment : System.Web.UI.Page
         cblAuth_DataInit(usrId);
 
         usrGV.Enabled = false;
+
+        btnOk.Visible = true;
     }
     protected void cblAuth_DataInit(int usrId)
     {
@@ -108,7 +115,8 @@ public partial class Main_usrManagerment_usrAuthManagerment : System.Web.UI.Page
         string strIndex = string.Empty;
         DataView dv = (Session["usrAuDtSources"] as DataTable).DefaultView;
         List<string> ls = Session["strAuth"] as List<string>;
-
+        ls.Clear();
+        
         foreach (ListItem li in cblAuth.Items)
         {
             li.Selected = false;
@@ -144,7 +152,26 @@ public partial class Main_usrManagerment_usrAuthManagerment : System.Web.UI.Page
                     dt.Rows.Add(dr);
                 }
                 else
-                { 
+                {
+                }
+            }
+            else 
+            {
+                if (ls.Contains(li.Value))
+                {
+                    DataRow dr = dt.NewRow();
+                    //dr["authority"] = int.Parse(li.Value);
+                    //dr["usrId"] = usrId;
+
+                    object[] findVals = new object[2];
+                    findVals[0] = usrId;
+                    findVals[1] = int.Parse(li.Value); 
+                                        
+                    dr = dt.Rows.Find(findVals);
+                    dr.Delete();
+                }
+                else
+                {
                 }
             }
         }
@@ -154,16 +181,26 @@ public partial class Main_usrManagerment_usrAuthManagerment : System.Web.UI.Page
         uap.commit();
         uap.View();
 
-        Session["usrAuDtSources"] = uap.MyDst.Tables["tbl_usr_authority"] as DataTable;
+        DataTable usrAuTable = uap.MyDst.Tables["tbl_usr_authority"];
+
+        DataColumn[] keys = new DataColumn[2];
+        keys[0] = usrAuTable.Columns[0];
+        keys[1] = usrAuTable.Columns[1];
+
+        usrAuTable.PrimaryKey = keys;
+
+        Session["usrAuDtSources"] = usrAuTable;
         
-        ls.Clear();
+        //ls.Clear();
 
         usrGV.Enabled = true;
 
         cblAuth.Enabled = false;
+
+        btnOk.Visible = false;
     }
     protected void cblAuth_TextChanged(object sender, EventArgs e)
     {
-        btnOk.Visible = true;
+        //btnOk.Visible = true;
     }
 }

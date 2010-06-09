@@ -34,7 +34,7 @@ public partial class SelfTitle : System.Web.UI.Page
             myView.View();
             DataTable taskTable = myView.MyDst.Tables["tbl_title"];
             taskTable.DefaultView.RowFilter =
-                "isDel = " + bool.FalseString.ToString().Trim();
+                "isDel = " + bool.FalseString.ToString().Trim() + " and titleName <> '无' ";
             Session["SelfTitleProcess"] = myView;
             Session["dtSources"] = taskTable;
             Session["error"] = bool.FalseString.ToString().Trim();
@@ -105,6 +105,7 @@ public partial class SelfTitle : System.Web.UI.Page
         SelfTitleGV.DataBind();
         //SelfTitleGV.DataBind();
 
+        btnOk.Enabled = false;
     }
 
     protected void SelfTitleGV_RowCommand(object sender, GridViewCommandEventArgs e)
@@ -120,6 +121,7 @@ public partial class SelfTitle : System.Web.UI.Page
             DataTable dt = Session["dtSources"] as DataTable;
             DataRow dr = dt.NewRow();
             dr["isDel"] = bool.FalseString.ToString().Trim();
+            dr["titleName"] = " ";
             dt.Rows.Add(dr);
 
             //SelfTitleGV.EditIndex = index;
@@ -129,6 +131,8 @@ public partial class SelfTitle : System.Web.UI.Page
             SelfTitleGV.DataSource = Session["dtSources"];//["dtSources"] as DataTable;
             SelfTitleGV.DataBind();
             SelfTitleGV.DataBind();
+
+            btnOk.Enabled = false;
         }
     }
     protected void SelfTitleGV_RowDeleting(object sender, GridViewDeleteEventArgs e)
@@ -143,10 +147,12 @@ public partial class SelfTitle : System.Web.UI.Page
             GridViewRow row = SelfTitleGV.Rows[e.RowIndex];
             //dt.Rows[row.DataItemIndex].Delete();
             //dt.Rows[row.DataItemIndex]["isDel"] = bool.TrueString.ToString().Trim();
+            dt.DefaultView[row.DataItemIndex].Row["titleName"] =
+                dt.DefaultView[row.DataItemIndex].Row["titleName"] + "(已无效)"; 
             dt.DefaultView[row.DataItemIndex].Row["isDel"] = bool.TrueString.ToString().Trim();
-
-
+            
             //SelfTitleGV.DataSource = Session["dtSources"] as DataTable;
+            btnOk.Enabled = true;
         }
         
         SelfTitleGV.DataSource = Session["dtSources"] as DataTable;
@@ -183,6 +189,7 @@ public partial class SelfTitle : System.Web.UI.Page
             SelfTitleGV.EditIndex = -1;
             SelfTitleGV.Columns[0].Visible = true;
 
+            btnOk.Enabled = true;
         }
 
         SelfTitleGV.DataSource = Session["dtSources"] as DataTable;
@@ -256,9 +263,14 @@ public partial class SelfTitle : System.Web.UI.Page
         stp.commit();
         stp.View();
 
+        DataTable taskTable = stp.MyDst.Tables["tbl_title"];
+        taskTable.DefaultView.RowFilter =
+            "isDel = " + bool.FalseString.ToString().Trim() + " and titleName <> '无' ";
         Session["dtSources"] = stp.MyDst.Tables["tbl_title"] as DataTable;
         SelfTitleGV.DataSource = Session["dtSources"];//["dtSources"] as DataTable;
 
         SelfTitleGV.DataBind();
+
+        btnOk.Enabled = false;
     }
 }
