@@ -22,32 +22,40 @@ public class view_usr_info : DataBase
 
     public DataSet SelectLogin(DataSet dataSet)
     {
-        SqlParameter sqlParaName = null;
-        SqlParameter sqlParaPassWord = null;
+        SqlParameter sqlParaNM = null;
+        SqlParameter sqlParaPwd = null;
+        SqlParameter sqlParaEnd = null;
+
         SqlCommand sqlCmd = null;
 
         string strSQL =
             "SELECT " +
             "* " +
-            "FROM view_usr_info " +
+            "FROM tbl_usr " +
             "WHERE " +
-            "usrName = @usrName and usrPassWord = @usrPassWord";
+            "usrName = @usrName " +
+            "and usrPassWord = @usrPassWord " +
+            "and endTime > @endTime";
 
         sqlCmd = this.SqlCom;
         sqlCmd.CommandText = strSQL;
+        //userRow["endTime"]
+        string usrNm = dataSet.Tables["tbl_usr"].Rows[0]["usrName"].ToString();
+        sqlParaNM = new SqlParameter("@usrName", usrNm);
+        string pwd = dataSet.Tables["tbl_usr"].Rows[0]["usrPassWord"].ToString();
+        sqlParaPwd = new SqlParameter("@usrPassWord", pwd);
+        DateTime end = DateTime.Parse(dataSet.Tables["tbl_usr"].Rows[0]["endTime"].ToString());
+        sqlParaEnd = new SqlParameter("@endTime", end);
 
-        sqlParaName = new SqlParameter("@usrName", SqlDbType.Char, 10);
-        sqlParaName.Value = dataSet.Tables["view_usr_info"].Rows[0]["usrName"].ToString().Trim();
-        sqlParaPassWord = new SqlParameter("@usrPassWord", SqlDbType.Char, 10);
-        sqlParaPassWord.Value = dataSet.Tables["view_usr_info"].Rows[0]["usrPassWord"].ToString().Trim();
-        sqlCmd.Parameters.Add(sqlParaName);
-        sqlCmd.Parameters.Add(sqlParaPassWord);
+        sqlCmd.Parameters.Clear();
+        sqlCmd.Parameters.Add(sqlParaNM);
+        sqlCmd.Parameters.Add(sqlParaPwd);
 
         SqlDataAdapter userDataAdapter = this.SqlDA;
         SqlDA.InsertCommand = sqlCmd;
         //SqlCommandBuilder userScb = new SqlCommandBuilder(userDataAdapter);
         DataSet myDataSet = new DataSet();
-        userDataAdapter.Fill(myDataSet, "view_usr_info");
+        userDataAdapter.Fill(myDataSet, "tbl_usr");
 
         return myDataSet;
     }

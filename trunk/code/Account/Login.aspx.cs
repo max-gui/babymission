@@ -22,11 +22,12 @@ public partial class Account_Login : System.Web.UI.Page
         DataRow userRow = null;
 
         DataColumn colName = new DataColumn("usrName", System.Type.GetType("System.String"));
-        DataColumn colAuth = new DataColumn("totleAuthority", System.Type.GetType("System.Int32"));
+        //DataColumn colAuth = new DataColumn("totleAuthority", System.Type.GetType("System.Int32"));
         DataColumn colPwd = new DataColumn("usrPassWord", System.Type.GetType("System.String"));
-        DataColumn colId = new DataColumn("usrId", System.Type.GetType("System.Int32"));
-
-        DataTable userTable = new DataTable("view_usr_info");
+        //DataColumn colId = new DataColumn("usrId", System.Type.GetType("System.Int32"));
+        //DataColumn colEnd = new DataColumn("endTime", System.Type.GetType("System.DateTime"));
+        
+        DataTable userTable = new DataTable("tbl_usr");
 
         //colName.DataType = System.Type.GetType("System.String");
         //colAuth.DataType = System.Type.GetType("System.Int32");
@@ -38,14 +39,16 @@ public partial class Account_Login : System.Web.UI.Page
         //colId.ColumnName = "usrId";
         //colAuth.ColumnName = "totleAuthority";
 
-        userTable.Columns.Add(colId);
         userTable.Columns.Add(colName);
-        userTable.Columns.Add(colAuth);
+        //userTable.Columns.Add(colAuth);
         userTable.Columns.Add(colPwd);
+        //userTable.Columns.Add(colId);
+        //userTable.Columns.Add(colEnd);
 
         userRow = userTable.NewRow();
         userRow["usrName"] = loginCon.UserName.ToString().Trim();
         userRow["usrPassWord"] = loginCon.Password.ToString().Trim();
+        //userRow["endTime"] = DateTime.Today;
         userTable.Rows.Add(userRow);
 
         dataSet.Tables.Add(userTable);
@@ -54,30 +57,32 @@ public partial class Account_Login : System.Web.UI.Page
         
 
 
-        int rowRtn = 0;
         UserProcess myLogin = new UserProcess(dataSet);
 
         myLogin.DoLogin();
-        rowRtn = myLogin.IntRtn;
+        int rowRtn = myLogin.IntRtn;
+                
         if (0 != rowRtn)
         {
-            FormsAuthentication.SetAuthCookie(this.loginCon.UserName.ToString().Trim(), false /* createPersistentCookie */);
-
-            Session["totleAuthority"] =
-                myLogin.MyDst.Tables["view_usr_info"].Rows[0]["totleAuthority"].ToString().Trim();
-            Session["usrName"] =
-                myLogin.MyDst.Tables["view_usr_info"].Rows[0]["usrName"].ToString().Trim();
-            Session["usrId"] =
-                myLogin.MyDst.Tables["view_usr_info"].Rows[0]["usrId"].ToString().Trim();
-
-            string continueUrl = "~/Main/DefaultMainSite.aspx";//Request.QueryString["ReturnUrl"];
-            if (String.IsNullOrEmpty(continueUrl))
+            using (DataTable dt =
+                        myLogin.MyDst.Tables["tbl_usr"].DefaultView.ToTable())
             {
-                continueUrl = "~/";
+                FormsAuthentication.SetAuthCookie(this.loginCon.UserName.ToString().Trim(), false /* createPersistentCookie */);
+
+                Session["totleAuthority"] =
+                    dt.Rows[0]["totleAuthority"].ToString().Trim();
+                Session["usrName"] =
+                    dt.Rows[0]["usrName"].ToString().Trim();
+
+                string continueUrl = "~/Main/DefaultMainSite.aspx";//Request.QueryString["ReturnUrl"];
+                if (String.IsNullOrEmpty(continueUrl))
+                {
+                    continueUrl = "~/";
+                }
+                Response.Redirect(continueUrl);
+                //aspxName = myLogin.StrRtn + "Main.aspx";
+                //Server.Transfer(aspxName);
             }
-            Response.Redirect(continueUrl);
-            //aspxName = myLogin.StrRtn + "Main.aspx";
-            //Server.Transfer(aspxName);
         }
         else
         {

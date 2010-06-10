@@ -9,6 +9,8 @@ using System.Data;
 
 public partial class SelfDepartment : System.Web.UI.Page
 {
+    string strForever = "9999-12-31";
+            
     protected void Page_Load(object sender, EventArgs e)
     {
         if (!(null == Session["totleAuthority"]))
@@ -37,8 +39,8 @@ public partial class SelfDepartment : System.Web.UI.Page
 
             myView.View();
             DataTable taskTable = myView.MyDst.Tables["tbl_department"];
-            taskTable.DefaultView.RowFilter =
-                "isDel = " + bool.FalseString.ToString().Trim() + " and departmentName <> '无' ";
+            //taskTable.DefaultView.RowFilter =
+            //    "isDel = " + bool.FalseString.ToString().Trim() + " and departmentName <> '无' ";
             Session["SelfDepartProcess"] = myView;
             Session["dtSources"] = taskTable;
             Session["error"] = bool.FalseString.ToString().Trim();
@@ -117,8 +119,9 @@ public partial class SelfDepartment : System.Web.UI.Page
             //GridViewRow row = new GridViewRow(index, index, DataControlRowType.EmptyDataRow, DataControlRowState.Edit);
             DataTable dt = Session["dtSources"] as DataTable;
             DataRow dr = dt.NewRow();
-            dr["isDel"] = bool.FalseString.ToString().Trim();
+            dr["startTime"] = DateTime.Now;
             dr["departmentName"] = " ";
+            dr["endTime"] = DateTime.Parse(strForever);
             dt.Rows.Add(dr);
             
             //SelfDepartGV.EditIndex = index;
@@ -140,9 +143,8 @@ public partial class SelfDepartment : System.Web.UI.Page
             //Update the values.
             GridViewRow row = SelfDepartGV.Rows[e.RowIndex];
             //dt.Rows[row.DataItemIndex].Delete();
-            dt.DefaultView[row.DataItemIndex].Row["departmentName"] =
-                dt.DefaultView[row.DataItemIndex].Row["departmentName"] + "(已无效)";
-            dt.DefaultView[row.DataItemIndex].Row["isDel"] = bool.TrueString.ToString().Trim();
+            dt.DefaultView[row.DataItemIndex].Row["endTime"] =
+                DateTime.Now.ToShortDateString();
 
             btnOk.Enabled = true;
         }
@@ -257,8 +259,8 @@ public partial class SelfDepartment : System.Web.UI.Page
         sdp.View();
 
         DataTable taskTable = sdp.MyDst.Tables["tbl_department"];
-        taskTable.DefaultView.RowFilter =
-                "isDel = " + bool.FalseString.ToString().Trim() + " and departmentName <> '无' ";
+        //taskTable.DefaultView.RowFilter =
+        //        "isDel = " + bool.FalseString.ToString().Trim() + " and departmentName <> '无' ";
         Session["dtSources"] = sdp.MyDst.Tables["tbl_department"] as DataTable;
         SelfDepartGV.DataSource = Session["dtSources"];//["dtSources"] as DataTable;
         

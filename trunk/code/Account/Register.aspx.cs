@@ -82,38 +82,40 @@ public partial class Account_Register : System.Web.UI.Page
             dataSet.Tables.Add(userTable);
             #endregion
 
-            bool checkRtn = false;
             UserProcess up = new UserProcess(dataSet);
 
             up.DoCheckUsrName();
-            checkRtn = bool.Parse(up.StrRtn.ToString().Trim());
-            if (checkRtn)
+            int rowRtn = up.IntRtn;
+            if (0 == rowRtn)
             {
-                DataRow dr = up.MyDst.Tables["tbl_usr"].NewRow();
-                dr["realName"] = sn;
-                dr["usrName"] = sun;
-                dr["usrPassWord"] = spw;
-                dr["usrContact"] = sc;
+                using (DataTable dt =
+                            up.MyDst.Tables["tbl_usr"].DefaultView.ToTable("addTable"))
+                {
+                    DataRow dr = dt.NewRow();
+                    dr["realName"] = sn;
+                    dr["usrName"] = sun;
+                    dr["usrPassWord"] = spw;
+                    dr["usrContact"] = sc;
 
-                up.MyDst.Tables["tbl_usr"].Rows.Add(dr);
+                    dt.Rows.Add(dr);
+                    up.MyDst.Tables.Add(dt);
+                    //up.MyDst.Tables["tbl_usr"].Rows.Add(dr);
 
-                up.Add();
-                //up.commit();
+                    up.Add();
+                    //up.commit();
 
-                int nullAuth = 0;
-                Session["totleAuthority"] = nullAuth;
-                Session["usrName"] =
-                    up.MyDst.Tables["tbl_usr"].Rows[0]["usrName"].ToString().Trim();
-                Session["usrId"] =
-                    up.MyDst.Tables["tbl_usr"].Rows[0]["usrId"].ToString().Trim();
+                    int nullAuth = 0;
+                    Session["totleAuthority"] = nullAuth;
+                    Session["usrName"] = sun;
 
-                FormsAuthentication.SetAuthCookie(sun, false);
+                    FormsAuthentication.SetAuthCookie(sun, false);
 
-                string continueUrl = "~/Main/DefaultMainSite.aspx";//Request.QueryString["ReturnUrl"];
-                
-                Response.Redirect(continueUrl);
-                //aspxName = myLogin.StrRtn + "Main.aspx";
-                //Server.Transfer(aspxName);
+                    string continueUrl = "~/Main/DefaultMainSite.aspx";//Request.QueryString["ReturnUrl"];
+
+                    Response.Redirect(continueUrl);
+                    //aspxName = myLogin.StrRtn + "Main.aspx";
+                    //Server.Transfer(aspxName);
+                }
             }
             else
             {
@@ -230,6 +232,29 @@ public partial class Account_Register : System.Web.UI.Page
 
         return flag;
     }
+    protected bool txtRPassWord_TextCheck()
+    {
+        bool flag = true;
+        if (string.IsNullOrWhiteSpace(txtRPassWord.Text.ToString().Trim()))
+        {
+            lblRPassWord.Text = "*必填项!";
+            flag = false;
+        }
+        if ( !(txtRPassWord.Text.ToString().Equals(txtPassWord.Text.ToString())) )
+        {
+            lblRPassWord.Text = "两次输入的密码不同!";
+            //Session["flagUsrName"] = bool.FalseString.ToString().Trim();
+            flag = false;
+        }
+        else
+        {
+            lblRPassWord.Text = string.Empty;
+            //Session["flagPassWord"] = bool.TrueString.ToString().Trim();
+            //btnOk();
+        }
+
+        return flag;
+    }
     protected bool txtContact_TextCheck()
     {
         bool flag = true;
@@ -296,6 +321,10 @@ public partial class Account_Register : System.Web.UI.Page
             flag = false;
         }
         else if (!txtPassWord_TextCheck())
+        {
+            flag = false;
+        }
+        else if (!txtRPassWord_TextCheck())
         {
             flag = false;
         }

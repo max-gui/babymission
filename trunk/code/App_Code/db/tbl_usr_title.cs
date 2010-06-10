@@ -19,29 +19,33 @@ public class tbl_usr_title : DataBase
 		//
 	}
 
-    public void SelectAdd(int usrId, int titleId)
+    public void SelectAdd(string usrName, string titleName)
     {
-        SqlParameter sqlParaUid = null;
-        SqlParameter sqlParaTid = null;
+        SqlParameter sqlParaUNM = null;
+        SqlParameter sqlParaTNM = null;
+        SqlParameter sqlParaSt = null;
         SqlCommand sqlCmd = null;
 
         string strSQL =
             "insert into " +
             "tbl_usr_title " +
-            "(usrId , titleId) " +
-            "values(@usrId , @titleId) ";
+            "(usrName , titleName , startTime) " +
+            "values(@usrName , @titleName , @startTime) ";
         //"WHERE " +
         //"isDel = @isDel ";
 
         sqlCmd = this.SqlCom;
         sqlCmd.CommandText = strSQL;
 
-        sqlParaUid = new SqlParameter("@usrId", usrId);
-        sqlParaTid = new SqlParameter("@titleId", titleId);
+        sqlParaUNM = new SqlParameter("@usrName", usrName);
+        sqlParaTNM = new SqlParameter("@titleName", titleName);
+        DateTime st = DateTime.Now;
+        sqlParaSt = new SqlParameter("@startTime", st);
 
         sqlCmd.Parameters.Clear();
-        sqlCmd.Parameters.Add(sqlParaUid);
-        sqlCmd.Parameters.Add(sqlParaTid);
+        sqlCmd.Parameters.Add(sqlParaUNM);
+        sqlCmd.Parameters.Add(sqlParaTNM);
+        sqlCmd.Parameters.Add(sqlParaSt);
 
         sqlCmd.Connection.Open();
 
@@ -50,17 +54,17 @@ public class tbl_usr_title : DataBase
         sqlCmd.Connection.Close();
     }
 
-    public void SelectUpdate(int usrId, int titleId)
+    public void SelectUpdate(int usrId, string titleName)
     {
         SqlParameter sqlParaUid = null;
-        SqlParameter sqlParaTid = null;
+        SqlParameter sqlParaTNM = null;
         SqlCommand sqlCmd = null;
 
         string strSQL =
             "update " +
             "tbl_usr_title " +
             "set " +
-            "titleId = @titleId " +
+            "titleName = @titleName " +
             "where usrId = @usrId ";
         //"WHERE " +
         //"isDel = @isDel ";
@@ -69,11 +73,11 @@ public class tbl_usr_title : DataBase
         sqlCmd.CommandText = strSQL;
 
         sqlParaUid = new SqlParameter("@usrId", usrId);
-        sqlParaTid = new SqlParameter("@titleId", titleId);
+        sqlParaTNM = new SqlParameter("@titleName", titleName);
 
         sqlCmd.Parameters.Clear();
         sqlCmd.Parameters.Add(sqlParaUid);
-        sqlCmd.Parameters.Add(sqlParaTid);
+        sqlCmd.Parameters.Add(sqlParaTNM);
 
         sqlCmd.Connection.Open();
 

@@ -37,10 +37,16 @@
     </p>
     <p>
         密码：&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-        <asp:TextBox ID="txtPassWord" runat="server"></asp:TextBox>
+        <asp:TextBox ID="txtPassWord" runat="server" TextMode="Password"></asp:TextBox>
         &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;<asp:Label ID="lblPassWord" runat="server" 
             Font-Size="Large" ForeColor="Red" Text="*必填项"></asp:Label>
-        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+        &nbsp;&nbsp;&nbsp;&nbsp;</p>
+    <p>
+        密码确认：&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        <asp:TextBox ID="txtRPassWord" runat="server" TextMode="Password"></asp:TextBox>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        <asp:Label ID="lblRPassWord" runat="server" 
+            Font-Size="Large" ForeColor="Red" Text="*必填项"></asp:Label>
     </p>
     <p>
         联系方式：&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;

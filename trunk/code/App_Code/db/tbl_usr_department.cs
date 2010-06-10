@@ -19,29 +19,33 @@ public class tbl_usr_department : DataBase
 		//
 	}
 
-    public void SelectAdd(int usrId , int depId)
+    public void SelectAdd(string usrName, string depName)
     {
-        SqlParameter sqlParaUid = null;
-        SqlParameter sqlParaDid = null;
+        SqlParameter sqlParaUNM = null;
+        SqlParameter sqlParaDNM = null;
+        SqlParameter sqlParaSt = null;
         SqlCommand sqlCmd = null;
 
         string strSQL =
             "insert into " +
             "tbl_usr_department " +
-            "(usrId , departmentId) " +
-            "values(@usrId , @departmentId) ";
+            "(usrName , departmentName , startTime) " +
+            "values(@usrName , @departmentName , @startTime) ";
         //"WHERE " +
         //"isDel = @isDel ";
 
         sqlCmd = this.SqlCom;
         sqlCmd.CommandText = strSQL;
 
-        sqlParaUid = new SqlParameter("@usrId", usrId);
-        sqlParaDid = new SqlParameter("@departmentId", depId);
+        sqlParaUNM = new SqlParameter("@usrName", usrName);
+        sqlParaDNM = new SqlParameter("@departmentName", depName);
+        DateTime st = DateTime.Now;
+        sqlParaSt = new SqlParameter("@startTime", st);
         
         sqlCmd.Parameters.Clear();
-        sqlCmd.Parameters.Add(sqlParaUid);
-        sqlCmd.Parameters.Add(sqlParaDid);
+        sqlCmd.Parameters.Add(sqlParaUNM);
+        sqlCmd.Parameters.Add(sqlParaDNM);
+        sqlCmd.Parameters.Add(sqlParaSt);
 
         sqlCmd.Connection.Open();
 
@@ -50,17 +54,17 @@ public class tbl_usr_department : DataBase
         sqlCmd.Connection.Close();
     }
 
-    public void SelectUpdate(int usrId, int depId)
+    public void SelectUpdate(int usrId, string depName)
     {
         SqlParameter sqlParaUid = null;
-        SqlParameter sqlParaDid = null;
+        SqlParameter sqlParaDNM = null;
         SqlCommand sqlCmd = null;
 
         string strSQL =
             "update " +
             "tbl_usr_department " +
             "set " +
-            "departmentId = @departmentId " +
+            "departmentName = @departmentName " +
             "where usrId = @usrId ";
         //"WHERE " +
         //"isDel = @isDel ";
@@ -69,11 +73,11 @@ public class tbl_usr_department : DataBase
         sqlCmd.CommandText = strSQL;
 
         sqlParaUid = new SqlParameter("@usrId", usrId);
-        sqlParaDid = new SqlParameter("@departmentId", depId);
+        sqlParaDNM = new SqlParameter("@departmentName", depName);
 
         sqlCmd.Parameters.Clear();
         sqlCmd.Parameters.Add(sqlParaUid);
-        sqlCmd.Parameters.Add(sqlParaDid);
+        sqlCmd.Parameters.Add(sqlParaDNM);
 
         sqlCmd.Connection.Open();
 
