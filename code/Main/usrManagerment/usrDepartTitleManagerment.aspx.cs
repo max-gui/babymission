@@ -9,15 +9,17 @@ using System.Data;
 
 public partial class Main_usrManagerment_usrDepartTitleManagerment : System.Web.UI.Page
 {
-    string sdNullId = string.Empty;
-    string stNullId = string.Empty;
+    string strForever = "9999-12-31";
+
+    string sdNullId = "无";
+    string stNullId = "无";
 
     protected void Page_Load(object sender, EventArgs e)
     {
         if (!(null == Session["totleAuthority"]))
         {
             int usrAuth = 0;
-            string strUsrAuth = Session["totleAuthority"].ToString().Trim();
+            string strUsrAuth = Session["totleAuthority"].ToString();
             usrAuth = int.Parse(strUsrAuth);
             int flag = 0x1 << 3;
 
@@ -43,8 +45,8 @@ public partial class Main_usrManagerment_usrDepartTitleManagerment : System.Web.
             SelfTitleProcess stView = new SelfTitleProcess(stDst);
 
             upView.usrDepartTitleView();
-            sdView.View();
-            stView.View();
+            sdView.RealDepView();
+            stView.RealTitleView();
             DataTable upTable = upView.MyDst.Tables["view_usr_departTitle"];
             DataTable sdTable = sdView.MyDst.Tables["tbl_department"];
             DataTable stTable = stView.MyDst.Tables["tbl_title"];
@@ -59,15 +61,7 @@ public partial class Main_usrManagerment_usrDepartTitleManagerment : System.Web.
 
             //object findVals = new object();
             //findVals = "无";
-
-            sdNullId = "无";
-            stNullId = "无";
-
-            sdTable.DefaultView.RowFilter =
-                "isDel = " + bool.FalseString.ToString().Trim();
-            stTable.DefaultView.RowFilter =
-                "isDel = " + bool.FalseString.ToString().Trim();
-
+            
             Session["UserProcess"] = upView;
             Session["upDtSources"] = upTable;
             Session["sdDtSources"] = sdTable;
@@ -127,23 +121,25 @@ public partial class Main_usrManagerment_usrDepartTitleManagerment : System.Web.
             DataTable dtT = Session["stDtSources"] as DataTable;
 
             int index = e.Row.DataItemIndex;
-            string depName = dt_udt.Rows[index]["departmentName"].ToString().Trim();
-            string titleName = dt_udt.Rows[index]["titleName"].ToString().Trim();
+            string depName = dt_udt.Rows[index]["departmentName"].ToString();
+            DateTime depTime = DateTime.Parse(dt_udt.Rows[index]["depEnd"].ToString());
+            string titleName = dt_udt.Rows[index]["titleName"].ToString();
+            DateTime titleTime = DateTime.Parse(dt_udt.Rows[index]["titleEnd"].ToString());
             DropDownList ddl = (DropDownList)e.Row.FindControl("ddlDep");
             if (ddl != null)
             {
                 ddl.DataSource = dtD;
-                ddl.DataTextField = "departmentName".ToString().Trim();
-                ddl.DataValueField = "departmentName".ToString().Trim();
+                ddl.DataTextField = "departmentName".ToString();
+                ddl.DataValueField = "departmentName".ToString();
                 ddl.DataBind();
                 //ddl.Items[0].
-                if (bool.Parse(dt_udt.Rows[index]["depIsDel"].ToString().Trim()))
+                if (depTime.CompareTo(DateTime.Now) > 0)
                 {
-                    ddl.SelectedValue = sdNullId;
+                    ddl.SelectedValue = depName;
                 }
                 else
                 {
-                    ddl.SelectedValue = depName;
+                    ddl.SelectedValue = sdNullId;
                 }
                 
             }
@@ -152,17 +148,17 @@ public partial class Main_usrManagerment_usrDepartTitleManagerment : System.Web.
             if (ddl != null)
             {
                 ddl.DataSource = dtT;
-                ddl.DataTextField = "titleName".ToString().Trim();
-                ddl.DataValueField = "titleName".ToString().Trim();
+                ddl.DataTextField = "titleName".ToString();
+                ddl.DataValueField = "titleName".ToString();
                 ddl.DataBind();
 
-                if (bool.Parse(dt_udt.Rows[index]["titleIsDel"].ToString().Trim()))
+                if (titleTime.CompareTo(DateTime.Now) > 0)
                 {
-                    ddl.SelectedValue = stNullId;
+                    ddl.SelectedValue = titleName; 
                 }
                 else
                 {
-                    ddl.SelectedValue = titleName;
+                    ddl.SelectedValue = stNullId;
                 }
             }
 
@@ -197,18 +193,23 @@ public partial class Main_usrManagerment_usrDepartTitleManagerment : System.Web.
 
         DropDownList ddl = null;
         ddl = (usrGV.Rows[index].FindControl("ddlDep") as DropDownList);
-        string depName = ddl.SelectedValue.ToString().Trim();
+        string depName = ddl.SelectedValue.ToString();
         ddl.Enabled = false;
         ddl = (usrGV.Rows[index].FindControl("ddlTitle") as DropDownList);
-        string titleName = ddl.SelectedValue.ToString().Trim();
+        string titleName = ddl.SelectedValue.ToString();
         ddl.Enabled = false;
 
         UserProcess up = Session["UserProcess"] as UserProcess;
 
         DataTable dt = Session["upDtSources"] as DataTable;
-        int usrId = int.Parse(dt.Rows[index]["usrId"].ToString().Trim());
-        up.usrDepModify(usrId, depName);
-        up.usrTitleModify(usrId, titleName);
+        string usrName = dt.Rows[index]["usrName"].ToString();
+        DateTime depSt = DateTime.Parse(dt.Rows[index]["usrDepSt"].ToString());
+        DateTime TitleSt = DateTime.Parse(dt.Rows[index]["usrTitleSt"].ToString());
+        string depOldNm = dt.Rows[index]["departmentName"].ToString();
+        string TitleOldNm = dt.Rows[index]["titleName"].ToString();
+
+        up.usrDepModify(usrName , depName, depSt , depOldNm );
+        up.usrTitleModify(usrName, titleName, TitleSt , TitleOldNm);
 
         up.usrDepartTitleView();
         DataTable upTable = up.MyDst.Tables["view_usr_departTitle"];

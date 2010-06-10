@@ -89,6 +89,14 @@ public class UserProcess : SelectLogic
     public void usrDepartTitleView()
     {
         MyDst = vuiDB.SelectUsrDepartTitleView(MyDst);
+        
+        string end = DateTime.Now.ToShortDateString();
+
+        string strFilter =
+            " usrEnd > " + "'" + end + "'" +
+            " and usrTitleEnd > " + "'" + end + "'" +
+            " and usrDepEnd > " + "'" + end + "'";
+        MyDst.Tables["view_usr_departTitle"].DefaultView.RowFilter = strFilter;
     }
 
     //public void commit()
@@ -120,14 +128,16 @@ public class UserProcess : SelectLogic
         tua.SelectAdd(usrName, authNull);
     }
 
-    public void usrDepModify(int usrId , string depName)
+    public void usrDepModify(string usrName, string depName, DateTime depSt, string depOldNm)
     {
-        tud.SelectUpdate(usrId, depName);
+        tud.SelectDel(usrName, depOldNm, depSt); 
+        tud.SelectAdd(usrName, depName);        
     }
 
-    public void usrTitleModify(int usrId, string titleName)
+    public void usrTitleModify(string usrName, string titleName, DateTime TitleSt, string TitleOldNm)
     {
-        tut.SelectUpdate(usrId, titleName);
+        tut.SelectDel(usrName, TitleOldNm, TitleSt);
+        tut.SelectAdd(usrName, titleName);
     }
 
     public override void Del()

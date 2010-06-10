@@ -9,6 +9,8 @@ using System.Data;
 
 public partial class Main_usrManagerment_usrAuthManagerment : System.Web.UI.Page
 {
+    string strForever = "9999-12-31";
+
     protected void Page_Load(object sender, EventArgs e)
     {
 
