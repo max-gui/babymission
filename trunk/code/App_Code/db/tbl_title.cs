@@ -57,7 +57,7 @@ public class tbl_title : DataBase
 
         string strSQL =
             "SELECT " +
-            "titleName , isDel " +
+            "* " +
             "FROM tbl_title ";// +
             //"WHERE " +
             //"isDel = @isDel";//@titleName";

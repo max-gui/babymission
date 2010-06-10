@@ -66,6 +66,22 @@ public class SelfDepartProcess :SelectLogic
 
     public override void View()
     {
+        //MyDst = tdDB.SelectSelfDepatView(MyDst);
+
+        //string end = DateTime.Now.ToShortDateString();
+
+        //string strFilter =
+        //    " endTime > " + "'" + end + "'" +
+        //    " and departmentName <> '无' ";
+        //MyDst.Tables["tbl_department"].DefaultView.RowFilter = strFilter;
+
+        ////TAB_DATA_USERDatabase db = (TAB_DATA_USERDatabase)InitDatabaseProc("Database", "DataBase.TAB_DATA_USERDatabase");
+        ////MyDst = db.SelectView();
+        ////StrRtn = db.selectNum().ToString();
+    }
+
+    public void SelDepView()
+    {
         MyDst = tdDB.SelectSelfDepatView(MyDst);
 
         string end = DateTime.Now.ToShortDateString();
@@ -73,6 +89,21 @@ public class SelfDepartProcess :SelectLogic
         string strFilter =
             " endTime > " + "'" + end + "'" +
             " and departmentName <> '无' ";
+        MyDst.Tables["tbl_department"].DefaultView.RowFilter = strFilter;
+
+        //TAB_DATA_USERDatabase db = (TAB_DATA_USERDatabase)InitDatabaseProc("Database", "DataBase.TAB_DATA_USERDatabase");
+        //MyDst = db.SelectView();
+        //StrRtn = db.selectNum().ToString();
+    }
+
+    public void RealDepView()
+    {
+        MyDst = tdDB.SelectSelfDepatView(MyDst);
+
+        string end = DateTime.Now.ToShortDateString();
+
+        string strFilter =
+            " endTime > " + "'" + end + "'";
         MyDst.Tables["tbl_department"].DefaultView.RowFilter = strFilter;
 
         //TAB_DATA_USERDatabase db = (TAB_DATA_USERDatabase)InitDatabaseProc("Database", "DataBase.TAB_DATA_USERDatabase");

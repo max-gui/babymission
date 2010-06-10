@@ -37,7 +37,7 @@ public partial class SelfDepartment : System.Web.UI.Page
             DataSet MyDst = new DataSet();
             SelfDepartProcess myView = new SelfDepartProcess(MyDst);
 
-            myView.View();
+            myView.SelDepView();
             DataTable taskTable = myView.MyDst.Tables["tbl_department"];
             //taskTable.DefaultView.RowFilter =
             //    "isDel = " + bool.FalseString.ToString().Trim() + " and departmentName <> '无' ";
@@ -256,7 +256,7 @@ public partial class SelfDepartment : System.Web.UI.Page
         SelfDepartProcess sdp = Session["SelfDepartProcess"] as SelfDepartProcess;
         
         sdp.commit();
-        sdp.View();
+        sdp.SelDepView();
 
         DataTable taskTable = sdp.MyDst.Tables["tbl_department"];
         //taskTable.DefaultView.RowFilter =

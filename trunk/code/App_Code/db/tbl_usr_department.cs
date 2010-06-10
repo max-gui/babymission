@@ -54,30 +54,40 @@ public class tbl_usr_department : DataBase
         sqlCmd.Connection.Close();
     }
 
-    public void SelectUpdate(int usrId, string depName)
+    public void SelectDel(string usrName, string depName, DateTime depSt)
     {
-        SqlParameter sqlParaUid = null;
+        SqlParameter sqlParaUNM = null;
         SqlParameter sqlParaDNM = null;
+        SqlParameter sqlParaDSt = null;
+        SqlParameter sqlParaDEnd = null;
+        SqlParameter sqlParaDNEnd = null;
         SqlCommand sqlCmd = null;
 
         string strSQL =
             "update " +
             "tbl_usr_department " +
             "set " +
-            "departmentName = @departmentName " +
-            "where usrId = @usrId ";
+            "endTime = @nendTime " +
+            "where usrName = @usrName and departmentName = @departmentName and startTime = @startTime and endTime = @endTime";
         //"WHERE " +
         //"isDel = @isDel ";
 
         sqlCmd = this.SqlCom;
         sqlCmd.CommandText = strSQL;
 
-        sqlParaUid = new SqlParameter("@usrId", usrId);
+        sqlParaUNM = new SqlParameter("@usrName", usrName);
         sqlParaDNM = new SqlParameter("@departmentName", depName);
+        sqlParaDSt = new SqlParameter("@startTime", depSt);
+        sqlParaDEnd = new SqlParameter("@endTime", DateTime.Parse("9999-12-31"));
+        sqlParaDNEnd = new SqlParameter("@nendTime", DateTime.Now);
+
 
         sqlCmd.Parameters.Clear();
-        sqlCmd.Parameters.Add(sqlParaUid);
+        sqlCmd.Parameters.Add(sqlParaUNM);
         sqlCmd.Parameters.Add(sqlParaDNM);
+        sqlCmd.Parameters.Add(sqlParaDSt);
+        sqlCmd.Parameters.Add(sqlParaDEnd);
+        sqlCmd.Parameters.Add(sqlParaDNEnd);
 
         sqlCmd.Connection.Open();
 

@@ -9,6 +9,8 @@ using System.Data;
 
 public partial class SelfTitle : System.Web.UI.Page
 {
+    string strForever = "9999-12-31";
+            
     protected void Page_Load(object sender, EventArgs e)
     {
         if (!(null == Session["totleAuthority"]))
@@ -31,10 +33,10 @@ public partial class SelfTitle : System.Web.UI.Page
             DataSet MyDst = new DataSet();
             SelfTitleProcess myView = new SelfTitleProcess(MyDst);
 
-            myView.View();
+            myView.SelTitleView();
             DataTable taskTable = myView.MyDst.Tables["tbl_title"];
-            taskTable.DefaultView.RowFilter =
-                "isDel = " + bool.FalseString.ToString().Trim() + " and titleName <> '无' ";
+            //taskTable.DefaultView.RowFilter =
+            //    "isDel = " + bool.FalseString.ToString().Trim() + " and titleName <> '无' ";
             Session["SelfTitleProcess"] = myView;
             Session["dtSources"] = taskTable;
             Session["error"] = bool.FalseString.ToString().Trim();
@@ -120,8 +122,9 @@ public partial class SelfTitle : System.Web.UI.Page
             //GridViewRow row = new GridViewRow(index, index, DataControlRowType.EmptyDataRow, DataControlRowState.Edit);
             DataTable dt = Session["dtSources"] as DataTable;
             DataRow dr = dt.NewRow();
-            dr["isDel"] = bool.FalseString.ToString().Trim();
+            dr["startTime"] = DateTime.Now;
             dr["titleName"] = " ";
+            dr["endTime"] = DateTime.Parse(strForever);
             dt.Rows.Add(dr);
 
             //SelfTitleGV.EditIndex = index;
@@ -146,12 +149,9 @@ public partial class SelfTitle : System.Web.UI.Page
             //Update the values.
             GridViewRow row = SelfTitleGV.Rows[e.RowIndex];
             //dt.Rows[row.DataItemIndex].Delete();
-            //dt.Rows[row.DataItemIndex]["isDel"] = bool.TrueString.ToString().Trim();
-            dt.DefaultView[row.DataItemIndex].Row["titleName"] =
-                dt.DefaultView[row.DataItemIndex].Row["titleName"] + "(已无效)"; 
-            dt.DefaultView[row.DataItemIndex].Row["isDel"] = bool.TrueString.ToString().Trim();
-            
-            //SelfTitleGV.DataSource = Session["dtSources"] as DataTable;
+            dt.DefaultView[row.DataItemIndex].Row["endTime"] =
+                DateTime.Now.ToShortDateString();
+
             btnOk.Enabled = true;
         }
         
@@ -261,11 +261,11 @@ public partial class SelfTitle : System.Web.UI.Page
         SelfTitleProcess stp = Session["SelfTitleProcess"] as SelfTitleProcess;
 
         stp.commit();
-        stp.View();
+        stp.SelTitleView();
 
         DataTable taskTable = stp.MyDst.Tables["tbl_title"];
-        taskTable.DefaultView.RowFilter =
-            "isDel = " + bool.FalseString.ToString().Trim() + " and titleName <> '无' ";
+        //taskTable.DefaultView.RowFilter =
+        //    "isDel = " + bool.FalseString.ToString().Trim() + " and titleName <> '无' ";
         Session["dtSources"] = stp.MyDst.Tables["tbl_title"] as DataTable;
         SelfTitleGV.DataSource = Session["dtSources"];//["dtSources"] as DataTable;
 

@@ -66,7 +66,55 @@ public class SelfTitleProcess : SelectLogic
 
     public override void View()
     {
+        //MyDst = ttDB.SelectSelfTitleatView(MyDst);
+
+        //string end = DateTime.Now.ToShortDateString();
+
+        //string strFilter =
+        //    " endTime > " + "'" + end + "'" +
+        //    " and titleName <> '无' ";
+        //MyDst.Tables["tbl_title"].DefaultView.RowFilter = strFilter;
+        ////taskTable.DefaultView.RowFilter =
+        ////    "isDel = " + bool.FalseString.ToString().Trim() + " and titleName <> '无' ";
+
+        ////MyDst = ttDB.SelectSelfTitleatView(MyDst);
+        ////TAB_DATA_USERDatabase db = (TAB_DATA_USERDatabase)InitDatabaseProc("Database", "DataBase.TAB_DATA_USERDatabase");
+        ////MyDst = db.SelectView();
+        ////StrRtn = db.selectNum().ToString();
+    }
+
+    public void SelTitleView()
+    {
         MyDst = ttDB.SelectSelfTitleatView(MyDst);
+
+        string end = DateTime.Now.ToShortDateString();
+
+        string strFilter =
+            " endTime > " + "'" + end + "'" +
+            " and titleName <> '无' ";
+        MyDst.Tables["tbl_title"].DefaultView.RowFilter = strFilter;
+        //taskTable.DefaultView.RowFilter =
+        //    "isDel = " + bool.FalseString.ToString().Trim() + " and titleName <> '无' ";
+
+        //MyDst = ttDB.SelectSelfTitleatView(MyDst);
+        //TAB_DATA_USERDatabase db = (TAB_DATA_USERDatabase)InitDatabaseProc("Database", "DataBase.TAB_DATA_USERDatabase");
+        //MyDst = db.SelectView();
+        //StrRtn = db.selectNum().ToString();
+    }
+
+    public void RealTitleView()
+    {
+        MyDst = ttDB.SelectSelfTitleatView(MyDst);
+
+        string end = DateTime.Now.ToShortDateString();
+
+        string strFilter =
+            " endTime > " + "'" + end + "'";
+        MyDst.Tables["tbl_title"].DefaultView.RowFilter = strFilter;
+        //taskTable.DefaultView.RowFilter =
+        //    "isDel = " + bool.FalseString.ToString().Trim() + " and titleName <> '无' ";
+
+        //MyDst = ttDB.SelectSelfTitleatView(MyDst);
         //TAB_DATA_USERDatabase db = (TAB_DATA_USERDatabase)InitDatabaseProc("Database", "DataBase.TAB_DATA_USERDatabase");
         //MyDst = db.SelectView();
         //StrRtn = db.selectNum().ToString();
