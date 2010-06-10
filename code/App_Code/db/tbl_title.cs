@@ -19,35 +19,35 @@ public class tbl_title : DataBase
 		//
 	}
 
-    public int SelectNull()
-    {
-        int selId = -1;
-        SqlCommand sqlCmd = null;
+    //public int SelectNull()
+    //{
+    //    int selId = -1;
+    //    SqlCommand sqlCmd = null;
 
-        string strSQL =
-            "SELECT " +
-            "titleId " +
-            "FROM tbl_title " +
-            "WHERE " +
-            "titleName = '无'";//@titleName";
+    //    string strSQL =
+    //        "SELECT " +
+    //        "titleId " +
+    //        "FROM tbl_title " +
+    //        "WHERE " +
+    //        "titleName = '无'";//@titleName";
 
-        sqlCmd = this.SqlCom;
-        sqlCmd.CommandText = strSQL;
+    //    sqlCmd = this.SqlCom;
+    //    sqlCmd.CommandText = strSQL;
 
-        sqlCmd.Connection.Open();
+    //    sqlCmd.Connection.Open();
         
-        using (SqlDataReader sdr = sqlCmd.ExecuteReader())
-        {
-            while (sdr.Read())
-            {
-                selId = sdr.GetInt32(0);
-            }
-        }
+    //    using (SqlDataReader sdr = sqlCmd.ExecuteReader())
+    //    {
+    //        while (sdr.Read())
+    //        {
+    //            selId = sdr.GetInt32(0);
+    //        }
+    //    }
 
-        sqlCmd.Connection.Close();
+    //    sqlCmd.Connection.Close();
 
-        return selId;
-    }
+    //    return selId;
+    //}
 
     public DataSet SelectSelfTitleatView(DataSet dataSet)
     {
@@ -57,7 +57,7 @@ public class tbl_title : DataBase
 
         string strSQL =
             "SELECT " +
-            "titleId , titleName , isDel " +
+            "titleName , isDel " +
             "FROM tbl_title ";// +
             //"WHERE " +
             //"isDel = @isDel";//@titleName";

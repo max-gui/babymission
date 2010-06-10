@@ -23,9 +23,9 @@ public class UserProcess : SelectLogic
         //
         vuiDB = (view_usr_info)InitDatabaseProc("view_usr_info");
         tu = (tbl_usr)InitDatabaseProc("tbl_usr");
-        td = (tbl_department)InitDatabaseProc("tbl_department");
+        //td = (tbl_department)InitDatabaseProc("tbl_department");
         ta = (tbl_authority)InitDatabaseProc("tbl_authority");
-        tt = (tbl_title)InitDatabaseProc("tbl_title");
+        //tt = (tbl_title)InitDatabaseProc("tbl_title");
         tud = (tbl_usr_department)InitDatabaseProc("tbl_usr_department");
         tua = (tbl_usr_authority)InitDatabaseProc("tbl_usr_authority");
         tut = (tbl_usr_title)InitDatabaseProc("tbl_usr_title");
@@ -33,9 +33,9 @@ public class UserProcess : SelectLogic
 
     private view_usr_info vuiDB = null;
     private tbl_usr tu = null;
-    private tbl_department td = null;
+    //private tbl_department td = null;
     private tbl_authority ta = null;
-    private tbl_title tt = null;
+    //private tbl_title tt = null;
     private tbl_usr_department tud = null;
     private tbl_usr_authority tua = null;
     private tbl_usr_title tut = null;
@@ -46,32 +46,44 @@ public class UserProcess : SelectLogic
 
     public override void DoLogin()
     {
-        MyDst = vuiDB.SelectLogin(MyDst);
+        string usrNm = MyDst.Tables["tbl_usr"].Rows[0]["usrName"].ToString();
+        string pwd = MyDst.Tables["tbl_usr"].Rows[0]["usrPassWord"].ToString();
+        string end = DateTime.Now.ToShortDateString();
+        
+        MyDst = tu.SelectView();
 
-        //if (MyDst.Tables["view_usr_info"].Rows.Count != 0)
-        //{
-        //    IntRtn = int.Parse(MyDst.Tables["view_usr_info"].Rows[0]["totleAuthority"].ToString().Trim());
-        //}
-        //else
-        //{
-        //    IntRtn = -1;
-        //}
+        string strFilter =
+            " usrName = " + "'" + usrNm + "'" +
+            " and usrPassWord = " + "'" + pwd + "'" +
+            " and endTime > " + "'" + end + "'";
+        MyDst.Tables["tbl_usr"].DefaultView.RowFilter = strFilter;
 
-        IntRtn = MyDst.Tables["view_usr_info"].Rows.Count;
+        IntRtn = MyDst.Tables["tbl_usr"].DefaultView.Count;
     }
 
     public void DoCheckUsrName()
     {
-        MyDst = tu.SelectUsr(MyDst);
+        string usrNm = MyDst.Tables["tbl_usr"].Rows[0]["usrName"].ToString();
+        string pwd = MyDst.Tables["tbl_usr"].Rows[0]["usrPassWord"].ToString();
 
-        if (MyDst.Tables["tbl_usr"].Rows.Count == 0)
-        {
-            StrRtn = bool.TrueString.ToString().Trim();
-        }
-        else
-        {
-            StrRtn = bool.FalseString.ToString().Trim();
-        }
+        MyDst = tu.SelectView();
+
+        string strFilter =
+            " usrName = " + "'" + usrNm + "'";
+        MyDst.Tables["tbl_usr"].DefaultView.RowFilter = strFilter;
+
+        IntRtn = MyDst.Tables["tbl_usr"].DefaultView.Count;
+
+        //MyDst = tu.SelectUsr(MyDst);
+
+        //if (MyDst.Tables["tbl_usr"].Rows.Count == 0)
+        //{
+        //    StrRtn = bool.TrueString.ToString().Trim();
+        //}
+        //else
+        //{
+        //    StrRtn = bool.FalseString.ToString().Trim();
+        //}
     }
 
     public void usrDepartTitleView()
@@ -97,26 +109,25 @@ public class UserProcess : SelectLogic
 
     public override void Add()
     {
+        string strNull = "无";
+        int authNull = 0;
+        string usrName = MyDst.Tables["addTable"].Rows[0]["usrName"].ToString().Trim();
+
         tu.SelectAdd(MyDst);
-
-        int titleId = tt.SelectNull();
-        int auth = ta.SelectNull();
-        int depId = td.SelectNull();
-        int usrId = tu.SelectNew(MyDst.Tables["tbl_usr"].Rows[0]["usrName"].ToString().Trim());
-
-        tud.SelectAdd(usrId, depId);
-        tut.SelectAdd(usrId, titleId);
-        tua.SelectAdd(usrId, auth);
+        
+        tud.SelectAdd(usrName, strNull);
+        tut.SelectAdd(usrName, strNull);
+        tua.SelectAdd(usrName, authNull);
     }
 
-    public void usrDepModify(int usrId , int depId)
+    public void usrDepModify(int usrId , string depName)
     {
-        tud.SelectUpdate(usrId, depId);
+        tud.SelectUpdate(usrId, depName);
     }
 
-    public void usrTitleModify(int usrId, int titleId)
+    public void usrTitleModify(int usrId, string titleName)
     {
-        tut.SelectUpdate(usrId, titleId);
+        tut.SelectUpdate(usrId, titleName);
     }
 
     public override void Del()

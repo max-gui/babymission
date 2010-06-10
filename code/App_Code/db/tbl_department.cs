@@ -19,35 +19,35 @@ public class tbl_department :DataBase
 		//
 	}
 
-    public int SelectNull()
-    {
-        int selId = -1;
-        SqlCommand sqlCmd = null;
+    //public int SelectNull()
+    //{
+    //    int selId = -1;
+    //    SqlCommand sqlCmd = null;
 
-        string strSQL =
-            "SELECT " +
-            "departmentId " +
-            "FROM tbl_department " +
-            "WHERE " +
-            "departmentName = '无'";//@titleName";
+    //    string strSQL =
+    //        "SELECT " +
+    //        "departmentId " +
+    //        "FROM tbl_department " +
+    //        "WHERE " +
+    //        "departmentName = '无'";//@titleName";
 
-        sqlCmd = this.SqlCom;
-        sqlCmd.CommandText = strSQL;
+    //    sqlCmd = this.SqlCom;
+    //    sqlCmd.CommandText = strSQL;
 
-        sqlCmd.Connection.Open();
+    //    sqlCmd.Connection.Open();
         
-        using (SqlDataReader sdr = sqlCmd.ExecuteReader())
-        {
-            while (sdr.Read())
-            {
-                selId = sdr.GetInt32(0);
-            }
-        }
+    //    using (SqlDataReader sdr = sqlCmd.ExecuteReader())
+    //    {
+    //        while (sdr.Read())
+    //        {
+    //            selId = sdr.GetInt32(0);
+    //        }
+    //    }
 
-        sqlCmd.Connection.Close();
+    //    sqlCmd.Connection.Close();
 
-        return selId;
-    }
+    //    return selId;
+    //}
 
     public DataSet SelectSelfDepatView(DataSet dataSet)
     {
@@ -57,7 +57,7 @@ public class tbl_department :DataBase
 
         string strSQL =
             "SELECT " +
-            "departmentId , departmentName , isDel " +
+            "* " +
             "FROM tbl_department ";// +
             //"WHERE " +
             //"isDel = @isDel";
@@ -70,7 +70,7 @@ public class tbl_department :DataBase
         //sqlParaIsDel = new SqlParameter("@isDel", SqlDbType.Char, 10);
         //sqlParaIsDel.Value = bool.FalseString.ToString().Trim();
         //sqlCmd.Parameters.Add(sqlParaName);
-        sqlCmd.Parameters.Clear();
+        //sqlCmd.Parameters.Clear();
         //sqlCmd.Parameters.Add(sqlParaIsDel);
 
         SqlDataAdapter userDataAdapter = this.SqlDA;

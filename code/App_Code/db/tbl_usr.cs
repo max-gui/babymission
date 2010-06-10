@@ -62,30 +62,33 @@ public class tbl_usr : DataBase
         SqlParameter sqlParaUC = null;
         SqlParameter sqlParaUN = null;
         SqlParameter sqlParaPW = null;
+        SqlParameter sqlParaSt = null;
         SqlCommand sqlCmd = null;
 
         string strSQL =
             "insert into " +
             "tbl_usr " +
-            "(realName , usrContact , usrName , usrPassWord ) " +
-            "values(@realName , @usrContact , @usrName , @usrPassWord ) ";
+            "(realName , usrContact , usrName , usrPassWord , startTime) " +
+            "values(@realName , @usrContact , @usrName , @usrPassWord , @startTime) ";
         //"WHERE " +
         //"isDel = @isDel ";
 
         sqlCmd = this.SqlCom;
         sqlCmd.CommandText = strSQL;
 
-        string rn = dataSet.Tables["tbl_usr"].Rows[0]["realName"].ToString().Trim();
+        string rn = dataSet.Tables["addTable"].Rows[0]["realName"].ToString().Trim();
         //int ta = int.Parse(dataSet.Tables["tbl_usr"].Rows[0]["totleAuthority"].ToString().Trim());
-        string uc = dataSet.Tables["tbl_usr"].Rows[0]["usrContact"].ToString().Trim();
-        string un = dataSet.Tables["tbl_usr"].Rows[0]["usrName"].ToString().Trim();
-        string pw = dataSet.Tables["tbl_usr"].Rows[0]["usrPassWord"].ToString().Trim();
+        string uc = dataSet.Tables["addTable"].Rows[0]["usrContact"].ToString().Trim();
+        string un = dataSet.Tables["addTable"].Rows[0]["usrName"].ToString().Trim();
+        string pw = dataSet.Tables["addTable"].Rows[0]["usrPassWord"].ToString().Trim();
+        DateTime st = DateTime.Now;
 
         sqlParaRN = new SqlParameter("@realName", rn);
         //sqlParaTA = new SqlParameter("@totleAuthority", ta);
         sqlParaUC = new SqlParameter("@usrContact", uc);
         sqlParaUN = new SqlParameter("@usrName", un);
         sqlParaPW = new SqlParameter("@usrPassWord", pw);
+        sqlParaSt = new SqlParameter("@startTime", st);
 
         sqlCmd.Parameters.Clear();
         sqlCmd.Parameters.Add(sqlParaRN);
@@ -93,6 +96,7 @@ public class tbl_usr : DataBase
         sqlCmd.Parameters.Add(sqlParaUC);
         sqlCmd.Parameters.Add(sqlParaUN);
         sqlCmd.Parameters.Add(sqlParaPW);
+        sqlCmd.Parameters.Add(sqlParaSt);
 
         sqlCmd.Connection.Open();
 
@@ -137,6 +141,45 @@ public class tbl_usr : DataBase
         return myDataSet;
     }
 
+    public DataSet SelectView()
+    {
+        //SqlParameter sqlParaNM = null;
+        //SqlParameter sqlParaPwd = null;
+        //SqlParameter sqlParaEnd = null;
+
+        SqlCommand sqlCmd = null;
+
+        string strSQL =
+            "SELECT " +
+            "* " +
+            "FROM tbl_usr ";// +
+            //"WHERE " +
+            //"usrName = @usrName " +
+            //"and usrPassWord = @usrPassWord " +
+            //"and endTime > @endTime";
+
+        sqlCmd = this.SqlCom;
+        sqlCmd.CommandText = strSQL;
+        //userRow["endTime"]
+        //string usrNm = dataSet.Tables["tbl_usr"].Rows[0]["usrName"].ToString();
+        //sqlParaNM = new SqlParameter("@usrName", usrNm);
+        //string pwd = dataSet.Tables["tbl_usr"].Rows[0]["usrPassWord"].ToString();
+        //sqlParaPwd = new SqlParameter("@usrPassWord", pwd);
+        //DateTime end = DateTime.Parse(dataSet.Tables["tbl_usr"].Rows[0]["endTime"].ToString());
+        //sqlParaEnd = new SqlParameter("@endTime", end);
+
+        //sqlCmd.Parameters.Clear();
+        //sqlCmd.Parameters.Add(sqlParaNM);
+        //sqlCmd.Parameters.Add(sqlParaPwd);
+
+        SqlDataAdapter userDataAdapter = this.SqlDA;
+        SqlDA.InsertCommand = sqlCmd;
+        //SqlCommandBuilder userScb = new SqlCommandBuilder(userDataAdapter);
+        DataSet myDataSet = new DataSet();
+        userDataAdapter.Fill(myDataSet, "tbl_usr");
+
+        return myDataSet;
+    }
     //public void SelecttUsrCommit(DataSet dataSet)
     //{
     //    SqlDataAdapter da = this.SqlDA;

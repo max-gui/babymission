@@ -19,29 +19,33 @@ public class tbl_usr_authority : DataBase
 		//
 	}
 
-    public void SelectAdd(int usrId, int auth)
+    public void SelectAdd(string usrName, int auth)
     {
-        SqlParameter sqlParaUid = null;
+        SqlParameter sqlParaUNM = null;
         SqlParameter sqlParaAu = null;
+        SqlParameter sqlParaSt = null;
         SqlCommand sqlCmd = null;
 
         string strSQL =
             "insert into " +
             "tbl_usr_authority " +
-            "(usrId , authority) " +
-            "values(@usrId , @authority) ";
+            "(usrName , authority , startTime) " +
+            "values(@usrName , @authority , @startTime) ";
         //"WHERE " +
         //"isDel = @isDel ";
 
         sqlCmd = this.SqlCom;
         sqlCmd.CommandText = strSQL;
 
-        sqlParaUid = new SqlParameter("@usrId", usrId);
+        sqlParaUNM = new SqlParameter("@usrName", usrName);
         sqlParaAu = new SqlParameter("@authority", auth);
+        DateTime st = DateTime.Now;
+        sqlParaSt = new SqlParameter("@startTime", st);
 
         sqlCmd.Parameters.Clear();
-        sqlCmd.Parameters.Add(sqlParaUid);
+        sqlCmd.Parameters.Add(sqlParaUNM);
         sqlCmd.Parameters.Add(sqlParaAu);
+        sqlCmd.Parameters.Add(sqlParaSt);
 
         sqlCmd.Connection.Open();
 
