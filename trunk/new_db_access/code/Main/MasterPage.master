@@ -1,0 +1,44 @@
+﻿<%@ Master Language="C#" MasterPageFile="~/Site.master" AutoEventWireup="true" CodeFile="MasterPage.master.cs" Inherits="MasterPage" %>
+
+<asp:Content ID="Content1" ContentPlaceHolderID="HeadContent" Runat="Server">
+    <style type="text/css">
+        .style1
+        {
+            font-size: large;
+            font-weight: bold;
+        }
+    </style>
+</asp:Content>
+<asp:Content ID="Content2" ContentPlaceHolderID="MainContent" Runat="Server">
+        <p>
+            <span class="style1">欢迎使用 宝宝任务</span>&nbsp;</p>
+        <asp:Menu ID="MainMenu" runat="server" BackColor="#F7F6F3" 
+        DynamicHorizontalOffset="2" Font-Italic="False" Font-Names="Verdana" 
+        Font-Overline="False" Font-Size="Small" Font-Strikeout="False" 
+        ForeColor="#7C6F57" Orientation="Horizontal" StaticSubMenuIndent="10px" 
+            onmenuitemclick="MainMenu_MenuItemClick">
+        <DynamicHoverStyle BackColor="#7C6F57" ForeColor="White" />
+        <DynamicMenuItemStyle HorizontalPadding="5px" VerticalPadding="2px" />
+        <DynamicMenuStyle BackColor="#F7F6F3" />
+        <DynamicSelectedStyle BackColor="#5D7B9D" />
+        <Items>
+            <asp:MenuItem Text="个人信息更改" Value="个人信息更改"></asp:MenuItem>
+            <asp:MenuItem Text="用户管理" Value="用户管理">
+                <asp:MenuItem Text="用户权限管理" Value="usrAuth"></asp:MenuItem>
+                <asp:MenuItem Text="删除用户信息" Value="删除用户信息"></asp:MenuItem>
+                <asp:MenuItem Text="更改用户所属部门和职务" Value="usrDepartTitle"></asp:MenuItem>
+            </asp:MenuItem>
+            <asp:MenuItem Text="公司结构管理" Value="公司结构管理">
+                <asp:MenuItem Text="公司部门管理" Value="departEdit"></asp:MenuItem>
+                <asp:MenuItem Text="公司职位管理" Value="titleEdit"></asp:MenuItem>
+            </asp:MenuItem>
+        </Items>
+        <StaticHoverStyle BackColor="#7C6F57" ForeColor="White" />
+        <StaticMenuItemStyle HorizontalPadding="5px" VerticalPadding="2px" />
+        <StaticSelectedStyle BackColor="#5D7B9D" />
+    </asp:Menu>
+    <div class="main">
+        <asp:ContentPlaceHolder ID="MasterMainContent" runat="server" />
+    </div>
+</asp:Content>
+
