@@ -64,7 +64,6 @@ public class UserProcess : SelectLogic
     public void DoCheckUsrName()
     {
         string usrNm = MyDst.Tables["tbl_usr"].Rows[0]["usrName"].ToString();
-        string pwd = MyDst.Tables["tbl_usr"].Rows[0]["usrPassWord"].ToString();
 
         MyDst = tu.SelectView();
 
@@ -117,15 +116,16 @@ public class UserProcess : SelectLogic
 
     public override void Add()
     {
-        string strNull = "无";
-        int authNull = 0;
-        string usrName = MyDst.Tables["addTable"].Rows[0]["usrName"].ToString().Trim();
+        //string strNull = "无";
+        //int authNull = 0;
+        //string usrName = MyDst.Tables["addTable"].Rows[0]["usrName"].ToString().Trim();
 
-        tu.SelectAdd(MyDst);
-        
-        tud.SelectAdd(usrName, strNull);
-        tut.SelectAdd(usrName, strNull);
-        tua.SelectAdd(usrName, authNull);
+        long usrId = tu.SelectAdd(MyDst);
+
+        StrRtn = usrId.ToString().Trim();
+        //tud.SelectAdd(usrId, strNull);
+        //tut.SelectAdd(usrId, strNull);
+        //tua.SelectAdd(usrId, authNull);
     }
 
     public void usrDepModify(string usrName, string depName, DateTime depSt, string depOldNm)
