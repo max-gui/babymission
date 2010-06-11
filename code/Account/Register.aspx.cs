@@ -106,9 +106,9 @@ public partial class Account_Register : System.Web.UI.Page
 
                     int nullAuth = 0;
                     Session["totleAuthority"] = nullAuth;
-                    Session["usrName"] = sun;
+                    Session["usrId"] = up.StrRtn;
 
-                    FormsAuthentication.SetAuthCookie(sun, false);
+                    FormsAuthentication.SetAuthCookie(sn, false);
 
                     string continueUrl = "~/Main/DefaultMainSite.aspx";//Request.QueryString["ReturnUrl"];
 

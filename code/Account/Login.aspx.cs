@@ -67,13 +67,15 @@ public partial class Account_Login : System.Web.UI.Page
             using (DataTable dt =
                         myLogin.MyDst.Tables["tbl_usr"].DefaultView.ToTable())
             {
-                FormsAuthentication.SetAuthCookie(this.loginCon.UserName.ToString().Trim(), false /* createPersistentCookie */);
-
                 Session["totleAuthority"] =
-                    dt.Rows[0]["totleAuthority"].ToString().Trim();
-                Session["usrName"] =
-                    dt.Rows[0]["usrName"].ToString().Trim();
+                    dt.Rows[0]["totleAuthority"].ToString();
+                Session["usrId"] =
+                    dt.Rows[0]["usrId"].ToString();
 
+                string strRealName = 
+                    dt.Rows[0]["realName"].ToString();
+                FormsAuthentication.SetAuthCookie(strRealName, false);
+                                
                 string continueUrl = "~/Main/DefaultMainSite.aspx";//Request.QueryString["ReturnUrl"];
                 if (String.IsNullOrEmpty(continueUrl))
                 {

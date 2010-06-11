@@ -91,6 +91,13 @@ public class SelfDepartProcess :SelectLogic
             " and departmentName <> '无' ";
         MyDst.Tables["tbl_department"].DefaultView.RowFilter = strFilter;
 
+        DataTable depTable = MyDst.Tables["tbl_department"];
+
+        DataColumn[] keys = new DataColumn[2];
+        keys[0] = depTable.Columns["departmentName"];
+        keys[1] = depTable.Columns["endTime"];
+
+        depTable.PrimaryKey = keys;
         //TAB_DATA_USERDatabase db = (TAB_DATA_USERDatabase)InitDatabaseProc("Database", "DataBase.TAB_DATA_USERDatabase");
         //MyDst = db.SelectView();
         //StrRtn = db.selectNum().ToString();
