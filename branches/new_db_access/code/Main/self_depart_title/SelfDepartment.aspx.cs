@@ -10,6 +10,7 @@ using System.Data;
 public partial class SelfDepartment : System.Web.UI.Page
 {
     string strForever = "9999-12-31";
+    string oldDepName = string.Empty;
             
     protected void Page_Load(object sender, EventArgs e)
     {
@@ -70,53 +71,31 @@ public partial class SelfDepartment : System.Web.UI.Page
     {
         int index = Convert.ToInt32(e.NewEditIndex);
 
-        DataTable dt = (DataTable)Session["dtSources"];
-
-        //if (SelfTitleGV.EditIndex != -1)
-        //{
-            //int indexRow = SelfTitleGV.Rows[SelfTitleGV.EditIndex].DataItemIndex;
-            //if ((dt.DefaultView[indexRow].Row.RowState == DataRowState.Added) &&
-            //    (string.IsNullOrWhiteSpace(dt.DefaultView[indexRow].Row["titleName"].ToString().Trim())))
-            //{
-            //    dt.DefaultView[indexRow].Row.Delete();
-            //}
-        //}
-
+        
         if (SelfDepartGV.EditIndex == -1)
         {
             e.Cancel = false;
             SelfDepartGV.EditIndex = index;
+            
+            SelfDepartGV.Columns[0].Visible = false;
+
+            SelfDepartGV.DataSource = Session["dtSources"];//["dtSources"] as DataTable;
+            SelfDepartGV.DataBind();
+            
+            btnAdd.Enabled = false;
         }
         else
         {
             e.Cancel = true;
         }
 
-        //SelfDepartGV.EditIndex = index;
-        //Bind data to the GridView control.
-        //BindData();
-        SelfDepartGV.Columns[0].Visible = false;
-
-        //SelfDepartGV.Enabled = false;
-        //SelfDepartGV.Rows[index].Enabled = true;
-
-        SelfDepartGV.DataSource = Session["dtSources"];//["dtSources"] as DataTable;
-        SelfDepartGV.DataBind();
-        SelfDepartGV.DataBind();
-        //SelfDepartGV.Rows[index].Enabled = true;
-        btnOk.Enabled = false;
+        
     }
     
     protected void SelfDepartGV_RowCommand(object sender, GridViewCommandEventArgs e)
     {
         if ( "Add" == e.CommandName)
         {
-            //int index = Convert.ToInt32(e.CommandArgument);
-            //index++;
-
-            // Retrieve the row that contains the button clicked 
-            // by the user from the Rows collection.
-            //GridViewRow row = new GridViewRow(index, index, DataControlRowType.EmptyDataRow, DataControlRowState.Edit);
             DataTable dt = Session["dtSources"] as DataTable;
             DataRow dr = dt.NewRow();
             dr["startTime"] = DateTime.Now;
@@ -124,14 +103,13 @@ public partial class SelfDepartment : System.Web.UI.Page
             dr["endTime"] = DateTime.Parse(strForever);
             dt.Rows.Add(dr);
             
-            //SelfDepartGV.EditIndex = index;
             SelfDepartGV.Columns[0].Visible = false;
 
             Session["dtSources"] = dt;
             SelfDepartGV.DataSource = Session["dtSources"];//["dtSources"] as DataTable;
             SelfDepartGV.DataBind();
             SelfDepartGV.DataBind();
-            btnOk.Enabled = false;
+            btnAdd.Enabled = false;
         }
     }
     protected void SelfDepartGV_RowDeleting(object sender, GridViewDeleteEventArgs e)
@@ -142,11 +120,10 @@ public partial class SelfDepartment : System.Web.UI.Page
 
             //Update the values.
             GridViewRow row = SelfDepartGV.Rows[e.RowIndex];
-            //dt.Rows[row.DataItemIndex].Delete();
             dt.DefaultView[row.DataItemIndex].Row["endTime"] =
                 DateTime.Now.ToShortDateString();
 
-            btnOk.Enabled = true;
+            btnAdd.Enabled = true;
         }
         
 
@@ -183,7 +160,7 @@ public partial class SelfDepartment : System.Web.UI.Page
             dt.DefaultView[row.DataItemIndex].Row["departmentName"] = strTxt;
             SelfDepartGV.EditIndex = -1;
             SelfDepartGV.Columns[0].Visible = true;
-            btnOk.Enabled = true;
+            btnAdd.Enabled = true;
         }
         
         SelfDepartGV.DataSource = Session["dtSources"] as DataTable;
@@ -250,12 +227,69 @@ public partial class SelfDepartment : System.Web.UI.Page
 
     }
 
-    protected void btnOk_Click(object sender, EventArgs e)
+    //protected void btnOk_Click(object sender, EventArgs e)
+    //{
+
+    //    SelfDepartProcess sdp = Session["SelfDepartProcess"] as SelfDepartProcess;
+        
+    //    sdp.commit();
+    //    sdp.SelDepView();
+
+    //    DataTable taskTable = sdp.MyDst.Tables["tbl_department"];
+    //    //taskTable.DefaultView.RowFilter =
+    //    //        "isDel = " + bool.FalseString.ToString().Trim() + " and departmentName <> '无' ";
+    //    Session["dtSources"] = sdp.MyDst.Tables["tbl_department"] as DataTable;
+    //    SelfDepartGV.DataSource = Session["dtSources"];//["dtSources"] as DataTable;
+        
+    //    SelfDepartGV.DataBind();
+    //    btnAdd.Enabled = false;
+    //}
+
+    protected string input_check(string depName)
     {
+        DataTable dt = (DataTable)Session["dtSources"];
+        string strRtn = string.Empty;
+
+        if (string.IsNullOrWhiteSpace(depName))
+        {
+            strRtn = "部门名称不能为空！";
+        }
+        else if (depName.Length > 25)
+        {
+            strRtn = "部门名称不能超过25个字！";
+        }
+        else if (depName.Equals("部门名称不能为空！"))
+        {
+            strRtn = "部门名称不能为空！  ";
+        }
+        else if (depName.Equals("部门名称不能超过25个字！"))
+        {
+            strRtn = "部门名称不能超过25个字！  ";
+        }
+        else
+        {
+            strRtn = depName;
+        }
+
+        return strRtn;
+    }
+
+    protected void btnDel_Click(object sender, EventArgs e)
+    {
+        int index = SelfDepartGV.SelectedIndex;
+
+        int dataIndex = SelfDepartGV.Rows[index].DataItemIndex;
+        DataTable dt = (DataTable)Session["dtSources"];
+        int depId = int.Parse(dt.DefaultView[dataIndex].Row["departmentId"].ToString());
+
+        Button btn = null;
+        btn = (SelfDepartGV.Rows[index].FindControl("btnUpdate") as Button);
+        btn.Visible = false;
 
         SelfDepartProcess sdp = Session["SelfDepartProcess"] as SelfDepartProcess;
-        
-        sdp.commit();
+
+        sdp.SelfDepDel(depId);
+
         sdp.SelDepView();
 
         DataTable taskTable = sdp.MyDst.Tables["tbl_department"];
@@ -263,8 +297,129 @@ public partial class SelfDepartment : System.Web.UI.Page
         //        "isDel = " + bool.FalseString.ToString().Trim() + " and departmentName <> '无' ";
         Session["dtSources"] = sdp.MyDst.Tables["tbl_department"] as DataTable;
         SelfDepartGV.DataSource = Session["dtSources"];//["dtSources"] as DataTable;
-        
+
+        SelfDepartGV.SelectedIndex = -1;
+        SelfDepartGV.EditIndex = -1;
         SelfDepartGV.DataBind();
-        btnOk.Enabled = false;
+
+        btn = sender as Button;
+        btn.Visible = false;
+        btnAdd.Enabled = true;
+    }
+    protected void btnUpdate_Click(object sender, EventArgs e)
+    {
+        int index = SelfDepartGV.SelectedIndex;
+
+        int dataIndex = SelfDepartGV.Rows[index].DataItemIndex;
+        DataTable dt = (DataTable)Session["dtSources"];
+
+        GridViewRow row = SelfDepartGV.Rows[index];
+        TextBox tbDepName = row.Cells[1].Controls[0] as TextBox;
+        string newDepName = tbDepName.Text.ToString().Trim();
+
+        string strCheck = newDepName;
+        newDepName = input_check(strCheck.Trim());
+
+        if (newDepName.Equals(strCheck))
+        {
+            if (!oldDepName.Equals(newDepName))
+            {
+
+                int depId = int.Parse(dt.DefaultView[dataIndex].Row["departmentId"].ToString());
+
+                SelfDepartProcess sdp = Session["SelfDepartProcess"] as SelfDepartProcess;
+
+                sdp.SelfDepUpdate(depId, newDepName);
+
+                sdp.SelDepView();
+
+                DataTable taskTable = sdp.MyDst.Tables["tbl_department"];
+                //taskTable.DefaultView.RowFilter =
+                //        "isDel = " + bool.FalseString.ToString().Trim() + " and departmentName <> '无' ";
+                Session["dtSources"] = sdp.MyDst.Tables["tbl_department"] as DataTable;
+            }
+
+            Button btn = null;
+            btn = (SelfDepartGV.Rows[index].FindControl("btnDel") as Button);
+            btn.Visible = false;
+            btn = sender as Button;
+            btn.Visible = false;
+
+            SelfDepartGV.SelectedIndex = -1;
+            SelfDepartGV.EditIndex = -1;
+
+            SelfDepartGV.DataSource = Session["dtSources"];//["dtSources"] as DataTable;  
+            SelfDepartGV.DataBind();
+
+            btnAdd.Enabled = true;
+        }
+        else
+        {
+            tbDepName.Text = newDepName;
+            SelfDepartGV.SelectedIndex = index;
+            SelfDepartGV.EditIndex = index;
+
+            //Button btn = null;
+            //btn = (SelfDepartGV.Rows[index].FindControl("btnDel") as Button);
+            //btn.Visible = true;
+            //btn = sender as Button;
+            //btn.Visible = true;
+        }
+    }
+    protected void SelfDepartGV_SelectedIndexChanging(object sender, GridViewSelectEventArgs e)
+    {
+        if (SelfDepartGV.SelectedIndex == -1)
+        {
+            e.Cancel = false;
+            int index = e.NewSelectedIndex;
+            
+            int dataIndex = SelfDepartGV.Rows[index].DataItemIndex;
+            DataTable dt = (DataTable)Session["dtSources"];
+            oldDepName = dt.DefaultView[dataIndex].Row["departmentName"].ToString();
+
+            SelfDepartGV.EditIndex = index;
+            SelfDepartGV.DataSource = Session["dtSources"];
+            SelfDepartGV.DataBind();
+
+            Button btn = null;
+            btn = (SelfDepartGV.Rows[index].FindControl("btnDel") as Button);
+            btn.Visible = true;
+            btn = (SelfDepartGV.Rows[index].FindControl("btnUpdate") as Button);
+            btn.Visible = true;
+        }
+        else
+        {
+            e.Cancel = true;
+        }
+
+        btnAdd.Enabled = false;
+    }
+    protected void btnAdd_Click(object sender, EventArgs e)
+    {
+        lblDepName.Visible = true;
+        txtDepName.Visible = true;
+        btnAccept.Visible = true;
+        btnNo.Visible = true;
+
+        btnAdd.Enabled = false;
+    }
+    protected void btnAccept_Click(object sender, EventArgs e)
+    {
+        lblDepName.Visible = false;
+        txtDepName.Visible = false;
+        btnAccept.Visible = false;
+        btnNo.Visible = false;
+
+        btnAdd.Enabled = true;
+    }
+    protected void btnNo_Click(object sender, EventArgs e)
+    {
+        lblDepName.Visible = false;
+        txtDepName.Text = string.Empty;
+        txtDepName.Visible = false;
+        btnAccept.Visible = false;
+        btnNo.Visible = false;
+
+        btnAdd.Enabled = true;
     }
 }
