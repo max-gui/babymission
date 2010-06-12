@@ -120,9 +120,9 @@ public class UserProcess : SelectLogic
         //int authNull = 0;
         //string usrName = MyDst.Tables["addTable"].Rows[0]["usrName"].ToString().Trim();
 
-        long usrId = tu.SelectAdd(MyDst);
+        string usrId = tu.SelectAdd(MyDst);
 
-        StrRtn = usrId.ToString().Trim();
+        StrRtn = usrId;
         //tud.SelectAdd(usrId, strNull);
         //tut.SelectAdd(usrId, strNull);
         //tua.SelectAdd(usrId, authNull);
