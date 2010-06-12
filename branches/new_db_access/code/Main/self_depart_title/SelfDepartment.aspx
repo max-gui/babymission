@@ -30,6 +30,12 @@
                     Visible="False" />
             </ItemTemplate>
         </asp:TemplateField>
+        <asp:TemplateField>
+            <ItemTemplate>
+                <asp:Button ID="btnCancle" runat="server" onclick="btnCancle_Click" Text="放弃更改" 
+                    Visible="False" />
+            </ItemTemplate>
+        </asp:TemplateField>
     </Columns>
     <EditRowStyle BackColor="#CCFFCC" BorderStyle="Solid" Font-Names="宋体" />
     <FooterStyle BackColor="White" ForeColor="#333333" />

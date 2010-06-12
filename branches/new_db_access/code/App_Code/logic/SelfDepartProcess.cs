@@ -40,6 +40,11 @@ public class SelfDepartProcess :SelectLogic
         tdDB.SelfDepUpdate(depId, depName);
     }
 
+    public void SelfDepAdd(string depName)
+    {
+        StrRtn = tdDB.SelfDepAdd(depName);
+    }
+
     public void commit()
     {
         tdDB.SelectSelfDepatCommit(MyDst);
