@@ -170,4 +170,55 @@ public class tbl_department :DataBase
 
         sqlCmd.Connection.Close();
     }
+
+    public string SelfDepAdd(string depName)
+    {
+        #region sqlPara declare
+        //realName
+        SqlParameter sqlParaDepId = null;
+        //usrContact
+        SqlParameter sqlParaDepEnd = null;
+        //usrContact
+        SqlParameter sqlParaDepName = null;
+        #endregion
+
+        SqlCommand sqlCmd = null;
+
+        string strSQL = "tbl_department_Insert";
+
+        sqlCmd = this.SqlCom;
+        sqlCmd.CommandText = strSQL;
+        sqlCmd.CommandType = CommandType.StoredProcedure;
+
+        #region sqlParaInit
+        DateTime st = DateTime.Now;
+
+        sqlParaDepId = new SqlParameter("@Identity", SqlDbType.BigInt);
+        sqlParaDepEnd = new SqlParameter("@startTime", st);
+        sqlParaDepName = new SqlParameter("@departmentName", depName);
+        #endregion
+
+        #region sqlParaAdd
+        sqlCmd.Parameters.Clear();
+        sqlCmd.Parameters.Add(sqlParaDepId);
+        sqlCmd.Parameters.Add(sqlParaDepEnd);
+        sqlCmd.Parameters.Add(sqlParaDepName);
+        #endregion
+
+        #region sqlDirection
+        sqlParaDepId.Direction = ParameterDirection.Output;
+        //sqlParaDepId.Direction = ParameterDirection.Output;
+        //sqlParaTitleId.Direction = ParameterDirection.Output;
+        //sqlParaAuthId.Direction = ParameterDirection.Output;
+        #endregion
+
+        sqlCmd.Connection.Open();
+
+        sqlCmd.ExecuteNonQuery();
+
+        sqlCmd.Connection.Close();
+
+        string depId = sqlParaDepId.Value.ToString();
+        return depId;
+    }
 }
