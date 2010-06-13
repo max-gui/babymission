@@ -9,8 +9,8 @@ using System.Data;
 
 public partial class SelfDepartment : System.Web.UI.Page
 {
-    string strForever = "9999-12-31";
-    string oldDepName = string.Empty;
+    //string strForever = "9999-12-31";
+    //string oldDepName;
             
     protected void Page_Load(object sender, EventArgs e)
     {
@@ -44,7 +44,7 @@ public partial class SelfDepartment : System.Web.UI.Page
             //    "isDel = " + bool.FalseString.ToString().Trim() + " and departmentName <> '无' ";
             Session["SelfDepartProcess"] = myView;
             Session["dtSources"] = taskTable;
-            Session["error"] = bool.FalseString.ToString().Trim();
+            //Session["error"] = bool.FalseString.ToString().Trim();
             //if (Session["PAGESIZE"] != null)
             //{
             //    SelfDepartGV.DataSource = Session["dtSources"];//["dtSources"] as DataTable;
@@ -67,165 +67,165 @@ public partial class SelfDepartment : System.Web.UI.Page
 
     }
 
-    protected void SelfDepartGV_RowEditing(object sender, GridViewEditEventArgs e)
-    {
-        int index = Convert.ToInt32(e.NewEditIndex);
+    //protected void SelfDepartGV_RowEditing(object sender, GridViewEditEventArgs e)
+    //{
+    //    int index = Convert.ToInt32(e.NewEditIndex);
 
         
-        if (SelfDepartGV.EditIndex == -1)
-        {
-            e.Cancel = false;
-            SelfDepartGV.EditIndex = index;
+    //    if (SelfDepartGV.EditIndex == -1)
+    //    {
+    //        e.Cancel = false;
+    //        SelfDepartGV.EditIndex = index;
             
-            SelfDepartGV.Columns[0].Visible = false;
+    //        SelfDepartGV.Columns[0].Visible = false;
 
-            SelfDepartGV.DataSource = Session["dtSources"];//["dtSources"] as DataTable;
-            SelfDepartGV.DataBind();
+    //        SelfDepartGV.DataSource = Session["dtSources"];//["dtSources"] as DataTable;
+    //        SelfDepartGV.DataBind();
             
-            btnAdd.Enabled = false;
-        }
-        else
-        {
-            e.Cancel = true;
-        }
+    //        btnAdd.Enabled = false;
+    //    }
+    //    else
+    //    {
+    //        e.Cancel = true;
+    //    }
 
         
-    }
+    //}
     
-    protected void SelfDepartGV_RowCommand(object sender, GridViewCommandEventArgs e)
-    {
-        if ( "Add" == e.CommandName)
-        {
-            DataTable dt = Session["dtSources"] as DataTable;
-            DataRow dr = dt.NewRow();
-            dr["startTime"] = DateTime.Now;
-            dr["departmentName"] = " ";
-            dr["endTime"] = DateTime.Parse(strForever);
-            dt.Rows.Add(dr);
+    //protected void SelfDepartGV_RowCommand(object sender, GridViewCommandEventArgs e)
+    //{
+    //    if ( "Add" == e.CommandName)
+    //    {
+    //        DataTable dt = Session["dtSources"] as DataTable;
+    //        DataRow dr = dt.NewRow();
+    //        dr["startTime"] = DateTime.Now;
+    //        dr["departmentName"] = " ";
+    //        dr["endTime"] = DateTime.Parse(strForever);
+    //        dt.Rows.Add(dr);
             
-            SelfDepartGV.Columns[0].Visible = false;
+    //        SelfDepartGV.Columns[0].Visible = false;
 
-            Session["dtSources"] = dt;
-            SelfDepartGV.DataSource = Session["dtSources"];//["dtSources"] as DataTable;
-            SelfDepartGV.DataBind();
-            SelfDepartGV.DataBind();
-            btnAdd.Enabled = false;
-        }
-    }
-    protected void SelfDepartGV_RowDeleting(object sender, GridViewDeleteEventArgs e)
-    {
-        if (SelfDepartGV.EditIndex == -1)
-        {
-            DataTable dt = (DataTable)Session["dtSources"];
+    //        Session["dtSources"] = dt;
+    //        SelfDepartGV.DataSource = Session["dtSources"];//["dtSources"] as DataTable;
+    //        SelfDepartGV.DataBind();
+    //        SelfDepartGV.DataBind();
+    //        btnAdd.Enabled = false;
+    //    }
+    //}
+    //protected void SelfDepartGV_RowDeleting(object sender, GridViewDeleteEventArgs e)
+    //{
+    //    if (SelfDepartGV.EditIndex == -1)
+    //    {
+    //        DataTable dt = (DataTable)Session["dtSources"];
 
-            //Update the values.
-            GridViewRow row = SelfDepartGV.Rows[e.RowIndex];
-            dt.DefaultView[row.DataItemIndex].Row["endTime"] =
-                DateTime.Now.ToShortDateString();
+    //        //Update the values.
+    //        GridViewRow row = SelfDepartGV.Rows[e.RowIndex];
+    //        dt.DefaultView[row.DataItemIndex].Row["endTime"] =
+    //            DateTime.Now.ToShortDateString();
 
-            btnAdd.Enabled = true;
-        }
+    //        btnAdd.Enabled = true;
+    //    }
         
 
-        SelfDepartGV.DataSource = Session["dtSources"] as DataTable;
-        SelfDepartGV.DataBind();
+    //    SelfDepartGV.DataSource = Session["dtSources"] as DataTable;
+    //    SelfDepartGV.DataBind();
 
-        //数据库更新；
-    }
-    protected void SelfDepartGV_RowUpdating(object sender, GridViewUpdateEventArgs e)
-    {
-        //Retrieve the table from the session object.
-        DataTable dt = (DataTable)Session["dtSources"];
-        int index = e.RowIndex;
+    //    //数据库更新；
+    //}
+    //protected void SelfDepartGV_RowUpdating(object sender, GridViewUpdateEventArgs e)
+    //{
+    //    //Retrieve the table from the session object.
+    //    DataTable dt = (DataTable)Session["dtSources"];
+    //    int index = e.RowIndex;
 
-        //Update the values.
-        GridViewRow row = SelfDepartGV.Rows[index];
-        string strTxt = ((TextBox)(row.Cells[2].Controls[0])).Text.ToString().Trim();
+    //    //Update the values.
+    //    GridViewRow row = SelfDepartGV.Rows[index];
+    //    string strTxt = ((TextBox)(row.Cells[2].Controls[0])).Text.ToString().Trim();
 
-        if (string.IsNullOrWhiteSpace(strTxt)) 
-        {
-            Session["error"] = bool.TrueString.ToString().Trim();
-            dt.DefaultView[row.DataItemIndex].Row["departmentName"] = "部门名称不能为空！";
-            SelfDepartGV.EditIndex = index;
-        }
-        else if (strTxt.Length > 25)
-        {
-            Session["error"] = bool.TrueString.ToString().Trim();
-            dt.DefaultView[row.DataItemIndex].Row["departmentName"] = "部门名称不能超过25个字！";
-            SelfDepartGV.EditIndex = index;
-        }
-        else
-        {
-            Session["error"] = bool.FalseString.ToString().Trim();
-            dt.DefaultView[row.DataItemIndex].Row["departmentName"] = strTxt;
-            SelfDepartGV.EditIndex = -1;
-            SelfDepartGV.Columns[0].Visible = true;
-            btnAdd.Enabled = true;
-        }
+    //    if (string.IsNullOrWhiteSpace(strTxt)) 
+    //    {
+    //        Session["error"] = bool.TrueString.ToString().Trim();
+    //        dt.DefaultView[row.DataItemIndex].Row["departmentName"] = "部门名称不能为空！";
+    //        SelfDepartGV.EditIndex = index;
+    //    }
+    //    else if (strTxt.Length > 25)
+    //    {
+    //        Session["error"] = bool.TrueString.ToString().Trim();
+    //        dt.DefaultView[row.DataItemIndex].Row["departmentName"] = "部门名称不能超过25个字！";
+    //        SelfDepartGV.EditIndex = index;
+    //    }
+    //    else
+    //    {
+    //        Session["error"] = bool.FalseString.ToString().Trim();
+    //        dt.DefaultView[row.DataItemIndex].Row["departmentName"] = strTxt;
+    //        SelfDepartGV.EditIndex = -1;
+    //        SelfDepartGV.Columns[0].Visible = true;
+    //        btnAdd.Enabled = true;
+    //    }
         
-        SelfDepartGV.DataSource = Session["dtSources"] as DataTable;
-        SelfDepartGV.DataBind();
-    }
-    protected void SelfDepartGV_RowCancelingEdit(object sender, GridViewCancelEditEventArgs e)
-    {
-        DataTable dt = (DataTable)Session["dtSources"];
+    //    SelfDepartGV.DataSource = Session["dtSources"] as DataTable;
+    //    SelfDepartGV.DataBind();
+    //}
+    //protected void SelfDepartGV_RowCancelingEdit(object sender, GridViewCancelEditEventArgs e)
+    //{
+    //    DataTable dt = (DataTable)Session["dtSources"];
 
-        GridViewRow row = SelfDepartGV.Rows[e.RowIndex];
-        string str = dt.DefaultView[row.DataItemIndex].Row["departmentName"].ToString().Trim();
+    //    GridViewRow row = SelfDepartGV.Rows[e.RowIndex];
+    //    string str = dt.DefaultView[row.DataItemIndex].Row["departmentName"].ToString().Trim();
 
-        if (string.IsNullOrWhiteSpace(str) ||
-            bool.Parse(Session["error"].ToString().Trim()))
-        {
-            dt.DefaultView[row.DataItemIndex].Row.Delete();
-            Session["error"] = bool.FalseString.ToString().Trim();
-        }
+    //    if (string.IsNullOrWhiteSpace(str) ||
+    //        bool.Parse(Session["error"].ToString().Trim()))
+    //    {
+    //        dt.DefaultView[row.DataItemIndex].Row.Delete();
+    //        Session["error"] = bool.FalseString.ToString().Trim();
+    //    }
 
-        SelfDepartGV.EditIndex = -1;
-        SelfDepartGV.Columns[0].Visible = true;
+    //    SelfDepartGV.EditIndex = -1;
+    //    SelfDepartGV.Columns[0].Visible = true;
 
-        //Bind data to the GridView control.
-        SelfDepartGV.DataSource = Session["dtSources"] as DataTable;
-        SelfDepartGV.DataBind();
-    }
-    protected void SelfDepartGV_RowDataBound(object sender, GridViewRowEventArgs e)
-    {
-        if (e.Row.RowType == DataControlRowType.DataRow)
-        {
-            System.Data.DataRowView drv = (System.Data.DataRowView)e.Row.DataItem;
-            if (string.IsNullOrWhiteSpace(drv["departmentName"].ToString().Trim()))
-            {
-                SelfDepartGV.EditIndex = e.Row.RowIndex;
-                //rbl.Items.FindByValue("del").Enabled = false;
-            }
-            //gridview嵌套控件
-            //System.Data.DataRowView drv = (System.Data.DataRowView)e.Row.DataItem;
-            //RadioButtonList rbl = (RadioButtonList)e.Row.FindControl("RblIsDel");
-            //if (rbl != null)
-            //{
-            //    if (bool.Parse(drv["isDel"].ToString().Trim()))
-            //    {
-            //        rbl.Items.FindByValue("del").Selected = true;
-            //        //rbl.Items.FindByValue("del").Enabled = false;
-            //    }
-            //    else
-            //    {
-            //        rbl.Items.FindByValue("unDel").Selected = true;
-            //        //rbl.Items.FindByValue("unDel").Enabled = false;
-            //    }
-            //    rbl.Items.FindByValue("del").Enabled = false;
-            //    rbl.Items.FindByValue("unDel").Enabled = false;
-            //}
+    //    //Bind data to the GridView control.
+    //    SelfDepartGV.DataSource = Session["dtSources"] as DataTable;
+    //    SelfDepartGV.DataBind();
+    //}
+    //protected void SelfDepartGV_RowDataBound(object sender, GridViewRowEventArgs e)
+    //{
+    //    if (e.Row.RowType == DataControlRowType.DataRow)
+    //    {
+    //        System.Data.DataRowView drv = (System.Data.DataRowView)e.Row.DataItem;
+    //        if (string.IsNullOrWhiteSpace(drv["departmentName"].ToString().Trim()))
+    //        {
+    //            SelfDepartGV.EditIndex = e.Row.RowIndex;
+    //            //rbl.Items.FindByValue("del").Enabled = false;
+    //        }
+    //        //gridview嵌套控件
+    //        //System.Data.DataRowView drv = (System.Data.DataRowView)e.Row.DataItem;
+    //        //RadioButtonList rbl = (RadioButtonList)e.Row.FindControl("RblIsDel");
+    //        //if (rbl != null)
+    //        //{
+    //        //    if (bool.Parse(drv["isDel"].ToString().Trim()))
+    //        //    {
+    //        //        rbl.Items.FindByValue("del").Selected = true;
+    //        //        //rbl.Items.FindByValue("del").Enabled = false;
+    //        //    }
+    //        //    else
+    //        //    {
+    //        //        rbl.Items.FindByValue("unDel").Selected = true;
+    //        //        //rbl.Items.FindByValue("unDel").Enabled = false;
+    //        //    }
+    //        //    rbl.Items.FindByValue("del").Enabled = false;
+    //        //    rbl.Items.FindByValue("unDel").Enabled = false;
+    //        //}
 
-            //TextBox ttb = (TextBox)e.Row.FindControl("depNameTxt");
-            //if (ttb != null)
-            //{
-            //    ttb.Text = drv["departmentName"].ToString().Trim();
-            //    ttb.Enabled = false;
-            //}
+    //        //TextBox ttb = (TextBox)e.Row.FindControl("depNameTxt");
+    //        //if (ttb != null)
+    //        //{
+    //        //    ttb.Text = drv["departmentName"].ToString().Trim();
+    //        //    ttb.Enabled = false;
+    //        //}
 
-        }
+    //    }
 
-    }
+    //}
 
     //protected void btnOk_Click(object sender, EventArgs e)
     //{
@@ -247,7 +247,14 @@ public partial class SelfDepartment : System.Web.UI.Page
 
     protected string input_check(string depName)
     {
-        DataTable dt = (DataTable)Session["dtSources"];
+        DataTable dt = (Session["dtSources"] as DataTable).DefaultView.ToTable();
+        DataColumn[] key = new DataColumn[1];
+        key[0] = dt.Columns["departmentName"];
+
+        dt.PrimaryKey = key;
+
+        dt.Rows.Contains(depName);
+
         string strRtn = string.Empty;
 
         if (string.IsNullOrWhiteSpace(depName))
@@ -258,6 +265,10 @@ public partial class SelfDepartment : System.Web.UI.Page
         {
             strRtn = "部门名称不能超过25个字！";
         }
+        else if (dt.Rows.Contains(depName))
+        {
+            strRtn = "部门名称不能重复！";
+        }
         else if (depName.Equals("部门名称不能为空！"))
         {
             strRtn = "部门名称不能为空！  ";
@@ -265,6 +276,10 @@ public partial class SelfDepartment : System.Web.UI.Page
         else if (depName.Equals("部门名称不能超过25个字！"))
         {
             strRtn = "部门名称不能超过25个字！  ";
+        }
+        else if (depName.Equals("部门名称不能重复！"))
+        {
+            strRtn = "部门名称不能重复！  ";
         }
         else
         {
@@ -325,22 +340,23 @@ public partial class SelfDepartment : System.Web.UI.Page
 
         if (newDepName.Equals(strCheck))
         {
-            if (!oldDepName.Equals(newDepName))
-            {
+            //string oldDepName = Session["oldDepName"].ToString();
+            //if (!oldDepName.Equals(newDepName))
+            //{
 
-                int depId = int.Parse(dt.DefaultView[dataIndex].Row["departmentId"].ToString());
+            int depId = int.Parse(dt.DefaultView[dataIndex].Row["departmentId"].ToString());
 
-                SelfDepartProcess sdp = Session["SelfDepartProcess"] as SelfDepartProcess;
+            SelfDepartProcess sdp = Session["SelfDepartProcess"] as SelfDepartProcess;
 
-                sdp.SelfDepUpdate(depId, newDepName);
+            sdp.SelfDepUpdate(depId, newDepName);
 
-                sdp.SelDepView();
+            sdp.SelDepView();
 
-                DataTable taskTable = sdp.MyDst.Tables["tbl_department"];
-                //taskTable.DefaultView.RowFilter =
-                //        "isDel = " + bool.FalseString.ToString().Trim() + " and departmentName <> '无' ";
-                Session["dtSources"] = sdp.MyDst.Tables["tbl_department"] as DataTable;
-            }
+            DataTable taskTable = sdp.MyDst.Tables["tbl_department"];
+            //taskTable.DefaultView.RowFilter =
+            //        "isDel = " + bool.FalseString.ToString().Trim() + " and departmentName <> '无' ";
+            Session["dtSources"] = sdp.MyDst.Tables["tbl_department"] as DataTable;
+            //}
 
             Button btn = null;
             btn = (SelfDepartGV.Rows[index].FindControl("btnDel") as Button);
@@ -394,9 +410,9 @@ public partial class SelfDepartment : System.Web.UI.Page
             e.Cancel = false;
             int index = e.NewSelectedIndex;
             
-            int dataIndex = SelfDepartGV.Rows[index].DataItemIndex;
-            DataTable dt = (DataTable)Session["dtSources"];
-            oldDepName = dt.DefaultView[dataIndex].Row["departmentName"].ToString();
+            //int dataIndex = SelfDepartGV.Rows[index].DataItemIndex;
+            //DataTable dt = (DataTable)Session["dtSources"];
+            //Session["oldDepName"] = dt.DefaultView[dataIndex].Row["departmentName"].ToString();
 
             SelfDepartGV.EditIndex = index;
             SelfDepartGV.DataSource = Session["dtSources"];
@@ -452,6 +468,7 @@ public partial class SelfDepartment : System.Web.UI.Page
 
             SelfDepartGV.Enabled = true;
             lblDepName.Visible = false;
+            txtDepName.Text = string.Empty;
             txtDepName.Visible = false;
             btnAccept.Visible = false;
             btnNo.Visible = false;
@@ -473,5 +490,12 @@ public partial class SelfDepartment : System.Web.UI.Page
         btnNo.Visible = false;
 
         btnAdd.Enabled = true;
-    }    
+    }
+    protected void SelfDepartGV_PageIndexChanging(object sender, GridViewPageEventArgs e)
+    {
+        SelfDepartGV.PageIndex = e.NewPageIndex;
+
+        SelfDepartGV.DataSource = Session["dtSources"];//["dtSources"] as DataTable;  
+        SelfDepartGV.DataBind();
+    }
 }

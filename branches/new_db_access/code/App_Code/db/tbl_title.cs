@@ -64,6 +64,7 @@ public class tbl_title : DataBase
 
         sqlCmd = this.SqlCom;
         sqlCmd.CommandText = strSQL;
+        sqlCmd.CommandType = CommandType.Text;
 
         //sqlParaTName = new SqlParameter("@titleName", SqlDbType.Char, 10);
         //sqlParaTName.Value = "无职位";
@@ -96,5 +97,134 @@ public class tbl_title : DataBase
         //SqlCommandBuilder userScb = new SqlCommandBuilder(userDataAdapter);
         da.Update(dataSet, "tbl_title");
         dataSet.AcceptChanges();
+    }
+
+    public void SelfTitleDel(int titleId)
+    {
+        #region sqlPara declare
+        //realName
+        SqlParameter sqlParaTitleId = null;
+        //usrContact
+        SqlParameter sqlParaTitleEnd = null;
+        #endregion
+
+        SqlCommand sqlCmd = null;
+
+        string strSQL = "tbl_title_delete";
+
+        sqlCmd = this.SqlCom;
+        sqlCmd.CommandText = strSQL;
+        sqlCmd.CommandType = CommandType.StoredProcedure;
+
+        #region sqlParaInit
+        DateTime st = DateTime.Now;
+
+        sqlParaTitleId = new SqlParameter("@delTitleId", titleId);
+        sqlParaTitleEnd = new SqlParameter("@delEndTime", st);
+        #endregion
+
+        #region sqlParaAdd
+        sqlCmd.Parameters.Clear();
+        sqlCmd.Parameters.Add(sqlParaTitleId);
+        sqlCmd.Parameters.Add(sqlParaTitleEnd);
+        #endregion
+
+        sqlCmd.Connection.Open();
+
+        sqlCmd.ExecuteNonQuery();
+
+        sqlCmd.Connection.Close();
+    }
+
+    public void SelfTitleUpdate(int titleId, string titleName)
+    {
+        #region sqlPara declare
+        //realName
+        SqlParameter sqlParaTitleId = null;
+        //usrContact
+        SqlParameter sqlParaTitleEnd = null;
+        //usrContact
+        SqlParameter sqlParaTitleName = null;
+        #endregion
+
+        SqlCommand sqlCmd = null;
+
+        string strSQL = "tbl_title_update";
+
+        sqlCmd = this.SqlCom;
+        sqlCmd.CommandText = strSQL;
+        sqlCmd.CommandType = CommandType.StoredProcedure;
+
+        #region sqlParaInit
+        DateTime st = DateTime.Now;
+
+        sqlParaTitleId = new SqlParameter("@delTitleId", titleId);
+        sqlParaTitleEnd = new SqlParameter("@delEndTime", st);
+        sqlParaTitleName = new SqlParameter("@newTitletName", titleName);
+        #endregion
+
+        #region sqlParaAdd
+        sqlCmd.Parameters.Clear();
+        sqlCmd.Parameters.Add(sqlParaTitleId);
+        sqlCmd.Parameters.Add(sqlParaTitleEnd);
+        sqlCmd.Parameters.Add(sqlParaTitleName);
+        #endregion
+
+        sqlCmd.Connection.Open();
+
+        sqlCmd.ExecuteNonQuery();
+
+        sqlCmd.Connection.Close();
+    }
+
+    public string SelfTitleAdd(string titleName)
+    {
+        #region sqlPara declare
+        //realName
+        SqlParameter sqlParaTitleId = null;
+        //usrContact
+        SqlParameter sqlParaTitleEnd = null;
+        //usrContact
+        SqlParameter sqlParaTitleName = null;
+        #endregion
+
+        SqlCommand sqlCmd = null;
+
+        string strSQL = "tbl_title_Insert";
+
+        sqlCmd = this.SqlCom;
+        sqlCmd.CommandText = strSQL;
+        sqlCmd.CommandType = CommandType.StoredProcedure;
+
+        #region sqlParaInit
+        DateTime st = DateTime.Now;
+
+        sqlParaTitleId = new SqlParameter("@Identity", SqlDbType.BigInt);
+        sqlParaTitleEnd = new SqlParameter("@startTime", st);
+        sqlParaTitleName = new SqlParameter("@titleName", titleName);
+        #endregion
+
+        #region sqlParaAdd
+        sqlCmd.Parameters.Clear();
+        sqlCmd.Parameters.Add(sqlParaTitleId);
+        sqlCmd.Parameters.Add(sqlParaTitleEnd);
+        sqlCmd.Parameters.Add(sqlParaTitleName);
+        #endregion
+
+        #region sqlDirection
+        sqlParaTitleId.Direction = ParameterDirection.Output;
+        //sqlParaDepId.Direction = ParameterDirection.Output;
+        //sqlParaTitleId.Direction = ParameterDirection.Output;
+        //sqlParaAuthId.Direction = ParameterDirection.Output;
+        #endregion
+
+        sqlCmd.Connection.Open();
+
+        sqlCmd.ExecuteNonQuery();
+
+        sqlCmd.Connection.Close();
+
+        string depId = sqlParaTitleId.Value.ToString();
+        return depId;
     }
 }

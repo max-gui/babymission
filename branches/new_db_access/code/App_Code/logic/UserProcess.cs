@@ -85,6 +85,29 @@ public class UserProcess : SelectLogic
         //}
     }
 
+    public void usrSelfDepartTitleView()
+    {
+        MyDst = vuiDB.SelectSelfUsrDepartTitleView();
+
+        string end = DateTime.Now.ToShortDateString();
+
+        string strFilter =
+            " usrEnd > " + "'" + end + "'" +
+            " and usrTitleEnd > " + "'" + end + "'" +
+            " and usrDepEnd > " + "'" + end + "'";
+        MyDst.Tables["view_usr_department_title"].DefaultView.RowFilter = strFilter;
+    }
+
+    public void SelfUsrDepartUpdate(int usrDepId, int usrId, int depId)
+    {
+        tud.SelfUsrDepartUpdate(usrDepId, usrId, depId);
+    }
+
+    public void SelfUsrTitleUpdate(int usrTitleId, int usrId, int titleId)
+    {
+        tut.SelfUsrTitleUpdate(usrTitleId, usrId, titleId);
+    }
+
     public void usrDepartTitleView()
     {
         MyDst = vuiDB.SelectUsrDepartTitleView(MyDst);

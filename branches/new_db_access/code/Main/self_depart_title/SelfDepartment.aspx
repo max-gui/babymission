@@ -7,14 +7,10 @@
 <asp:GridView ID="SelfDepartGV" runat="server" AllowPaging="True" 
     AllowSorting="True" BackColor="White" BorderColor="#336666" 
     BorderStyle="Double" BorderWidth="3px" Caption="部门信息" CellPadding="4" 
-    GridLines="Horizontal" HorizontalAlign="Center" AutoGenerateColumns="False" 
-        onrowcancelingedit="SelfDepartGV_RowCancelingEdit" 
-        onrowcommand="SelfDepartGV_RowCommand" 
-        onrowdatabound="SelfDepartGV_RowDataBound" 
-        onrowdeleting="SelfDepartGV_RowDeleting" onrowediting="SelfDepartGV_RowEditing" 
-        onrowupdating="SelfDepartGV_RowUpdating" onsorting="SelfDepartGV_Sorting" 
+    GridLines="Horizontal" HorizontalAlign="Center" AutoGenerateColumns="False" onsorting="SelfDepartGV_Sorting" 
         style="margin-left: 0px" 
-        onselectedindexchanging="SelfDepartGV_SelectedIndexChanging">
+        onselectedindexchanging="SelfDepartGV_SelectedIndexChanging" 
+        onpageindexchanging="SelfDepartGV_PageIndexChanging">
     <Columns>
         <asp:CommandField ShowSelectButton="True" />
         <asp:BoundField DataField="departmentName" HeaderText="部门名称" />
