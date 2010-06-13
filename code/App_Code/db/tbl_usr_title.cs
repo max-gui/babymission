@@ -19,6 +19,51 @@ public class tbl_usr_title : DataBase
 		//
 	}
 
+    public void SelfUsrTitleUpdate(int usrTitleId, int usrId, int titleId)
+    {
+        #region sqlPara declare
+        //usrTitleId
+        SqlParameter sqlParaUsrTitleId = null;
+        //endTime
+        SqlParameter sqlParaEnd = null;
+        //usrId
+        SqlParameter sqlParaUsrId = null;
+        //titleId
+        SqlParameter sqlParaTitleId = null;
+        #endregion
+
+        SqlCommand sqlCmd = null;
+
+        string strSQL = "tbl_usr_title_update";
+
+        sqlCmd = this.SqlCom;
+        sqlCmd.CommandText = strSQL;
+        sqlCmd.CommandType = CommandType.StoredProcedure;
+
+        #region sqlParaInit
+        DateTime st = DateTime.Now;
+
+        sqlParaUsrTitleId = new SqlParameter("@delUsrTitleId", usrTitleId);
+        sqlParaEnd = new SqlParameter("@delEndTime", st);
+        sqlParaUsrId = new SqlParameter("@newUsrId", usrId);
+        sqlParaTitleId = new SqlParameter("@newTitleId", titleId);
+        #endregion
+
+        #region sqlParaAdd
+        sqlCmd.Parameters.Clear();
+        sqlCmd.Parameters.Add(sqlParaUsrTitleId);
+        sqlCmd.Parameters.Add(sqlParaEnd);
+        sqlCmd.Parameters.Add(sqlParaUsrId);
+        sqlCmd.Parameters.Add(sqlParaTitleId);
+        #endregion
+
+        sqlCmd.Connection.Open();
+
+        sqlCmd.ExecuteNonQuery();
+
+        sqlCmd.Connection.Close();
+    }
+
     public void SelectAdd(string usrName, string titleName)
     {
         SqlParameter sqlParaUNM = null;

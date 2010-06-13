@@ -133,7 +133,6 @@ public class tbl_usr : DataBase
         string  usrId = sqlParaId.Value.ToString();
         return usrId;
     }
-    
     //public void SelectAdd(DataSet dataSet)
     //{
     //    SqlParameter sqlParaRN = null;
