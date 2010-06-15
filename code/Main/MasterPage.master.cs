@@ -17,10 +17,10 @@ public partial class MasterPage : System.Web.UI.MasterPage
         switch (s)
         { 
             case ("departEdit"):
-                Response.Redirect("~/Main/self_depart_title/SelfDepartment.aspx");
+                Response.Redirect("~/Main/self_depart_title/selfDep/SelfDepartment.aspx");
                 break;
             case ("titleEdit"):
-                Response.Redirect("~/Main/self_depart_title/SelfTitle.aspx");
+                Response.Redirect("~/Main/self_depart_title/selfTitle/SelfTitle.aspx");
                 break;
             case ("usrAuth"):
                 Response.Redirect("~/Main/usrManagerment/usrAuthManagerment.aspx");
@@ -28,6 +28,9 @@ public partial class MasterPage : System.Web.UI.MasterPage
             case ("usrDepartTitle"):
                 Response.Redirect("~/Main/usrManagerment/usrDepartTitleManagerment.aspx");
                 break;
+            case ("usrDel"):
+                Response.Redirect("~/Main/usrManagerment/usrInfoDel.aspx");
+                break;                
         }
     }
 }

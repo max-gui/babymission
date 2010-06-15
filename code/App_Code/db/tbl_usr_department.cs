@@ -24,8 +24,8 @@ public class tbl_usr_department : DataBase
         #region sqlPara declare
         //usrDepId
         SqlParameter sqlParaUsrDepId = null;
-        //endTime
-        SqlParameter sqlParaEnd = null;
+        ////endTime
+        //SqlParameter sqlParaEnd = null;
         //usrId
         SqlParameter sqlParaUsrId = null;
         //depId
@@ -41,10 +41,10 @@ public class tbl_usr_department : DataBase
         sqlCmd.CommandType = CommandType.StoredProcedure;
 
         #region sqlParaInit
-        DateTime st = DateTime.Now;
+        //DateTime st = DateTime.Now;
 
-        sqlParaUsrDepId = new SqlParameter("@delUsrDepId", usrDepId);
-        sqlParaEnd = new SqlParameter("@delEndTime", st);
+        sqlParaUsrDepId = new SqlParameter("@usrDepId", usrDepId);
+        //sqlParaEnd = new SqlParameter("@delEndTime", st);
         sqlParaUsrId = new SqlParameter("@newUsrId", usrId);
         sqlParaDepId = new SqlParameter("@newDepId", depId);
         #endregion
@@ -52,7 +52,7 @@ public class tbl_usr_department : DataBase
         #region sqlParaAdd
         sqlCmd.Parameters.Clear();
         sqlCmd.Parameters.Add(sqlParaUsrDepId);
-        sqlCmd.Parameters.Add(sqlParaEnd);
+        //sqlCmd.Parameters.Add(sqlParaEnd);
         sqlCmd.Parameters.Add(sqlParaUsrId);
         sqlCmd.Parameters.Add(sqlParaDepId);
         #endregion

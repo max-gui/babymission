@@ -133,11 +133,11 @@ public class tbl_department :DataBase
     public void SelfDepUpdate(int depId , string depName)
     {
         #region sqlPara declare
-        //realName
+        //depId
         SqlParameter sqlParaDepId = null;
-        //usrContact
-        SqlParameter sqlParaDepEnd = null;
-        //usrContact
+        ////depEnd
+        //SqlParameter sqlParaDepEnd = null;
+        //depName
         SqlParameter sqlParaDepName = null;
         #endregion
 
@@ -150,17 +150,17 @@ public class tbl_department :DataBase
         sqlCmd.CommandType = CommandType.StoredProcedure;
 
         #region sqlParaInit
-        DateTime st = DateTime.Now;
+        //DateTime st = DateTime.Now;
 
-        sqlParaDepId = new SqlParameter("@delDepartmentId", depId);
-        sqlParaDepEnd = new SqlParameter("@delEndTime", st);
+        sqlParaDepId = new SqlParameter("@departmentId", depId);
+        //sqlParaDepEnd = new SqlParameter("@delEndTime", st);
         sqlParaDepName = new SqlParameter("@newDepartmentName", depName);
         #endregion
 
         #region sqlParaAdd
         sqlCmd.Parameters.Clear();
         sqlCmd.Parameters.Add(sqlParaDepId);
-        sqlCmd.Parameters.Add(sqlParaDepEnd);
+        //sqlCmd.Parameters.Add(sqlParaDepEnd);
         sqlCmd.Parameters.Add(sqlParaDepName);
         #endregion
 

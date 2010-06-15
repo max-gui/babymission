@@ -139,11 +139,11 @@ public class tbl_title : DataBase
     public void SelfTitleUpdate(int titleId, string titleName)
     {
         #region sqlPara declare
-        //realName
+        //titleId
         SqlParameter sqlParaTitleId = null;
-        //usrContact
-        SqlParameter sqlParaTitleEnd = null;
-        //usrContact
+        ////titleEnd
+        //SqlParameter sqlParaTitleEnd = null;
+        //titleName
         SqlParameter sqlParaTitleName = null;
         #endregion
 
@@ -156,17 +156,17 @@ public class tbl_title : DataBase
         sqlCmd.CommandType = CommandType.StoredProcedure;
 
         #region sqlParaInit
-        DateTime st = DateTime.Now;
+        //DateTime st = DateTime.Now;
 
-        sqlParaTitleId = new SqlParameter("@delTitleId", titleId);
-        sqlParaTitleEnd = new SqlParameter("@delEndTime", st);
+        sqlParaTitleId = new SqlParameter("@titleId", titleId);
+        //sqlParaTitleEnd = new SqlParameter("@delEndTime", st);
         sqlParaTitleName = new SqlParameter("@newTitletName", titleName);
         #endregion
 
         #region sqlParaAdd
         sqlCmd.Parameters.Clear();
         sqlCmd.Parameters.Add(sqlParaTitleId);
-        sqlCmd.Parameters.Add(sqlParaTitleEnd);
+        //sqlCmd.Parameters.Add(sqlParaTitleEnd);
         sqlCmd.Parameters.Add(sqlParaTitleName);
         #endregion
 
