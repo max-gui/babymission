@@ -9,11 +9,6 @@ using System.Data;
 
 public partial class Main_usrManagerment_usrDepartTitleManagerment : System.Web.UI.Page
 {
-    string strForever = "9999-12-31";
-
-    string sdNullId = "无";
-    string stNullId = "无";
-
     protected void Page_Load(object sender, EventArgs e)
     {
         if (!(null == Session["totleAuthority"]))
@@ -44,7 +39,7 @@ public partial class Main_usrManagerment_usrDepartTitleManagerment : System.Web.
             SelfDepartProcess sdView = new SelfDepartProcess(sdDst);
             SelfTitleProcess stView = new SelfTitleProcess(stDst);
 
-            upView.usrSelfDepartTitleView();
+            upView.UsrSelfDepartTitleView();
             sdView.RealDepView();
             stView.RealTitleView();
             DataTable upTable = upView.MyDst.Tables["view_usr_department_title"];
@@ -198,7 +193,7 @@ public partial class Main_usrManagerment_usrDepartTitleManagerment : System.Web.
             up.SelfUsrTitleUpdate(usrTitleId, usrId, titleId);
         }
         
-        up.usrSelfDepartTitleView();
+        up.UsrSelfDepartTitleView();
         DataTable upTable = up.MyDst.Tables["view_usr_department_title"];
         
         Session["upDtSources"] = upTable;

@@ -85,7 +85,7 @@ public class UserProcess : SelectLogic
         //}
     }
 
-    public void usrSelfDepartTitleView()
+    public void UsrSelfDepartTitleView()
     {
         MyDst = vuiDB.SelectSelfUsrDepartTitleView();
 
@@ -161,6 +161,11 @@ public class UserProcess : SelectLogic
     {
         tut.SelectDel(usrName, TitleOldNm, TitleSt);
         tut.SelectAdd(usrName, titleName);
+    }
+
+    public void usrDel(string usrId)
+    {
+        tu.SelectDel(usrId);
     }
 
     public override void Del()

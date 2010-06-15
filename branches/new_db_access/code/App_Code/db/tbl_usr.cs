@@ -133,6 +133,43 @@ public class tbl_usr : DataBase
         string  usrId = sqlParaId.Value.ToString();
         return usrId;
     }
+
+    public void SelectDel(string usrId)
+    {
+        #region sqlPara declare
+        //usrId
+        SqlParameter sqlParaUsrId = null;
+        //endTIme
+        SqlParameter sqlParaEnd = null;
+        #endregion
+
+        SqlCommand sqlCmd = null;
+
+        string strSQL = "tbl_usr_delete";
+
+        sqlCmd = this.SqlCom;
+        sqlCmd.CommandText = strSQL;
+        sqlCmd.CommandType = CommandType.StoredProcedure;
+
+        #region sqlParaInit
+        DateTime end = DateTime.Now;
+
+        sqlParaUsrId = new SqlParameter("@delUsrId", usrId);
+        sqlParaEnd = new SqlParameter("@delEndTime", end);
+        #endregion
+
+        #region sqlParaAdd
+        sqlCmd.Parameters.Clear();
+        sqlCmd.Parameters.Add(sqlParaUsrId);
+        sqlCmd.Parameters.Add(sqlParaEnd);
+        #endregion
+
+        sqlCmd.Connection.Open();
+
+        sqlCmd.ExecuteNonQuery();
+
+        sqlCmd.Connection.Close();
+    }
     //public void SelectAdd(DataSet dataSet)
     //{
     //    SqlParameter sqlParaRN = null;

@@ -57,12 +57,13 @@ public class tbl_authority : DataBase
         string strSQL =
             "SELECT " +
             "* " +
-            "FROM tbl_authority " +
-            "WHERE " +
-            "authorityName != '无' and authorityName != 'superMan'";
+            "FROM tbl_authority ";
+            //"WHERE " +
+            //"authorityName != '无' and authorityName != 'superMan'";
 
         sqlCmd = this.SqlCom;
         sqlCmd.CommandText = strSQL;
+        sqlCmd.CommandType = CommandType.Text;
 
         //sqlParaName = new SqlParameter("@usrName", SqlDbType.Char, 10);
         //sqlParaName.Value = dataSet.Tables["view_usr_info"].Rows[0]["usrName"].ToString().Trim();
