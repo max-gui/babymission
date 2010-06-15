@@ -9,11 +9,6 @@ using System.Data;
 
 public partial class Main_usrManagerment_usrDepartTitleManagerment : System.Web.UI.Page
 {
-    string strForever = "9999-12-31";
-
-    string sdNullId = "无";
-    string stNullId = "无";
-
     protected void Page_Load(object sender, EventArgs e)
     {
         if (!(null == Session["totleAuthority"]))
@@ -44,10 +39,10 @@ public partial class Main_usrManagerment_usrDepartTitleManagerment : System.Web.
             SelfDepartProcess sdView = new SelfDepartProcess(sdDst);
             SelfTitleProcess stView = new SelfTitleProcess(stDst);
 
-            upView.usrDepartTitleView();
+            upView.UsrSelfDepartTitleView();
             sdView.RealDepView();
             stView.RealTitleView();
-            DataTable upTable = upView.MyDst.Tables["view_usr_departTitle"];
+            DataTable upTable = upView.MyDst.Tables["view_usr_department_title"];
             DataTable sdTable = sdView.MyDst.Tables["tbl_department"];
             DataTable stTable = stView.MyDst.Tables["tbl_title"];
 
@@ -82,10 +77,7 @@ public partial class Main_usrManagerment_usrDepartTitleManagerment : System.Web.
             usrGV.DataBind();
         }
     }
-    protected void usrGV_RowUpdating(object sender, GridViewUpdateEventArgs e)
-    {
-
-    }
+    
     protected void usrGV_Sorting(object sender, GridViewSortEventArgs e)
     {
 
@@ -103,8 +95,11 @@ public partial class Main_usrManagerment_usrDepartTitleManagerment : System.Web.
             ddl = (usrGV.Rows[index].FindControl("ddlTitle") as DropDownList);
             ddl.Enabled = true;
 
-            Button btnOk = (usrGV.Rows[index].FindControl("btnOk") as Button);
-            btnOk.Visible = true;            
+            Button btn = null;
+            btn = (usrGV.Rows[index].FindControl("btnOk") as Button);
+            btn.Visible = true;
+            btn = (usrGV.Rows[index].FindControl("btnCancle") as Button);
+            btn.Visible = true;            
         }
         else
         {
@@ -116,32 +111,31 @@ public partial class Main_usrManagerment_usrDepartTitleManagerment : System.Web.
         if (e.Row.RowType == DataControlRowType.DataRow)
         {
             //
-            DataTable dt_udt = Session["upDtSources"] as DataTable;
+            DataTable dt_udt = (Session["upDtSources"] as DataTable).DefaultView.ToTable();
             DataTable dtD = Session["sdDtSources"] as DataTable;
             DataTable dtT = Session["stDtSources"] as DataTable;
 
             int index = e.Row.DataItemIndex;
-            string depName = dt_udt.Rows[index]["departmentName"].ToString();
-            DateTime depTime = DateTime.Parse(dt_udt.Rows[index]["depEnd"].ToString());
-            string titleName = dt_udt.Rows[index]["titleName"].ToString();
-            DateTime titleTime = DateTime.Parse(dt_udt.Rows[index]["titleEnd"].ToString());
+            string depId = dt_udt.Rows[index]["departmentId"].ToString();
+            string titleId = dt_udt.Rows[index]["titleId"].ToString();
+            
             DropDownList ddl = (DropDownList)e.Row.FindControl("ddlDep");
             if (ddl != null)
             {
                 ddl.DataSource = dtD;
                 ddl.DataTextField = "departmentName".ToString();
-                ddl.DataValueField = "departmentName".ToString();
+                ddl.DataValueField = "departmentId".ToString();
                 ddl.DataBind();
                 //ddl.Items[0].
-                if (depTime.CompareTo(DateTime.Now) > 0)
-                {
-                    ddl.SelectedValue = depName;
-                }
-                else
-                {
-                    ddl.SelectedValue = sdNullId;
-                }
-                
+                //if (depTime.CompareTo(DateTime.Now) > 0)
+                //{
+                //    ddl.SelectedValue = depName;
+                //}
+                //else
+                //{
+                //    ddl.SelectedValue = sdNullId;
+                //}
+                ddl.SelectedValue = depId;
             }
 
             ddl = (DropDownList)e.Row.FindControl("ddlTitle");
@@ -149,42 +143,11 @@ public partial class Main_usrManagerment_usrDepartTitleManagerment : System.Web.
             {
                 ddl.DataSource = dtT;
                 ddl.DataTextField = "titleName".ToString();
-                ddl.DataValueField = "titleName".ToString();
+                ddl.DataValueField = "titleId".ToString();
                 ddl.DataBind();
 
-                if (titleTime.CompareTo(DateTime.Now) > 0)
-                {
-                    ddl.SelectedValue = titleName; 
-                }
-                else
-                {
-                    ddl.SelectedValue = stNullId;
-                }
+                ddl.SelectedValue = titleId;
             }
-
-
-            //{
-            //    if (bool.Parse(drv["isDel"].ToString().Trim()))
-            //    {
-            //        rbl.Items.FindByValue("del").Selected = true;
-            //        //rbl.Items.FindByValue("del").Enabled = false;
-            //    }
-            //    else
-            //    {
-            //        rbl.Items.FindByValue("unDel").Selected = true;
-            //        //rbl.Items.FindByValue("unDel").Enabled = false;
-            //    }
-            //    rbl.Items.FindByValue("del").Enabled = false;
-            //    rbl.Items.FindByValue("unDel").Enabled = false;
-            //}
-
-            //TextBox ttb = (TextBox)e.Row.FindControl("depNameTxt");
-            //if (ttb != null)
-            //{
-            //    ttb.Text = drv["departmentName"].ToString().Trim();
-            //    ttb.Enabled = false;
-            //}
-
         }
     }
     protected void btnOk_Click(object sender, EventArgs e)
@@ -193,31 +156,76 @@ public partial class Main_usrManagerment_usrDepartTitleManagerment : System.Web.
 
         DropDownList ddl = null;
         ddl = (usrGV.Rows[index].FindControl("ddlDep") as DropDownList);
-        string depName = ddl.SelectedValue.ToString();
+        string strDepId = ddl.SelectedValue.ToString();
         ddl.Enabled = false;
         ddl = (usrGV.Rows[index].FindControl("ddlTitle") as DropDownList);
-        string titleName = ddl.SelectedValue.ToString();
+        string strTitleId = ddl.SelectedValue.ToString();
         ddl.Enabled = false;
+
+        Button btn = null;
+        btn = (usrGV.Rows[index].FindControl("btnCancle") as Button);
+        btn.Visible = false;
+        btn = sender as Button;
+        btn.Visible = false;
 
         UserProcess up = Session["UserProcess"] as UserProcess;
 
-        DataTable dt = Session["upDtSources"] as DataTable;
-        string usrName = dt.Rows[index]["usrName"].ToString();
-        DateTime depSt = DateTime.Parse(dt.Rows[index]["usrDepSt"].ToString());
-        DateTime TitleSt = DateTime.Parse(dt.Rows[index]["usrTitleSt"].ToString());
-        string depOldNm = dt.Rows[index]["departmentName"].ToString();
-        string TitleOldNm = dt.Rows[index]["titleName"].ToString();
+        DataTable dt = (Session["upDtSources"] as DataTable).DefaultView.ToTable();
 
-        up.usrDepModify(usrName , depName, depSt , depOldNm );
-        up.usrTitleModify(usrName, titleName, TitleSt , TitleOldNm);
+        int itemIndex = usrGV.Rows[index].DataItemIndex;
+        string oldDepId = dt.Rows[itemIndex]["departmentId"].ToString();
+        string oldTitleId = dt.Rows[itemIndex]["titleId"].ToString();
 
-        up.usrDepartTitleView();
-        DataTable upTable = up.MyDst.Tables["view_usr_departTitle"];
+        if (!strDepId.Equals(oldDepId))
+        {
+            int usrDepId = int.Parse(dt.Rows[index]["usrDepId"].ToString());
+            int usrId = int.Parse(dt.Rows[index]["usrId"].ToString());
+            int depId = int.Parse(strDepId);
+
+            up.SelfUsrDepartUpdate(usrDepId, usrId, depId);
+        }
+        if (!strTitleId.Equals(oldTitleId))
+        {
+            int usrTitleId = int.Parse(dt.Rows[index]["usrTitleId"].ToString());
+            int usrId = int.Parse(dt.Rows[index]["usrId"].ToString());
+            int titleId = int.Parse(strTitleId);
+
+            up.SelfUsrTitleUpdate(usrTitleId, usrId, titleId);
+        }
+        
+        up.UsrSelfDepartTitleView();
+        DataTable upTable = up.MyDst.Tables["view_usr_department_title"];
         
         Session["upDtSources"] = upTable;
-        
-        Button btnOk = sender as Button;
-        btnOk.Visible = false;
+        usrGV.DataSource = Session["upDtSources"];
         usrGV.SelectedIndex = -1;
+        usrGV.DataBind();
+    }
+    protected void usrGV_PageIndexChanging(object sender, GridViewPageEventArgs e)
+    {
+        usrGV.PageIndex = e.NewPageIndex;
+
+        usrGV.DataSource = Session["upDtSources"];//["dtSources"] as DataTable;  
+        usrGV.DataBind();
+    }
+    protected void btnCancle_Click(object sender, EventArgs e)
+    {
+        int index = usrGV.SelectedIndex;
+        
+        DropDownList ddl = null;
+        ddl = (usrGV.Rows[index].FindControl("ddlDep") as DropDownList);
+        ddl.Enabled = false;
+        ddl = (usrGV.Rows[index].FindControl("ddlTitle") as DropDownList);
+        ddl.Enabled = false;
+
+        Button btn = null;
+        btn = (usrGV.Rows[index].FindControl("btnOk") as Button);
+        btn.Visible = false;
+        btn = sender as Button;
+        btn.Visible = false;
+
+        usrGV.DataSource = Session["upDtSources"];
+        usrGV.SelectedIndex = -1;
+        usrGV.DataBind();
     }
 }

@@ -67,6 +67,11 @@ public class AuthProcess : SelectLogic
     public override void View()
     {
         MyDst = ta.SelectAuthorityView();
+        
+        string strFilter =
+            " authorityName <> '无' " +
+            " and authorityName <> 'superman' ";
+        MyDst.Tables["tbl_authority"].DefaultView.RowFilter = strFilter;
     }
 
     public override void Search()

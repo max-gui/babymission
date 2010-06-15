@@ -35,6 +35,21 @@ public class SelfTitleProcess : SelectLogic
         ttDB.SelectSelfTitleatCommit(MyDst);
     }
 
+    public void SelfTitleDel(int titleId)
+    {
+        ttDB.SelfTitleDel(titleId);
+    }
+
+    public void SelfTitleUpdate(int titleId, string titleName)
+    {
+        ttDB.SelfTitleUpdate(titleId, titleName);
+    }
+
+    public void SelfTitleAdd(string titleName)
+    {
+        StrRtn = ttDB.SelfTitleAdd(titleName);
+    }
+    
     public override void Add()
     {
         //TAB_DATA_USERDatabase db = (TAB_DATA_USERDatabase)InitDatabaseProc("Database", "DataBase.TAB_DATA_USERDatabase");
@@ -83,7 +98,7 @@ public class SelfTitleProcess : SelectLogic
         ////StrRtn = db.selectNum().ToString();
     }
 
-    public void SelTitleView()
+    public void SelfTitleView()
     {
         MyDst = ttDB.SelectSelfTitleatView(MyDst);
 

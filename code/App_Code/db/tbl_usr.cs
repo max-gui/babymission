@@ -55,7 +55,7 @@ public class tbl_usr : DataBase
         return selId;
     }
 
-    public long SelectAdd(DataSet dataSet)
+    public string SelectAdd(DataSet dataSet)
     {
         #region sqlPara declare
         //realName
@@ -70,12 +70,12 @@ public class tbl_usr : DataBase
         SqlParameter sqlParaSt = null;
         //newUsrId
         SqlParameter sqlParaId = null;
-        //
-        SqlParameter sqlParaDepId = null;
-        //
-        SqlParameter sqlParaTitleId = null;
-        //
-        SqlParameter sqlParaAuthId = null;
+        ////
+        //SqlParameter sqlParaDepId = null;
+        ////
+        //SqlParameter sqlParaTitleId = null;
+        ////
+        //SqlParameter sqlParaAuthId = null;
         #endregion
 
         SqlCommand sqlCmd = null;
@@ -99,9 +99,9 @@ public class tbl_usr : DataBase
         sqlParaPW = new SqlParameter("@usrPassWord", pw);
         sqlParaSt = new SqlParameter("@startTime", st);
         sqlParaId = new SqlParameter("@Identity", SqlDbType.BigInt, 0, "usrId");
-        sqlParaDepId = new SqlParameter("@departmentId", SqlDbType.BigInt);
-        sqlParaTitleId = new SqlParameter("@titleId", SqlDbType.BigInt);
-        sqlParaAuthId = new SqlParameter("@authorityId", SqlDbType.BigInt);
+        //sqlParaDepId = new SqlParameter("@departmentId", SqlDbType.BigInt);
+        //sqlParaTitleId = new SqlParameter("@titleId", SqlDbType.BigInt);
+        //sqlParaAuthId = new SqlParameter("@authorityId", SqlDbType.BigInt);
         #endregion
 
         #region sqlParaAdd
@@ -112,16 +112,16 @@ public class tbl_usr : DataBase
         sqlCmd.Parameters.Add(sqlParaPW);
         sqlCmd.Parameters.Add(sqlParaSt);
         sqlCmd.Parameters.Add(sqlParaId);
-        sqlCmd.Parameters.Add(sqlParaDepId);
-        sqlCmd.Parameters.Add(sqlParaTitleId);
-        sqlCmd.Parameters.Add(sqlParaAuthId);
+        //sqlCmd.Parameters.Add(sqlParaDepId);
+        //sqlCmd.Parameters.Add(sqlParaTitleId);
+        //sqlCmd.Parameters.Add(sqlParaAuthId);
         #endregion
 
         #region sqlDirection
         sqlParaId.Direction = ParameterDirection.Output;
-        sqlParaDepId.Direction = ParameterDirection.Output;
-        sqlParaTitleId.Direction = ParameterDirection.Output;
-        sqlParaAuthId.Direction = ParameterDirection.Output;
+        //sqlParaDepId.Direction = ParameterDirection.Output;
+        //sqlParaTitleId.Direction = ParameterDirection.Output;
+        //sqlParaAuthId.Direction = ParameterDirection.Output;
         #endregion
 
         sqlCmd.Connection.Open();
@@ -130,10 +130,56 @@ public class tbl_usr : DataBase
 
         sqlCmd.Connection.Close();
 
-        long usrId = long.Parse(sqlParaId.Value.ToString());
+        string  usrId = sqlParaId.Value.ToString();
         return usrId;
     }
     
+    //public void SelectAdd(DataSet dataSet)
+    //{
+    //    SqlParameter sqlParaRN = null;
+    //    //SqlParameter sqlParaTA = null;
+    //    SqlParameter sqlParaUC = null;
+    //    SqlParameter sqlParaUN = null;
+    //    SqlParameter sqlParaPW = null;
+    //    SqlParameter sqlParaSt = null;
+    //    SqlCommand sqlCmd = null;
+
+    public void SelectDel(string usrId)
+    {
+        #region sqlPara declare
+        //usrId
+        SqlParameter sqlParaUsrId = null;
+        //endTIme
+        SqlParameter sqlParaEnd = null;
+        #endregion
+
+        SqlCommand sqlCmd = null;
+
+        string strSQL = "tbl_usr_delete";
+
+        sqlCmd = this.SqlCom;
+        sqlCmd.CommandText = strSQL;
+        sqlCmd.CommandType = CommandType.StoredProcedure;
+
+        #region sqlParaInit
+        DateTime end = DateTime.Now;
+
+        sqlParaUsrId = new SqlParameter("@delUsrId", usrId);
+        sqlParaEnd = new SqlParameter("@delEndTime", end);
+        #endregion
+
+        #region sqlParaAdd
+        sqlCmd.Parameters.Clear();
+        sqlCmd.Parameters.Add(sqlParaUsrId);
+        sqlCmd.Parameters.Add(sqlParaEnd);
+        #endregion
+
+        sqlCmd.Connection.Open();
+
+        sqlCmd.ExecuteNonQuery();
+
+        sqlCmd.Connection.Close();
+    }
     //public void SelectAdd(DataSet dataSet)
     //{
     //    SqlParameter sqlParaRN = null;

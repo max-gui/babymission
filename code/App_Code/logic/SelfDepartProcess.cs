@@ -30,9 +30,25 @@ public class SelfDepartProcess :SelectLogic
     {
     }
 
+    public void SelfDepDel(int depId)
+    {
+        tdDB.SelfDepDel(depId);
+    }
+
+    public void SelfDepUpdate(int depId , string depName)
+    {
+        tdDB.SelfDepUpdate(depId, depName);
+    }
+
+    public void SelfDepAdd(string depName)
+    {
+        StrRtn = tdDB.SelfDepAdd(depName);
+    }
+
     public void commit()
     {
         tdDB.SelectSelfDepatCommit(MyDst);
+        //Table tb = MyDst.Tables["tbl_department"] as Table;
     }
 
     public override void Add()
@@ -91,13 +107,12 @@ public class SelfDepartProcess :SelectLogic
             " and departmentName <> '无' ";
         MyDst.Tables["tbl_department"].DefaultView.RowFilter = strFilter;
 
-        DataTable depTable = MyDst.Tables["tbl_department"];
+        //DataTable depTable = MyDst.Tables["tbl_department"];
 
-        DataColumn[] keys = new DataColumn[2];
-        keys[0] = depTable.Columns["departmentName"];
-        keys[1] = depTable.Columns["endTime"];
+        //DataColumn[] keys = new DataColumn[2];
+        //keys[0] = depTable.Columns["departmentId"];
 
-        depTable.PrimaryKey = keys;
+        //depTable.PrimaryKey = keys;
         //TAB_DATA_USERDatabase db = (TAB_DATA_USERDatabase)InitDatabaseProc("Database", "DataBase.TAB_DATA_USERDatabase");
         //MyDst = db.SelectView();
         //StrRtn = db.selectNum().ToString();

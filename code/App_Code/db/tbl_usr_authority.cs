@@ -19,7 +19,7 @@ public class tbl_usr_authority : DataBase
 		//
 	}
 
-    public void SelectAdd(string usrName, int auth)
+    public void UsrAuthAdd(int usrId, int authorityId)
     {
         SqlParameter sqlParaUNM = null;
         SqlParameter sqlParaAu = null;
@@ -29,17 +29,17 @@ public class tbl_usr_authority : DataBase
         string strSQL =
             "insert into " +
             "tbl_usr_authority " +
-            "(usrName , authority , startTime) " +
-            "values(@usrName , @authority , @startTime) ";
-        //"WHERE " +
-        //"isDel = @isDel ";
+            "(usrId , authorityId , startTime) " +
+            "values(@usrId , @authorityId , @startTime) ";
 
         sqlCmd = this.SqlCom;
         sqlCmd.CommandText = strSQL;
+        sqlCmd.CommandType = CommandType.Text;
 
-        sqlParaUNM = new SqlParameter("@usrName", usrName);
-        sqlParaAu = new SqlParameter("@authority", auth);
         DateTime st = DateTime.Now;
+
+        sqlParaUNM = new SqlParameter("@usrId", usrId);
+        sqlParaAu = new SqlParameter("@authorityId", authorityId);
         sqlParaSt = new SqlParameter("@startTime", st);
 
         sqlCmd.Parameters.Clear();
@@ -47,6 +47,32 @@ public class tbl_usr_authority : DataBase
         sqlCmd.Parameters.Add(sqlParaAu);
         sqlCmd.Parameters.Add(sqlParaSt);
 
+        sqlCmd.Connection.Open();
+
+        sqlCmd.ExecuteNonQuery();
+
+        sqlCmd.Connection.Close();
+    }
+
+    public void UsrAuthDel(int usrAuhId)
+    {
+        SqlParameter sqlParaUsrAuthId = null;
+        SqlCommand sqlCmd = null;
+
+        string strSQL =
+            "delete  " +
+            "from tbl_usr_authority " +
+            "where usrAuhId = @usrAuhId";
+
+        sqlCmd = this.SqlCom;
+        sqlCmd.CommandText = strSQL;
+        sqlCmd.CommandType = CommandType.Text;
+
+        sqlParaUsrAuthId = new SqlParameter("@usrAuhId", usrAuhId);
+        
+        sqlCmd.Parameters.Clear();
+        sqlCmd.Parameters.Add(sqlParaUsrAuthId);
+        
         sqlCmd.Connection.Open();
 
         sqlCmd.ExecuteNonQuery();
@@ -63,12 +89,11 @@ public class tbl_usr_authority : DataBase
         string strSQL =
             "SELECT " +
             "* " +
-            "FROM tbl_usr_authority " +
-            "WHERE " +
-            "authority != 0 ";
+            "FROM view_usr_autority ";
 
         sqlCmd = this.SqlCom;
         sqlCmd.CommandText = strSQL;
+        sqlCmd.CommandType = CommandType.Text;
 
         //sqlParaName = new SqlParameter("@usrName", SqlDbType.Char, 10);
         //sqlParaName.Value = dataSet.Tables["view_usr_info"].Rows[0]["usrName"].ToString().Trim();
@@ -82,7 +107,7 @@ public class tbl_usr_authority : DataBase
 
         //SqlCommandBuilder userScb = new SqlCommandBuilder(userDataAdapter);
         DataSet myDataSet = new DataSet();
-        userDataAdapter.Fill(myDataSet, "tbl_usr_authority");
+        userDataAdapter.Fill(myDataSet, "view_usr_autority");
 
         return myDataSet;
     }
