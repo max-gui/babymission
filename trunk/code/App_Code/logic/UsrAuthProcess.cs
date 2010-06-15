@@ -30,6 +30,16 @@ public class UsrAuthProcess : SelectLogic
     {
     }
 
+    public void UsrAuthAdd(int usrId, int authorityId)
+    {
+        tua.UsrAuthAdd(usrId, authorityId);
+    }
+
+    public void UsrAuthDel(int usrAuhId)
+    {
+        tua.UsrAuthDel(usrAuhId);
+    }
+
     public void commit()
     {
         tua.SelectUsrAuthCommit(MyDst);
@@ -67,6 +77,15 @@ public class UsrAuthProcess : SelectLogic
     public override void View()
     {
         MyDst = tua.SelectUsrAuthView(MyDst);
+        
+        string end = DateTime.Now.ToShortDateString();
+
+        string strFilter =
+            " usrEnd > " + "'" + end + "'" +
+            " and usrAuEnd > " + "'" + end + "'" +
+            " and authorityName <> '无' " +
+            " and authorityName <> 'superman' ";
+        MyDst.Tables["view_usr_autority"].DefaultView.RowFilter = strFilter;
     }
 
     public override void Search()

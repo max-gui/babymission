@@ -9,8 +9,6 @@ using System.Data;
 
 public partial class Main_usrManagerment_usrAuthManagerment : System.Web.UI.Page
 {
-    string strForever = "9999-12-31";
-
     protected void Page_Load(object sender, EventArgs e)
     {
 
@@ -33,31 +31,36 @@ public partial class Main_usrManagerment_usrAuthManagerment : System.Web.UI.Page
         {
             DataSet usrDst = new DataSet();
             DataSet usrAuDst = new DataSet();
+            DataSet auDst = new DataSet();
 
             UserProcess upView = new UserProcess(usrDst);
             UsrAuthProcess uapView = new UsrAuthProcess(usrAuDst);
+            AuthProcess auView = new AuthProcess(auDst);
 
-            upView.View();
+            upView.UsrSelfDepartTitleView();
             uapView.View();
+            auView.View();
 
-            DataTable usrTable = upView.MyDst.Tables["view_usr_info"];
-            DataTable usrAuTable = uapView.MyDst.Tables["tbl_usr_authority"];
+            DataTable usrTable = upView.MyDst.Tables["view_usr_department_title"];
+            DataTable usrAuTable = uapView.MyDst.Tables["view_usr_autority"];
+            DataTable auTable = auView.MyDst.Tables["tbl_authority"];
 
-            DataColumn[] keys = new DataColumn[2];
-            keys[0] = usrAuTable.Columns[0];
-            keys[1] = usrAuTable.Columns[1];
+            //DataColumn[] keys = new DataColumn[2];
+            //keys[0] = usrAuTable.Columns[0];
+            //keys[1] = usrAuTable.Columns[1];
 
-            usrAuTable.PrimaryKey = keys;
+            //usrAuTable.PrimaryKey = keys;
             //taskTable.DefaultView.RowFilter =
             //    "isDel = " + bool.FalseString.ToString().Trim();
             Session["UsrAuthProcess"] = uapView;
             Session["usrDtSources"] = usrTable;
             Session["usrAuDtSources"] = usrAuTable;
-            Session["selUsrId"] = -1;
+            Session["auTable"] = auTable;
+            //Session["selUsrId"] = -1;
 
-            List<string> strAuth = new List<string>();
-            strAuth.Clear();
-            Session["strAuth"] = strAuth;
+            //List<string> strAuth = new List<string>();
+            //strAuth.Clear();
+            //Session["strAuth"] = strAuth;
             //Session["error"] = bool.FalseString.ToString().Trim();
             //if (Session["PAGESIZE"] != null)
             //{
@@ -75,102 +78,195 @@ public partial class Main_usrManagerment_usrAuthManagerment : System.Web.UI.Page
             usrGV.DataBind();
 
         }
-        cblAuth.Visible = true;
     }
     protected void usrGV_Sorting(object sender, GridViewSortEventArgs e)
     {
 
     }
-    protected void usrGV_RowUpdating(object sender, GridViewUpdateEventArgs e)
-    {
-        //taskTable.DefaultView.RowFilter =
-        //    "isDel = " + bool.FalseString.ToString().Trim();
-    }
+    
     protected void usrGV_SelectedIndexChanging(object sender, GridViewSelectEventArgs e)
     {
-        int index = e.NewSelectedIndex;
-
-        int diIndex = usrGV.Rows[index].DataItemIndex;
-
-        DataTable dt = Session["usrDtSources"] as DataTable;
-        int usrId = int.Parse(dt.Rows[diIndex]["usrId"].ToString().Trim());
-
-        cblAuth_DataInit(usrId);
-
-        usrGV.Enabled = false;
-
-        btnOk.Visible = true;
-    }
-    protected void cblAuth_DataInit(int usrId)
-    {
-        DataTable dt = Session["usrAuDtSources"] as DataTable;
-        dt.DefaultView.RowFilter = "usrId = " + usrId.ToString().Trim();
-
-        Session["selUsrId"] = usrId;
-        cblAuth.DataBind();
-
-        cblAuth.Enabled = true;
-        //cblAuth.Visible = true;
-    }
-    protected void cblAuth_DataBinding(object sender, EventArgs e)
-    {
-        string strIndex = string.Empty;
-        DataView dv = (Session["usrAuDtSources"] as DataTable).DefaultView;
-        List<string> ls = Session["strAuth"] as List<string>;
-        ls.Clear();
-        
-        foreach (ListItem li in cblAuth.Items)
+        if (-1 == usrGV.SelectedIndex)
         {
-            li.Selected = false;
+            e.Cancel = false;
+            int index = e.NewSelectedIndex;
+            usrGV.SelectedIndex = index;
+            //int itemIndex = usrGV.Rows[index].DataItemIndex;
+
+            //DataTable dt = (Session["usrDtSources"] as DataTable).DefaultView.ToTable();
+            //string usrId = dt.Rows[itemIndex]["usrId"].ToString();
+            DataTable dtAu = (Session["auTable"] as DataTable).DefaultView.ToTable();
+
+            CheckBoxList cbl = usrGV.Rows[index].FindControl("cblUsrAuth") as CheckBoxList;
+            cbl.DataBind();
+            //if (cbl != null)
+            //{
+            //    cbl.DataSource = dtAu;
+            //    cbl.DataTextField = "authorityName".ToString();
+            //    cbl.DataValueField = "authorityId".ToString();
+            //    cbl.DataBind();
+            //}
+            cbl.Visible = true;
+
+            Button btn = null;
+            btn = usrGV.Rows[index].FindControl("btnOk") as Button;
+            btn.Visible = true;
+            btn = usrGV.Rows[index].FindControl("btnCancle") as Button;
+            btn.Visible = true;
+            //cblAuth_DataInit(usrId);
+
+            //usrGV.Enabled = false;
+
+            //btnOk.Visible = true;
         }
-
-        foreach (DataRowView drv in dv)
+        else
         {
-            strIndex = drv.Row["authority"].ToString().Trim();
-            cblAuth.Items.FindByValue(strIndex).Selected = true;
-            ls.Add(strIndex);
-        }        
-
+            e.Cancel = true;
+        }
     }
+    //protected void cblAuth_DataInit(int usrId)
+    //{
+    //    DataTable dt = Session["usrAuDtSources"] as DataTable;
+    //    dt.DefaultView.RowFilter = "usrId = " + usrId.ToString().Trim();
 
-    
+    //    Session["selUsrId"] = usrId;
+
+    //    cblAuth.DataSource = 
+    //    cblAuth.DataTextField = "authorityName";
+    //    cblAuth.DataValueField = "authorityId";
+    //    cblAuth.DataBind();
+
+    //    cblAuth.Enabled = true;
+    //}
+    //protected void cblAuth_DataBinding(object sender, EventArgs e)
+    //{
+    //    string strIndex = string.Empty;
+    //    DataView dv = (Session["usrAuDtSources"] as DataTable).DefaultView;
+    //    List<string> ls = Session["strAuth"] as List<string>;
+    //    ls.Clear();
+        
+    //    foreach (ListItem li in cblAuth.Items)
+    //    {
+    //        li.Selected = false;
+    //    }
+
+    //    foreach (DataRowView drv in dv)
+    //    {
+    //        strIndex = drv.Row["authority"].ToString().Trim();
+    //        cblAuth.Items.FindByValue(strIndex).Selected = true;
+    //        ls.Add(strIndex);
+    //    }        
+
+    //}
+
+    //protected void cblAuth_TextChanged(object sender, EventArgs e)
+    //{
+    //    //btnOk.Visible = true;
+    //}
+    protected void usrGV_RowDataBound(object sender, GridViewRowEventArgs e)
+    {
+        if (e.Row.RowType == DataControlRowType.DataRow)
+        {
+            DataTable dtAu = (Session["auTable"] as DataTable).DefaultView.ToTable();
+
+            CheckBoxList cbl = e.Row.FindControl("cblUsrAuth") as CheckBoxList;
+            if (cbl != null)
+            {
+                cbl.DataSource = dtAu;
+                cbl.DataTextField = "authorityName".ToString();
+                cbl.DataValueField = "authorityId".ToString();
+                cbl.DataBind();
+            }
+        }
+    }
+    protected void cblUsrAuth_DataBound(object sender, EventArgs e)
+    {
+        int index = usrGV.SelectedIndex;
+
+        int minIdex = -1;
+        if (index > minIdex)
+        {
+            int itemIndex = usrGV.Rows[index].DataItemIndex;
+
+            DataTable dt = (Session["usrDtSources"] as DataTable).DefaultView.ToTable();
+            string usrId = dt.Rows[itemIndex]["usrId"].ToString();
+
+            DataTable dtUsrAu = (Session["usrAuDtSources"] as DataTable).DefaultView.ToTable();
+            dtUsrAu.DefaultView.RowFilter = "usrId = " + usrId;
+            DataView dv = dtUsrAu.DefaultView;
+
+            CheckBoxList cbl = sender as CheckBoxList;
+
+            string authId = string.Empty;
+            foreach (DataRowView drv in dv)
+            {
+                authId = drv.Row["authorityId"].ToString();
+                cbl.Items.FindByValue(authId).Selected = true;
+            }
+        }
+    }
     protected void btnOk_Click(object sender, EventArgs e)
     {
-        DataTable dt = Session["usrAuDtSources"] as DataTable;
-        List<string> ls = Session["strAuth"] as List<string>;
+        UsrAuthProcess uap = Session["UsrAuthProcess"] as UsrAuthProcess;
 
-        int usrId = int.Parse(Session["selUsrId"].ToString().Trim());
+        int index = usrGV.SelectedIndex;
+        int itemIndex = usrGV.Rows[index].DataItemIndex;
+
+        DataTable dt = (Session["usrDtSources"] as DataTable).DefaultView.ToTable();
+        string usrId = dt.Rows[itemIndex]["usrId"].ToString();
+
+        DataTable dtUsrAu = (Session["usrAuDtSources"] as DataTable).DefaultView.ToTable();
         
-        foreach (ListItem li in cblAuth.Items)
+        DataColumn[] keys = new DataColumn[2];
+        keys[0] = dtUsrAu.Columns["usrId"];
+        keys[1] = dtUsrAu.Columns["authorityId"];
+
+        dtUsrAu.PrimaryKey = keys;
+
+        CheckBoxList cbl = usrGV.Rows[index].FindControl("cblUsrAuth") as CheckBoxList;
+
+        object[] findKeys = new object[2];
+        findKeys[0] = usrId;
+        DataRow dr = null;
+        int usrAuhId = -1;
+        string authId = string.Empty;
+        foreach (ListItem li in cbl.Items)
         {
+            findKeys[1] = li.Value;
+            dr = dtUsrAu.Rows.Find(findKeys);
             if (li.Selected)
             {
-                if (!ls.Contains(li.Value))
+                if (null == dr)
                 {
-                    DataRow dr = dt.NewRow();
-                    dr["authority"] = int.Parse(li.Value);
-                    dr["usrId"] = usrId;
-
-                    dt.Rows.Add(dr);
-                }
-                else
-                {
-                }
-            }
-            else 
-            {
-                if (ls.Contains(li.Value))
-                {
-                    DataRow dr = dt.NewRow();
+                    //add
+                    uap.UsrAuthAdd(int.Parse(usrId), int.Parse(li.Value));
+                    //DataRow dr = dt.NewRow();
                     //dr["authority"] = int.Parse(li.Value);
                     //dr["usrId"] = usrId;
 
-                    object[] findVals = new object[2];
-                    findVals[0] = usrId;
-                    findVals[1] = int.Parse(li.Value); 
-                                        
-                    dr = dt.Rows.Find(findVals);
-                    dr.Delete();
+                    //dt.Rows.Add(dr);
+                }
+                else
+                {
+                }
+            }
+            else
+            {
+                if (null != dr)
+                {
+                    //del
+                    usrAuhId = int.Parse(dr["usrAuhId"].ToString());
+                    uap.UsrAuthDel(usrAuhId);
+                    //DataRow dr = dt.NewRow();
+                    //dr["authority"] = int.Parse(li.Value);
+                    ////dr["usrId"] = usrId;
+
+                    //object[] findVals = new object[2];
+                    //findVals[0] = usrId;
+                    //findVals[1] = int.Parse(li.Value);
+
+                    //dr = dt.Rows.Find(findVals);
+                    //dr.Delete();
                 }
                 else
                 {
@@ -178,31 +274,46 @@ public partial class Main_usrManagerment_usrAuthManagerment : System.Web.UI.Page
             }
         }
 
-        UsrAuthProcess uap = Session["UsrAuthProcess"] as UsrAuthProcess;
-
-        uap.commit();
         uap.View();
-
-        DataTable usrAuTable = uap.MyDst.Tables["tbl_usr_authority"];
-
-        DataColumn[] keys = new DataColumn[2];
-        keys[0] = usrAuTable.Columns[0];
-        keys[1] = usrAuTable.Columns[1];
-
-        usrAuTable.PrimaryKey = keys;
+        
+        DataTable usrAuTable = uap.MyDst.Tables["view_usr_autority"];
 
         Session["usrAuDtSources"] = usrAuTable;
-        
+
         //ls.Clear();
+        usrGV.SelectedIndex = -1;
 
-        usrGV.Enabled = true;
+        cbl.Visible = false;
 
-        cblAuth.Enabled = false;
-
-        btnOk.Visible = false;
+        Button btn = null;
+        btn = btn = usrGV.Rows[index].FindControl("btnCancle") as Button;
+        btn.Visible = false;
+        btn = sender as Button;
+        btn.Visible = false;
     }
-    protected void cblAuth_TextChanged(object sender, EventArgs e)
+    protected void btnCancle_Click(object sender, EventArgs e)
     {
-        //btnOk.Visible = true;
+        int index = usrGV.SelectedIndex;
+
+
+        CheckBoxList cbl = usrGV.Rows[index].FindControl("cblUsrAuth") as CheckBoxList;
+        cbl.Visible = false;
+
+        Button btn = null;
+        btn = usrGV.Rows[index].FindControl("btnOk") as Button;
+        btn.Visible = false;
+        btn = usrGV.Rows[index].FindControl("btnCancle") as Button;
+        btn.Visible = false;
+
+        //usrGV.DataSource = Session["upDtSources"];
+        usrGV.SelectedIndex = -1;
+        //usrGV.DataBind();
+    }
+    protected void usrGV_PageIndexChanging(object sender, GridViewPageEventArgs e)
+    {
+        usrGV.PageIndex = e.NewPageIndex;
+
+        usrGV.DataSource = Session["usrDtSources"];//["dtSources"] as DataTable;  
+        usrGV.DataBind();
     }
 }

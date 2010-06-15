@@ -85,6 +85,29 @@ public class UserProcess : SelectLogic
         //}
     }
 
+    public void UsrSelfDepartTitleView()
+    {
+        MyDst = vuiDB.SelectSelfUsrDepartTitleView();
+
+        string end = DateTime.Now.ToShortDateString();
+
+        string strFilter =
+            " usrEnd > " + "'" + end + "'" +
+            " and usrTitleEnd > " + "'" + end + "'" +
+            " and usrDepEnd > " + "'" + end + "'";
+        MyDst.Tables["view_usr_department_title"].DefaultView.RowFilter = strFilter;
+    }
+
+    public void SelfUsrDepartUpdate(int usrDepId, int usrId, int depId)
+    {
+        tud.SelfUsrDepartUpdate(usrDepId, usrId, depId);
+    }
+
+    public void SelfUsrTitleUpdate(int usrTitleId, int usrId, int titleId)
+    {
+        tut.SelfUsrTitleUpdate(usrTitleId, usrId, titleId);
+    }
+
     public void usrDepartTitleView()
     {
         MyDst = vuiDB.SelectUsrDepartTitleView(MyDst);
@@ -120,9 +143,9 @@ public class UserProcess : SelectLogic
         //int authNull = 0;
         //string usrName = MyDst.Tables["addTable"].Rows[0]["usrName"].ToString().Trim();
 
-        long usrId = tu.SelectAdd(MyDst);
+        string usrId = tu.SelectAdd(MyDst);
 
-        StrRtn = usrId.ToString().Trim();
+        StrRtn = usrId;
         //tud.SelectAdd(usrId, strNull);
         //tut.SelectAdd(usrId, strNull);
         //tua.SelectAdd(usrId, authNull);
@@ -138,6 +161,11 @@ public class UserProcess : SelectLogic
     {
         tut.SelectDel(usrName, TitleOldNm, TitleSt);
         tut.SelectAdd(usrName, titleName);
+    }
+
+    public void usrDel(string usrId)
+    {
+        tu.SelectDel(usrId);
     }
 
     public override void Del()

@@ -35,8 +35,8 @@ public partial class Main_usrManagerment_usrInfoDel : System.Web.UI.Page
             DataSet upDst = new DataSet();
             UserProcess upView = new UserProcess(upDst);
 
-            upView.View();
-            DataTable upTable = upView.MyDst.Tables["view_usr_departTitle"];
+            upView.UsrSelfDepartTitleView();
+            DataTable upTable = upView.MyDst.Tables["view_usr_department_title"];
             
             Session["UserProcess"] = upView;
             Session["upDtSources"] = upTable;
@@ -57,54 +57,69 @@ public partial class Main_usrManagerment_usrInfoDel : System.Web.UI.Page
     }
     protected void  usrGV_RowDeleting(object sender, GridViewDeleteEventArgs e)
     {
-        int tbIndex = usrGV.Rows[e.RowIndex].DataItemIndex;
+        usrGV.SelectedIndex = e.RowIndex;
+        usrGV.Enabled = false;
 
-        DataTable dt = (DataTable)Session["dtSources"];
-        int usrId = int.Parse(dt.Rows[tbIndex]["usrId"].ToString().Trim());
-        //        if (usrGV.SelectedIndex == -1)
-        //        {
-        //            e.Cancel = false;
-        //            int index = e.NewSelectedIndex;
-        //            int tbIndex = usrGV.Rows[index].DataItemIndex;
-
-        //            DataTable dt = (DataTable)Session["dtSources"];
-        //            int usrId = int.Parse(dt.Rows[tbIndex]["usrId"].ToString().Trim());
-
-
-        //            Session["error"] = bool.FalseString.ToString().Trim();
-        //            dt.DefaultView[row.DataItemIndex].Row["departmentName"] = strTxt;
-        //            SelfDepartGV.EditIndex = -1;
-        //            SelfDepartGV.Columns[0].Visible = true;
-        //            btnOk.Enabled = true;
-        //            }
-
-        //            SelfDepartGV.DataSource = Session["dtSources"] as DataTable;
-        //            SelfDepartGV.DataBind();
-
-
-
-
-
-        //            Button btnOk = (usrGV.Rows[index].FindControl("btnDel") as Button);
-        //            btnOk.Visible = true;
-        //        }
-        //        else
-        //        {
-        //            e.Cancel = true;
-
-
-        //}
+        Button btn = null;
+        btn = btnOk;
+        btn.Visible = true;
+        btn = btnCancel;
+        btn.Visible = true;
     }
     protected void usrGV_Sorting(object sender, GridViewSortEventArgs e)
     {
 
     }
-    protected void usrGV_RowDataBound(object sender, GridViewRowEventArgs e)
+
+    protected void  btnOk_Click(object sender, EventArgs e)
+    {
+        int index = usrGV.SelectedIndex;
+        int itemIdex = usrGV.Rows[index].DataItemIndex;
+
+        DataTable dt = (Session["upDtSources"] as DataTable).DefaultView.ToTable();
+        string usrId = dt.Rows[itemIdex]["usrId"].ToString();
+
+        UserProcess up = Session["UserProcess"] as UserProcess;
+
+        up.usrDel(usrId);
+
+        up.UsrSelfDepartTitleView();
+        DataTable upTable = up.MyDst.Tables["view_usr_department_title"];
+        Session["upDtSources"] = upTable;
+
+        usrGV.DataSource = Session["upDtSources"];
+        usrGV.DataBind();
+
+        Button btn = sender as Button;
+        btn.Visible = false;
+        btn = btnCancel;
+        btn.Visible = false;
+
+        usrGV.SelectedIndex = -1;
+        usrGV.Enabled = true;
+    }
+
+    protected void usrGV_PageIndexChanging(object sender, GridViewPageEventArgs e)
+    {
+        usrGV.PageIndex = e.NewPageIndex;
+
+        usrGV.DataSource = Session["upDtSources"];//["dtSources"] as DataTable;  
+        usrGV.DataBind();
+    }
+    protected void usrGV_SelectedIndexChanged(object sender, EventArgs e)
     {
 
     }
-    protected void  btnOk_Click(object sender, EventArgs e)
+    
+    protected void btnCancel_Click(object sender, EventArgs e)
     {
+        Button btn = null;
+        btn = btnOk;
+        btn.Visible = false;
+        btn = sender as Button;
+        btn.Visible = false;
 
+        usrGV.SelectedIndex = -1;
+        usrGV.Enabled = true;
     }
 }

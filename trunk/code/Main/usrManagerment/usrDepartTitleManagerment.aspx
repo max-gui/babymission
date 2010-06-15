@@ -6,12 +6,14 @@
     </p>
         <asp:GridView ID="usrGV" runat="server" AllowPaging="True" 
             AllowSorting="True" AutoGenerateColumns="False" 
-            HorizontalAlign="Center" onrowupdating="usrGV_RowUpdating" 
+            HorizontalAlign="Center" 
             onsorting="usrGV_Sorting" onrowdatabound="usrGV_RowDataBound" 
-        onselectedindexchanging="usrGV_SelectedIndexChanging">
+        onselectedindexchanging="usrGV_SelectedIndexChanging" 
+        onpageindexchanging="usrGV_PageIndexChanging">
             <Columns>
                 <asp:CommandField SelectText="修改" ShowSelectButton="True" />
                 <asp:BoundField HeaderText="员工名字" DataField="realName" />
+                <asp:BoundField DataField="usrName" HeaderText="用户名" />
                 <asp:TemplateField HeaderText="所属部门">
                     <ItemTemplate>
                         <asp:DropDownList ID="ddlDep" runat="server" Enabled="False">
@@ -27,6 +29,12 @@
                 <asp:TemplateField>
                     <ItemTemplate>
                         <asp:Button ID="btnOk" runat="server" onclick="btnOk_Click" Text="更新" 
+                            Visible="False" />
+                    </ItemTemplate>
+                </asp:TemplateField>
+                <asp:TemplateField>
+                    <ItemTemplate>
+                        <asp:Button ID="btnCancle" runat="server" onclick="btnCancle_Click" Text="放弃更改" 
                             Visible="False" />
                     </ItemTemplate>
                 </asp:TemplateField>
