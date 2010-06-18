@@ -171,7 +171,7 @@ public partial class Account_Register : System.Web.UI.Page
             lblName.Text = "*必填项!";
             flag = false;
         }
-        if (txtName.Text.ToString().Trim().Length > 20)
+        else if (txtName.Text.ToString().Trim().Length > 20)
         {
             lblName.Text = "真实姓名太长!";
             //Session["flagUsrName"] = bool.FalseString.ToString().Trim();
@@ -194,7 +194,7 @@ public partial class Account_Register : System.Web.UI.Page
             lblUsrName.Text = "*必填项!";
             flag = false;
         }
-        if (txtUsrName.Text.ToString().Trim().Length > 20)
+        else if (txtUsrName.Text.ToString().Trim().Length > 20)
         {
             lblUsrName.Text = "用户名太长!";
             //Session["flagUsrName"] = bool.FalseString.ToString().Trim();
@@ -217,7 +217,7 @@ public partial class Account_Register : System.Web.UI.Page
             lblPassWord.Text = "*必填项!";
             flag = false;
         }
-        if (txtPassWord.Text.ToString().Trim().Length > 10)
+        else if (txtPassWord.Text.ToString().Trim().Length > 10)
         {
             lblPassWord.Text = "密码太长!";
             //Session["flagUsrName"] = bool.FalseString.ToString().Trim();
@@ -240,7 +240,7 @@ public partial class Account_Register : System.Web.UI.Page
             lblRPassWord.Text = "*必填项!";
             flag = false;
         }
-        if ( !(txtRPassWord.Text.ToString().Equals(txtPassWord.Text.ToString())) )
+        else if (!(txtRPassWord.Text.ToString().Equals(txtPassWord.Text.ToString())))
         {
             lblRPassWord.Text = "两次输入的密码不同!";
             //Session["flagUsrName"] = bool.FalseString.ToString().Trim();
@@ -316,7 +316,7 @@ public partial class Account_Register : System.Web.UI.Page
         {
             flag = false;
         } 
-        if (!txtUsrName_TextCheck())
+        else if (!txtUsrName_TextCheck())
         {
             flag = false;
         }

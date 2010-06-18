@@ -61,6 +61,11 @@ public class UserProcess : SelectLogic
         IntRtn = MyDst.Tables["tbl_usr"].DefaultView.Count;
     }
 
+    public void usrPwdModify(int usrId , string pwd)
+    {
+        tu.usrPwdModify(usrId , pwd);
+    }
+
     public void DoCheckUsrName()
     {
         string usrNm = MyDst.Tables["tbl_usr"].Rows[0]["usrName"].ToString();

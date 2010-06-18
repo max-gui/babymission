@@ -22,7 +22,10 @@
         <DynamicMenuStyle BackColor="#F7F6F3" />
         <DynamicSelectedStyle BackColor="#5D7B9D" />
         <Items>
-            <asp:MenuItem Text="个人信息更改" Value="个人信息更改"></asp:MenuItem>
+            <asp:MenuItem Text="个人信息更改" Value="个人信息更改">
+                <asp:MenuItem Text="密码修改" Value="selfPwdModify"></asp:MenuItem>
+                <asp:MenuItem Text="联系方式修改" Value="selfContectModify"></asp:MenuItem>
+            </asp:MenuItem>
             <asp:MenuItem Text="用户管理" Value="用户管理">
                 <asp:MenuItem Text="用户权限管理" Value="usrAuth"></asp:MenuItem>
                 <asp:MenuItem Text="删除用户信息" Value="usrDel"></asp:MenuItem>

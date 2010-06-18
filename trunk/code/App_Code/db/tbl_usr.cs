@@ -230,6 +230,42 @@ public class tbl_usr : DataBase
     //    sqlCmd.Connection.Close();
     //}
 
+    public void usrPwdModify(int usrId , string pwd)
+    {
+        #region sqlPara declare
+        //usrId
+        SqlParameter sqlParaUsrId = null;
+        //passWord
+        SqlParameter sqlParaPwd = null;
+        #endregion
+
+        SqlCommand sqlCmd = null;
+
+        string strSQL = "tbl_usr_pwdModify";
+
+        sqlCmd = this.SqlCom;
+        sqlCmd.CommandText = strSQL;
+        sqlCmd.CommandType = CommandType.StoredProcedure;
+
+        #region sqlParaInit
+
+        sqlParaUsrId = new SqlParameter("@usrId", usrId);
+        sqlParaPwd = new SqlParameter("@usrPassWord", pwd);
+        #endregion
+
+        #region sqlParaAdd
+        sqlCmd.Parameters.Clear();
+        sqlCmd.Parameters.Add(sqlParaUsrId);
+        sqlCmd.Parameters.Add(sqlParaPwd);
+        #endregion
+
+        sqlCmd.Connection.Open();
+
+        sqlCmd.ExecuteNonQuery();
+
+        sqlCmd.Connection.Close();
+    }
+
     public DataSet SelectUsr(DataSet dataSet)
     {
         SqlParameter sqlParaName = null;
