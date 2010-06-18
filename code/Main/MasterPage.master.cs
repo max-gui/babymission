@@ -30,7 +30,10 @@ public partial class MasterPage : System.Web.UI.MasterPage
                 break;
             case ("usrDel"):
                 Response.Redirect("~/Main/usrManagerment/usrInfoDel.aspx");
-                break;                
+                break;
+            case ("selfPwdModify"):
+                Response.Redirect("~/Main/usrSelfModify/usrSelfPwdModify.aspx");
+                break;       
         }
     }
 }
