@@ -37,6 +37,12 @@
                 <asp:MenuItem Text="公司职位管理" Value="titleEdit">
                 </asp:MenuItem>
             </asp:MenuItem>
+            <asp:MenuItem Text="客户信息管理" Value="客户信息管理">
+                <asp:MenuItem Text="添加新客户公司" Value="custCompAdd"></asp:MenuItem>
+                <asp:MenuItem Text="客户公司信息维护" Value="custCompEdit"></asp:MenuItem>
+                <asp:MenuItem Text="添加新客户项目经理" Value="custManAdd"></asp:MenuItem>
+                <asp:MenuItem Text="客户项目经理信息维护" Value="custManEdit"></asp:MenuItem>
+            </asp:MenuItem>
         </Items>
         <StaticHoverStyle BackColor="#7C6F57" ForeColor="White" />
         <StaticMenuItemStyle HorizontalPadding="5px" VerticalPadding="2px" />

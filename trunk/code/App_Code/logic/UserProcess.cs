@@ -66,6 +66,11 @@ public class UserProcess : SelectLogic
         tu.usrPwdModify(usrId , pwd);
     }
 
+    public void usrContactModify(int usrId, string contact)
+    {
+        tu.usrContactModify(usrId, contact);
+    } 
+
     public void DoCheckUsrName()
     {
         string usrNm = MyDst.Tables["tbl_usr"].Rows[0]["usrName"].ToString();

@@ -8,120 +8,64 @@ using System.Web.Services.Protocols;
 using System.Data.SqlClient;
 using System.Data;
 /// <summary>
-///tbl_usr 的摘要说明
+///tbl_customer_company 的摘要说明
 /// </summary>
-public class tbl_usr : DataBase
+public class tbl_customer_company : DataBase
 {
-	public tbl_usr()
+	public tbl_customer_company()
 	{
 		//
 		//TODO: 在此处添加构造函数逻辑
 		//
 	}
-
-    public int SelectNew(string usrName)
-    {
-        int selId = -1;
-        SqlParameter sqlParaUN = null;
-        SqlCommand sqlCmd = null;
-
-        string strSQL =
-            "SELECT " +
-            "usrId " +
-            "FROM tbl_usr " +
-            "WHERE " +
-            "usrName = @usrName";//@titleName";
-
-        sqlCmd = this.SqlCom;
-        sqlCmd.CommandText = strSQL;
-
-        sqlParaUN = new SqlParameter("@usrName", usrName);
-        
-        sqlCmd.Parameters.Clear();
-        sqlCmd.Parameters.Add(sqlParaUN);
-
-        sqlCmd.Connection.Open();
-
-        using (SqlDataReader sdr = sqlCmd.ExecuteReader())
-        {
-            while (sdr.Read())
-            {
-                selId = sdr.GetInt32(0);
-            }
-        }
-
-        sqlCmd.Connection.Close();
-
-        return selId;
-    }
-
+    
     public string SelectAdd(DataSet dataSet)
     {
         #region sqlPara declare
-        //realName
-        SqlParameter sqlParaRN = null;
-        //usrContact
-        SqlParameter sqlParaUC = null;
-        //usrName
-        SqlParameter sqlParaUN = null;
-        //usrPwd
-        SqlParameter sqlParaPW = null;
+        //CompName
+        SqlParameter sqlParaCompName = null;
+        //CompAddr
+        SqlParameter sqlParaCompAddr = null;
+        //CompTag
+        SqlParameter sqlParaCompTag = null;
         //start
         SqlParameter sqlParaSt = null;
-        //newUsrId
+        //newCompId
         SqlParameter sqlParaId = null;
-        ////
-        //SqlParameter sqlParaDepId = null;
-        ////
-        //SqlParameter sqlParaTitleId = null;
-        ////
-        //SqlParameter sqlParaAuthId = null;
         #endregion
 
         SqlCommand sqlCmd = null;
 
-        string strSQL = "tbl_usr_Insert";
+        string strSQL = "tbl_customer_company_Insert";
 
         sqlCmd = this.SqlCom;
         sqlCmd.CommandText = strSQL;
         sqlCmd.CommandType = CommandType.StoredProcedure;
-        
+
         #region sqlParaInit
-        string rn = dataSet.Tables["addTable"].Rows[0]["realName"].ToString().Trim();
-        string uc = dataSet.Tables["addTable"].Rows[0]["usrContact"].ToString().Trim();
-        string un = dataSet.Tables["addTable"].Rows[0]["usrName"].ToString().Trim();
-        string pw = dataSet.Tables["addTable"].Rows[0]["usrPassWord"].ToString().Trim();
+        string cn = dataSet.Tables["tbl_customer_company"].Rows[0]["custCompName"].ToString().Trim();
+        string ca = dataSet.Tables["tbl_customer_company"].Rows[0]["custCompAddress"].ToString().Trim();
+        string ct = dataSet.Tables["tbl_customer_company"].Rows[0]["custCompTag"].ToString().Trim();
         DateTime st = DateTime.Now;
 
-        sqlParaRN = new SqlParameter("@realName", rn);
-        sqlParaUC = new SqlParameter("@usrContact", uc);
-        sqlParaUN = new SqlParameter("@usrName", un);
-        sqlParaPW = new SqlParameter("@usrPassWord", pw);
+        sqlParaCompName = new SqlParameter("@custCompName", cn);
+        sqlParaCompAddr = new SqlParameter("@custCompAddress", ca);
+        sqlParaCompTag = new SqlParameter("@custCompTag", ct);
         sqlParaSt = new SqlParameter("@startTime", st);
-        sqlParaId = new SqlParameter("@Identity", SqlDbType.BigInt, 0, "usrId");
-        //sqlParaDepId = new SqlParameter("@departmentId", SqlDbType.BigInt);
-        //sqlParaTitleId = new SqlParameter("@titleId", SqlDbType.BigInt);
-        //sqlParaAuthId = new SqlParameter("@authorityId", SqlDbType.BigInt);
+        sqlParaId = new SqlParameter("@Identity", SqlDbType.BigInt, 0, "custCompyId");
         #endregion
 
         #region sqlParaAdd
         sqlCmd.Parameters.Clear();
-        sqlCmd.Parameters.Add(sqlParaRN);
-        sqlCmd.Parameters.Add(sqlParaUC);
-        sqlCmd.Parameters.Add(sqlParaUN);
-        sqlCmd.Parameters.Add(sqlParaPW);
+        sqlCmd.Parameters.Add(sqlParaCompName);
+        sqlCmd.Parameters.Add(sqlParaCompAddr);
+        sqlCmd.Parameters.Add(sqlParaCompTag);
         sqlCmd.Parameters.Add(sqlParaSt);
         sqlCmd.Parameters.Add(sqlParaId);
-        //sqlCmd.Parameters.Add(sqlParaDepId);
-        //sqlCmd.Parameters.Add(sqlParaTitleId);
-        //sqlCmd.Parameters.Add(sqlParaAuthId);
         #endregion
 
         #region sqlDirection
         sqlParaId.Direction = ParameterDirection.Output;
-        //sqlParaDepId.Direction = ParameterDirection.Output;
-        //sqlParaTitleId.Direction = ParameterDirection.Output;
-        //sqlParaAuthId.Direction = ParameterDirection.Output;
         #endregion
 
         sqlCmd.Connection.Open();
@@ -130,10 +74,11 @@ public class tbl_usr : DataBase
 
         sqlCmd.Connection.Close();
 
-        string  usrId = sqlParaId.Value.ToString();
-        return usrId;
+        string compId = sqlParaId.Value.ToString();
+        return compId;
     }
-    
+
+    /*
     //public void SelectAdd(DataSet dataSet)
     //{
     //    SqlParameter sqlParaRN = null;
@@ -230,7 +175,7 @@ public class tbl_usr : DataBase
     //    sqlCmd.Connection.Close();
     //}
 
-    public void usrPwdModify(int usrId , string pwd)
+    public void usrPwdModify(int usrId, string pwd)
     {
         #region sqlPara declare
         //usrId
@@ -315,7 +260,7 @@ public class tbl_usr : DataBase
             "from tbl_usr " +
             "WHERE " +
             "usrName = @usrName ";
-             
+
         sqlCmd = this.SqlCom;
         sqlCmd.CommandText = strSQL;
 
@@ -336,53 +281,26 @@ public class tbl_usr : DataBase
         userDataAdapter.Fill(myDataSet, "tbl_usr");
 
         return myDataSet;
-    }
+    }*/
 
     public DataSet SelectView()
     {
-        //SqlParameter sqlParaNM = null;
-        //SqlParameter sqlParaPwd = null;
-        //SqlParameter sqlParaEnd = null;
-
         SqlCommand sqlCmd = null;
 
         string strSQL =
             "SELECT " +
             "* " +
-            "FROM tbl_usr ";// +
-            //"WHERE " +
-            //"usrName = @usrName " +
-            //"and usrPassWord = @usrPassWord " +
-            //"and endTime > @endTime";
-
+            "FROM tbl_customer_company ";
+        
         sqlCmd = this.SqlCom;
         sqlCmd.CommandText = strSQL;
-        //userRow["endTime"]
-        //string usrNm = dataSet.Tables["tbl_usr"].Rows[0]["usrName"].ToString();
-        //sqlParaNM = new SqlParameter("@usrName", usrNm);
-        //string pwd = dataSet.Tables["tbl_usr"].Rows[0]["usrPassWord"].ToString();
-        //sqlParaPwd = new SqlParameter("@usrPassWord", pwd);
-        //DateTime end = DateTime.Parse(dataSet.Tables["tbl_usr"].Rows[0]["endTime"].ToString());
-        //sqlParaEnd = new SqlParameter("@endTime", end);
-
-        //sqlCmd.Parameters.Clear();
-        //sqlCmd.Parameters.Add(sqlParaNM);
-        //sqlCmd.Parameters.Add(sqlParaPwd);
 
         SqlDataAdapter userDataAdapter = this.SqlDA;
         SqlDA.SelectCommand = sqlCmd;
-        //SqlCommandBuilder userScb = new SqlCommandBuilder(userDataAdapter);
+        
         DataSet myDataSet = new DataSet();
-        userDataAdapter.Fill(myDataSet, "tbl_usr");
+        userDataAdapter.Fill(myDataSet, "tbl_customer_company");
 
         return myDataSet;
     }
-    //public void SelecttUsrCommit(DataSet dataSet)
-    //{
-    //    SqlDataAdapter da = this.SqlDA;
-    //    SqlCommandBuilder scb = new SqlCommandBuilder(da);
-    //    //SqlCommandBuilder userScb = new SqlCommandBuilder(userDataAdapter);
-    //    da.Update(dataSet, "tbl_usr");
-    //    dataSet.AcceptChanges();
-    //}
 }

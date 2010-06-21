@@ -33,7 +33,14 @@ public partial class MasterPage : System.Web.UI.MasterPage
                 break;
             case ("selfPwdModify"):
                 Response.Redirect("~/Main/usrSelfModify/usrSelfPwdModify.aspx");
-                break;       
+                break;
+            case ("selfContectModify"):
+                Response.Redirect("~/Main/usrSelfModify/usrSelfContactModify.aspx");
+            break;
+            case ("custCompAdd"):
+            Response.Redirect("~/Main/custInfoManager/custCompManager/custCompAdd.aspx");
+            break;
+                
         }
     }
 }
