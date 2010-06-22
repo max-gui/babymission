@@ -10,379 +10,382 @@ using System.Data;
 /// <summary>
 ///tbl_usr 的摘要说明
 /// </summary>
-public class tbl_usr : DataBase
+namespace xm_mis.App_Code.db
 {
-	public tbl_usr()
-	{
-		//
-		//TODO: 在此处添加构造函数逻辑
-		//
-	}
-
-    public int SelectNew(string usrName)
+    public class tbl_usr : DataBase
     {
-        int selId = -1;
-        SqlParameter sqlParaUN = null;
-        SqlCommand sqlCmd = null;
-
-        string strSQL =
-            "SELECT " +
-            "usrId " +
-            "FROM tbl_usr " +
-            "WHERE " +
-            "usrName = @usrName";//@titleName";
-
-        sqlCmd = this.SqlCom;
-        sqlCmd.CommandText = strSQL;
-
-        sqlParaUN = new SqlParameter("@usrName", usrName);
-        
-        sqlCmd.Parameters.Clear();
-        sqlCmd.Parameters.Add(sqlParaUN);
-
-        sqlCmd.Connection.Open();
-
-        using (SqlDataReader sdr = sqlCmd.ExecuteReader())
+        public tbl_usr()
         {
-            while (sdr.Read())
-            {
-                selId = sdr.GetInt32(0);
-            }
+            //
+            //TODO: 在此处添加构造函数逻辑
+            //
         }
 
-        sqlCmd.Connection.Close();
+        public int SelectNew(string usrName)
+        {
+            int selId = -1;
+            SqlParameter sqlParaUN = null;
+            SqlCommand sqlCmd = null;
 
-        return selId;
-    }
+            string strSQL =
+                "SELECT " +
+                "usrId " +
+                "FROM tbl_usr " +
+                "WHERE " +
+                "usrName = @usrName";//@titleName";
 
-    public string SelectAdd(DataSet dataSet)
-    {
-        #region sqlPara declare
-        //realName
-        SqlParameter sqlParaRN = null;
-        //usrContact
-        SqlParameter sqlParaUC = null;
-        //usrName
-        SqlParameter sqlParaUN = null;
-        //usrPwd
-        SqlParameter sqlParaPW = null;
-        //start
-        SqlParameter sqlParaSt = null;
-        //newUsrId
-        SqlParameter sqlParaId = null;
-        ////
-        //SqlParameter sqlParaDepId = null;
-        ////
-        //SqlParameter sqlParaTitleId = null;
-        ////
-        //SqlParameter sqlParaAuthId = null;
-        #endregion
+            sqlCmd = this.SqlCom;
+            sqlCmd.CommandText = strSQL;
 
-        SqlCommand sqlCmd = null;
+            sqlParaUN = new SqlParameter("@usrName", usrName);
 
-        string strSQL = "tbl_usr_Insert";
+            sqlCmd.Parameters.Clear();
+            sqlCmd.Parameters.Add(sqlParaUN);
 
-        sqlCmd = this.SqlCom;
-        sqlCmd.CommandText = strSQL;
-        sqlCmd.CommandType = CommandType.StoredProcedure;
-        
-        #region sqlParaInit
-        string rn = dataSet.Tables["addTable"].Rows[0]["realName"].ToString().Trim();
-        string uc = dataSet.Tables["addTable"].Rows[0]["usrContact"].ToString().Trim();
-        string un = dataSet.Tables["addTable"].Rows[0]["usrName"].ToString().Trim();
-        string pw = dataSet.Tables["addTable"].Rows[0]["usrPassWord"].ToString().Trim();
-        DateTime st = DateTime.Now;
+            sqlCmd.Connection.Open();
 
-        sqlParaRN = new SqlParameter("@realName", rn);
-        sqlParaUC = new SqlParameter("@usrContact", uc);
-        sqlParaUN = new SqlParameter("@usrName", un);
-        sqlParaPW = new SqlParameter("@usrPassWord", pw);
-        sqlParaSt = new SqlParameter("@startTime", st);
-        sqlParaId = new SqlParameter("@Identity", SqlDbType.BigInt, 0, "usrId");
-        //sqlParaDepId = new SqlParameter("@departmentId", SqlDbType.BigInt);
-        //sqlParaTitleId = new SqlParameter("@titleId", SqlDbType.BigInt);
-        //sqlParaAuthId = new SqlParameter("@authorityId", SqlDbType.BigInt);
-        #endregion
+            using (SqlDataReader sdr = sqlCmd.ExecuteReader())
+            {
+                while (sdr.Read())
+                {
+                    selId = sdr.GetInt32(0);
+                }
+            }
 
-        #region sqlParaAdd
-        sqlCmd.Parameters.Clear();
-        sqlCmd.Parameters.Add(sqlParaRN);
-        sqlCmd.Parameters.Add(sqlParaUC);
-        sqlCmd.Parameters.Add(sqlParaUN);
-        sqlCmd.Parameters.Add(sqlParaPW);
-        sqlCmd.Parameters.Add(sqlParaSt);
-        sqlCmd.Parameters.Add(sqlParaId);
-        //sqlCmd.Parameters.Add(sqlParaDepId);
-        //sqlCmd.Parameters.Add(sqlParaTitleId);
-        //sqlCmd.Parameters.Add(sqlParaAuthId);
-        #endregion
+            sqlCmd.Connection.Close();
 
-        #region sqlDirection
-        sqlParaId.Direction = ParameterDirection.Output;
-        //sqlParaDepId.Direction = ParameterDirection.Output;
-        //sqlParaTitleId.Direction = ParameterDirection.Output;
-        //sqlParaAuthId.Direction = ParameterDirection.Output;
-        #endregion
+            return selId;
+        }
 
-        sqlCmd.Connection.Open();
+        public string SelectAdd(DataSet dataSet)
+        {
+            #region sqlPara declare
+            //realName
+            SqlParameter sqlParaRN = null;
+            //usrContact
+            SqlParameter sqlParaUC = null;
+            //usrName
+            SqlParameter sqlParaUN = null;
+            //usrPwd
+            SqlParameter sqlParaPW = null;
+            //start
+            SqlParameter sqlParaSt = null;
+            //newUsrId
+            SqlParameter sqlParaId = null;
+            ////
+            //SqlParameter sqlParaDepId = null;
+            ////
+            //SqlParameter sqlParaTitleId = null;
+            ////
+            //SqlParameter sqlParaAuthId = null;
+            #endregion
 
-        sqlCmd.ExecuteNonQuery();
+            SqlCommand sqlCmd = null;
 
-        sqlCmd.Connection.Close();
+            string strSQL = "tbl_usr_Insert";
 
-        string  usrId = sqlParaId.Value.ToString();
-        return usrId;
-    }
-    
-    //public void SelectAdd(DataSet dataSet)
-    //{
-    //    SqlParameter sqlParaRN = null;
-    //    //SqlParameter sqlParaTA = null;
-    //    SqlParameter sqlParaUC = null;
-    //    SqlParameter sqlParaUN = null;
-    //    SqlParameter sqlParaPW = null;
-    //    SqlParameter sqlParaSt = null;
-    //    SqlCommand sqlCmd = null;
+            sqlCmd = this.SqlCom;
+            sqlCmd.CommandText = strSQL;
+            sqlCmd.CommandType = CommandType.StoredProcedure;
 
-    public void SelectDel(string usrId)
-    {
-        #region sqlPara declare
-        //usrId
-        SqlParameter sqlParaUsrId = null;
-        //endTIme
-        SqlParameter sqlParaEnd = null;
-        #endregion
+            #region sqlParaInit
+            string rn = dataSet.Tables["addTable"].Rows[0]["realName"].ToString().Trim();
+            string uc = dataSet.Tables["addTable"].Rows[0]["usrContact"].ToString().Trim();
+            string un = dataSet.Tables["addTable"].Rows[0]["usrName"].ToString().Trim();
+            string pw = dataSet.Tables["addTable"].Rows[0]["usrPassWord"].ToString().Trim();
+            DateTime st = DateTime.Now;
 
-        SqlCommand sqlCmd = null;
+            sqlParaRN = new SqlParameter("@realName", rn);
+            sqlParaUC = new SqlParameter("@usrContact", uc);
+            sqlParaUN = new SqlParameter("@usrName", un);
+            sqlParaPW = new SqlParameter("@usrPassWord", pw);
+            sqlParaSt = new SqlParameter("@startTime", st);
+            sqlParaId = new SqlParameter("@Identity", SqlDbType.BigInt, 0, "usrId");
+            //sqlParaDepId = new SqlParameter("@departmentId", SqlDbType.BigInt);
+            //sqlParaTitleId = new SqlParameter("@titleId", SqlDbType.BigInt);
+            //sqlParaAuthId = new SqlParameter("@authorityId", SqlDbType.BigInt);
+            #endregion
 
-        string strSQL = "tbl_usr_delete";
+            #region sqlParaAdd
+            sqlCmd.Parameters.Clear();
+            sqlCmd.Parameters.Add(sqlParaRN);
+            sqlCmd.Parameters.Add(sqlParaUC);
+            sqlCmd.Parameters.Add(sqlParaUN);
+            sqlCmd.Parameters.Add(sqlParaPW);
+            sqlCmd.Parameters.Add(sqlParaSt);
+            sqlCmd.Parameters.Add(sqlParaId);
+            //sqlCmd.Parameters.Add(sqlParaDepId);
+            //sqlCmd.Parameters.Add(sqlParaTitleId);
+            //sqlCmd.Parameters.Add(sqlParaAuthId);
+            #endregion
 
-        sqlCmd = this.SqlCom;
-        sqlCmd.CommandText = strSQL;
-        sqlCmd.CommandType = CommandType.StoredProcedure;
+            #region sqlDirection
+            sqlParaId.Direction = ParameterDirection.Output;
+            //sqlParaDepId.Direction = ParameterDirection.Output;
+            //sqlParaTitleId.Direction = ParameterDirection.Output;
+            //sqlParaAuthId.Direction = ParameterDirection.Output;
+            #endregion
 
-        #region sqlParaInit
-        DateTime end = DateTime.Now;
+            sqlCmd.Connection.Open();
 
-        sqlParaUsrId = new SqlParameter("@delUsrId", usrId);
-        sqlParaEnd = new SqlParameter("@delEndTime", end);
-        #endregion
+            sqlCmd.ExecuteNonQuery();
 
-        #region sqlParaAdd
-        sqlCmd.Parameters.Clear();
-        sqlCmd.Parameters.Add(sqlParaUsrId);
-        sqlCmd.Parameters.Add(sqlParaEnd);
-        #endregion
+            sqlCmd.Connection.Close();
 
-        sqlCmd.Connection.Open();
+            string usrId = sqlParaId.Value.ToString();
+            return usrId;
+        }
 
-        sqlCmd.ExecuteNonQuery();
+        //public void SelectAdd(DataSet dataSet)
+        //{
+        //    SqlParameter sqlParaRN = null;
+        //    //SqlParameter sqlParaTA = null;
+        //    SqlParameter sqlParaUC = null;
+        //    SqlParameter sqlParaUN = null;
+        //    SqlParameter sqlParaPW = null;
+        //    SqlParameter sqlParaSt = null;
+        //    SqlCommand sqlCmd = null;
 
-        sqlCmd.Connection.Close();
-    }
-    //public void SelectAdd(DataSet dataSet)
-    //{
-    //    SqlParameter sqlParaRN = null;
-    //    //SqlParameter sqlParaTA = null;
-    //    SqlParameter sqlParaUC = null;
-    //    SqlParameter sqlParaUN = null;
-    //    SqlParameter sqlParaPW = null;
-    //    SqlParameter sqlParaSt = null;
-    //    SqlCommand sqlCmd = null;
+        public void SelectDel(string usrId)
+        {
+            #region sqlPara declare
+            //usrId
+            SqlParameter sqlParaUsrId = null;
+            //endTIme
+            SqlParameter sqlParaEnd = null;
+            #endregion
 
-    //    string strSQL =
-    //        "insert into " +
-    //        "tbl_usr " +
-    //        "(realName , usrContact , usrName , usrPassWord , startTime) " +
-    //        "values(@realName , @usrContact , @usrName , @usrPassWord , @startTime) ";
-    //    //"WHERE " +
-    //    //"isDel = @isDel ";
+            SqlCommand sqlCmd = null;
 
-    //    sqlCmd = this.SqlCom;
-    //    sqlCmd.CommandText = strSQL;
+            string strSQL = "tbl_usr_delete";
 
-    //    string rn = dataSet.Tables["addTable"].Rows[0]["realName"].ToString().Trim();
-    //    //int ta = int.Parse(dataSet.Tables["tbl_usr"].Rows[0]["totleAuthority"].ToString().Trim());
-    //    string uc = dataSet.Tables["addTable"].Rows[0]["usrContact"].ToString().Trim();
-    //    string un = dataSet.Tables["addTable"].Rows[0]["usrName"].ToString().Trim();
-    //    string pw = dataSet.Tables["addTable"].Rows[0]["usrPassWord"].ToString().Trim();
-    //    DateTime st = DateTime.Now;
+            sqlCmd = this.SqlCom;
+            sqlCmd.CommandText = strSQL;
+            sqlCmd.CommandType = CommandType.StoredProcedure;
 
-    //    sqlParaRN = new SqlParameter("@realName", rn);
-    //    //sqlParaTA = new SqlParameter("@totleAuthority", ta);
-    //    sqlParaUC = new SqlParameter("@usrContact", uc);
-    //    sqlParaUN = new SqlParameter("@usrName", un);
-    //    sqlParaPW = new SqlParameter("@usrPassWord", pw);
-    //    sqlParaSt = new SqlParameter("@startTime", st);
+            #region sqlParaInit
+            DateTime end = DateTime.Now;
 
-    //    sqlCmd.Parameters.Clear();
-    //    sqlCmd.Parameters.Add(sqlParaRN);
-    //    //sqlCmd.Parameters.Add(sqlParaTA);
-    //    sqlCmd.Parameters.Add(sqlParaUC);
-    //    sqlCmd.Parameters.Add(sqlParaUN);
-    //    sqlCmd.Parameters.Add(sqlParaPW);
-    //    sqlCmd.Parameters.Add(sqlParaSt);
+            sqlParaUsrId = new SqlParameter("@delUsrId", usrId);
+            sqlParaEnd = new SqlParameter("@delEndTime", end);
+            #endregion
 
-    //    sqlCmd.Connection.Open();
+            #region sqlParaAdd
+            sqlCmd.Parameters.Clear();
+            sqlCmd.Parameters.Add(sqlParaUsrId);
+            sqlCmd.Parameters.Add(sqlParaEnd);
+            #endregion
 
-    //    sqlCmd.ExecuteNonQuery();
+            sqlCmd.Connection.Open();
 
-    //    sqlCmd.Connection.Close();
-    //}
+            sqlCmd.ExecuteNonQuery();
 
-    public void usrPwdModify(int usrId , string pwd)
-    {
-        #region sqlPara declare
-        //usrId
-        SqlParameter sqlParaUsrId = null;
-        //passWord
-        SqlParameter sqlParaPwd = null;
-        #endregion
+            sqlCmd.Connection.Close();
+        }
+        //public void SelectAdd(DataSet dataSet)
+        //{
+        //    SqlParameter sqlParaRN = null;
+        //    //SqlParameter sqlParaTA = null;
+        //    SqlParameter sqlParaUC = null;
+        //    SqlParameter sqlParaUN = null;
+        //    SqlParameter sqlParaPW = null;
+        //    SqlParameter sqlParaSt = null;
+        //    SqlCommand sqlCmd = null;
 
-        SqlCommand sqlCmd = null;
+        //    string strSQL =
+        //        "insert into " +
+        //        "tbl_usr " +
+        //        "(realName , usrContact , usrName , usrPassWord , startTime) " +
+        //        "values(@realName , @usrContact , @usrName , @usrPassWord , @startTime) ";
+        //    //"WHERE " +
+        //    //"isDel = @isDel ";
 
-        string strSQL = "tbl_usr_pwdModify";
+        //    sqlCmd = this.SqlCom;
+        //    sqlCmd.CommandText = strSQL;
 
-        sqlCmd = this.SqlCom;
-        sqlCmd.CommandText = strSQL;
-        sqlCmd.CommandType = CommandType.StoredProcedure;
+        //    string rn = dataSet.Tables["addTable"].Rows[0]["realName"].ToString().Trim();
+        //    //int ta = int.Parse(dataSet.Tables["tbl_usr"].Rows[0]["totleAuthority"].ToString().Trim());
+        //    string uc = dataSet.Tables["addTable"].Rows[0]["usrContact"].ToString().Trim();
+        //    string un = dataSet.Tables["addTable"].Rows[0]["usrName"].ToString().Trim();
+        //    string pw = dataSet.Tables["addTable"].Rows[0]["usrPassWord"].ToString().Trim();
+        //    DateTime st = DateTime.Now;
 
-        #region sqlParaInit
+        //    sqlParaRN = new SqlParameter("@realName", rn);
+        //    //sqlParaTA = new SqlParameter("@totleAuthority", ta);
+        //    sqlParaUC = new SqlParameter("@usrContact", uc);
+        //    sqlParaUN = new SqlParameter("@usrName", un);
+        //    sqlParaPW = new SqlParameter("@usrPassWord", pw);
+        //    sqlParaSt = new SqlParameter("@startTime", st);
 
-        sqlParaUsrId = new SqlParameter("@usrId", usrId);
-        sqlParaPwd = new SqlParameter("@usrPassWord", pwd);
-        #endregion
+        //    sqlCmd.Parameters.Clear();
+        //    sqlCmd.Parameters.Add(sqlParaRN);
+        //    //sqlCmd.Parameters.Add(sqlParaTA);
+        //    sqlCmd.Parameters.Add(sqlParaUC);
+        //    sqlCmd.Parameters.Add(sqlParaUN);
+        //    sqlCmd.Parameters.Add(sqlParaPW);
+        //    sqlCmd.Parameters.Add(sqlParaSt);
 
-        #region sqlParaAdd
-        sqlCmd.Parameters.Clear();
-        sqlCmd.Parameters.Add(sqlParaUsrId);
-        sqlCmd.Parameters.Add(sqlParaPwd);
-        #endregion
+        //    sqlCmd.Connection.Open();
 
-        sqlCmd.Connection.Open();
+        //    sqlCmd.ExecuteNonQuery();
 
-        sqlCmd.ExecuteNonQuery();
+        //    sqlCmd.Connection.Close();
+        //}
 
-        sqlCmd.Connection.Close();
-    }
+        public void usrPwdModify(int usrId, string pwd)
+        {
+            #region sqlPara declare
+            //usrId
+            SqlParameter sqlParaUsrId = null;
+            //passWord
+            SqlParameter sqlParaPwd = null;
+            #endregion
 
-    public void usrContactModify(int usrId, string contact)
-    {
-        #region sqlPara declare
-        //usrId
-        SqlParameter sqlParaUsrId = null;
-        //passWord
-        SqlParameter sqlParaContact = null;
-        #endregion
+            SqlCommand sqlCmd = null;
 
-        SqlCommand sqlCmd = null;
+            string strSQL = "tbl_usr_pwdModify";
 
-        string strSQL = "tbl_usr_contactModify";
+            sqlCmd = this.SqlCom;
+            sqlCmd.CommandText = strSQL;
+            sqlCmd.CommandType = CommandType.StoredProcedure;
 
-        sqlCmd = this.SqlCom;
-        sqlCmd.CommandText = strSQL;
-        sqlCmd.CommandType = CommandType.StoredProcedure;
+            #region sqlParaInit
 
-        #region sqlParaInit
+            sqlParaUsrId = new SqlParameter("@usrId", usrId);
+            sqlParaPwd = new SqlParameter("@usrPassWord", pwd);
+            #endregion
 
-        sqlParaUsrId = new SqlParameter("@usrId", usrId);
-        sqlParaContact = new SqlParameter("@usrContact", contact);
-        #endregion
+            #region sqlParaAdd
+            sqlCmd.Parameters.Clear();
+            sqlCmd.Parameters.Add(sqlParaUsrId);
+            sqlCmd.Parameters.Add(sqlParaPwd);
+            #endregion
 
-        #region sqlParaAdd
-        sqlCmd.Parameters.Clear();
-        sqlCmd.Parameters.Add(sqlParaUsrId);
-        sqlCmd.Parameters.Add(sqlParaContact);
-        #endregion
+            sqlCmd.Connection.Open();
 
-        sqlCmd.Connection.Open();
+            sqlCmd.ExecuteNonQuery();
 
-        sqlCmd.ExecuteNonQuery();
+            sqlCmd.Connection.Close();
+        }
 
-        sqlCmd.Connection.Close();
-    }
+        public void usrContactModify(int usrId, string contact)
+        {
+            #region sqlPara declare
+            //usrId
+            SqlParameter sqlParaUsrId = null;
+            //passWord
+            SqlParameter sqlParaContact = null;
+            #endregion
 
-    public DataSet SelectUsr(DataSet dataSet)
-    {
-        SqlParameter sqlParaName = null;
-        //SqlParameter sqlParaPassWord = null;
-        //SqlParameter sqlParaContact = null;
-        SqlCommand sqlCmd = null;
+            SqlCommand sqlCmd = null;
 
-        string strSQL =
-            "select " +
-            "usrId , realName , usrName , usrPassWord , usrContact " +
-            "from tbl_usr " +
-            "WHERE " +
-            "usrName = @usrName ";
-             
-        sqlCmd = this.SqlCom;
-        sqlCmd.CommandText = strSQL;
+            string strSQL = "tbl_usr_contactModify";
 
-        sqlParaName = new SqlParameter("@usrName", SqlDbType.Char, 10);
-        sqlParaName.Value = dataSet.Tables["tbl_usr"].Rows[0]["usrName"].ToString().Trim();
-        //sqlParaPassWord = new SqlParameter("@usrPassWord", SqlDbType.Char, 10);
-        //sqlParaPassWord.Value = dataSet.Tables["tbl_usr"].Rows[0]["usrPassWord"].ToString().Trim();
-        //sqlParaContact = new SqlParameter("@usrContact", SqlDbType.Char, 10);
-        //sqlParaContact.Value = dataSet.Tables["tbl_usr"].Rows[0]["usrContact"].ToString().Trim();
+            sqlCmd = this.SqlCom;
+            sqlCmd.CommandText = strSQL;
+            sqlCmd.CommandType = CommandType.StoredProcedure;
 
-        sqlCmd.Parameters.Add(sqlParaName);
-        //sqlCmd.Parameters.Add(sqlParaPassWord);
-        //sqlCmd.Parameters.Add(sqlParaContact);
+            #region sqlParaInit
 
-        SqlDataAdapter userDataAdapter = this.SqlDA;
-        //SqlCommandBuilder userScb = new SqlCommandBuilder(userDataAdapter);
-        DataSet myDataSet = new DataSet();
-        userDataAdapter.Fill(myDataSet, "tbl_usr");
+            sqlParaUsrId = new SqlParameter("@usrId", usrId);
+            sqlParaContact = new SqlParameter("@usrContact", contact);
+            #endregion
 
-        return myDataSet;
-    }
+            #region sqlParaAdd
+            sqlCmd.Parameters.Clear();
+            sqlCmd.Parameters.Add(sqlParaUsrId);
+            sqlCmd.Parameters.Add(sqlParaContact);
+            #endregion
 
-    public DataSet SelectView()
-    {
-        //SqlParameter sqlParaNM = null;
-        //SqlParameter sqlParaPwd = null;
-        //SqlParameter sqlParaEnd = null;
+            sqlCmd.Connection.Open();
 
-        SqlCommand sqlCmd = null;
+            sqlCmd.ExecuteNonQuery();
 
-        string strSQL =
-            "SELECT " +
-            "* " +
-            "FROM tbl_usr ";// +
+            sqlCmd.Connection.Close();
+        }
+
+        public DataSet SelectUsr(DataSet dataSet)
+        {
+            SqlParameter sqlParaName = null;
+            //SqlParameter sqlParaPassWord = null;
+            //SqlParameter sqlParaContact = null;
+            SqlCommand sqlCmd = null;
+
+            string strSQL =
+                "select " +
+                "usrId , realName , usrName , usrPassWord , usrContact " +
+                "from tbl_usr " +
+                "WHERE " +
+                "usrName = @usrName ";
+
+            sqlCmd = this.SqlCom;
+            sqlCmd.CommandText = strSQL;
+
+            sqlParaName = new SqlParameter("@usrName", SqlDbType.Char, 10);
+            sqlParaName.Value = dataSet.Tables["tbl_usr"].Rows[0]["usrName"].ToString().Trim();
+            //sqlParaPassWord = new SqlParameter("@usrPassWord", SqlDbType.Char, 10);
+            //sqlParaPassWord.Value = dataSet.Tables["tbl_usr"].Rows[0]["usrPassWord"].ToString().Trim();
+            //sqlParaContact = new SqlParameter("@usrContact", SqlDbType.Char, 10);
+            //sqlParaContact.Value = dataSet.Tables["tbl_usr"].Rows[0]["usrContact"].ToString().Trim();
+
+            sqlCmd.Parameters.Add(sqlParaName);
+            //sqlCmd.Parameters.Add(sqlParaPassWord);
+            //sqlCmd.Parameters.Add(sqlParaContact);
+
+            SqlDataAdapter userDataAdapter = this.SqlDA;
+            //SqlCommandBuilder userScb = new SqlCommandBuilder(userDataAdapter);
+            DataSet myDataSet = new DataSet();
+            userDataAdapter.Fill(myDataSet, "tbl_usr");
+
+            return myDataSet;
+        }
+
+        public DataSet SelectView()
+        {
+            //SqlParameter sqlParaNM = null;
+            //SqlParameter sqlParaPwd = null;
+            //SqlParameter sqlParaEnd = null;
+
+            SqlCommand sqlCmd = null;
+
+            string strSQL =
+                "SELECT " +
+                "* " +
+                "FROM tbl_usr ";// +
             //"WHERE " +
             //"usrName = @usrName " +
             //"and usrPassWord = @usrPassWord " +
             //"and endTime > @endTime";
 
-        sqlCmd = this.SqlCom;
-        sqlCmd.CommandText = strSQL;
-        //userRow["endTime"]
-        //string usrNm = dataSet.Tables["tbl_usr"].Rows[0]["usrName"].ToString();
-        //sqlParaNM = new SqlParameter("@usrName", usrNm);
-        //string pwd = dataSet.Tables["tbl_usr"].Rows[0]["usrPassWord"].ToString();
-        //sqlParaPwd = new SqlParameter("@usrPassWord", pwd);
-        //DateTime end = DateTime.Parse(dataSet.Tables["tbl_usr"].Rows[0]["endTime"].ToString());
-        //sqlParaEnd = new SqlParameter("@endTime", end);
+            sqlCmd = this.SqlCom;
+            sqlCmd.CommandText = strSQL;
+            //userRow["endTime"]
+            //string usrNm = dataSet.Tables["tbl_usr"].Rows[0]["usrName"].ToString();
+            //sqlParaNM = new SqlParameter("@usrName", usrNm);
+            //string pwd = dataSet.Tables["tbl_usr"].Rows[0]["usrPassWord"].ToString();
+            //sqlParaPwd = new SqlParameter("@usrPassWord", pwd);
+            //DateTime end = DateTime.Parse(dataSet.Tables["tbl_usr"].Rows[0]["endTime"].ToString());
+            //sqlParaEnd = new SqlParameter("@endTime", end);
 
-        //sqlCmd.Parameters.Clear();
-        //sqlCmd.Parameters.Add(sqlParaNM);
-        //sqlCmd.Parameters.Add(sqlParaPwd);
+            //sqlCmd.Parameters.Clear();
+            //sqlCmd.Parameters.Add(sqlParaNM);
+            //sqlCmd.Parameters.Add(sqlParaPwd);
 
-        SqlDataAdapter userDataAdapter = this.SqlDA;
-        SqlDA.SelectCommand = sqlCmd;
-        //SqlCommandBuilder userScb = new SqlCommandBuilder(userDataAdapter);
-        DataSet myDataSet = new DataSet();
-        userDataAdapter.Fill(myDataSet, "tbl_usr");
+            SqlDataAdapter userDataAdapter = this.SqlDA;
+            SqlDA.SelectCommand = sqlCmd;
+            //SqlCommandBuilder userScb = new SqlCommandBuilder(userDataAdapter);
+            DataSet myDataSet = new DataSet();
+            userDataAdapter.Fill(myDataSet, "tbl_usr");
 
-        return myDataSet;
+            return myDataSet;
+        }
+        //public void SelecttUsrCommit(DataSet dataSet)
+        //{
+        //    SqlDataAdapter da = this.SqlDA;
+        //    SqlCommandBuilder scb = new SqlCommandBuilder(da);
+        //    //SqlCommandBuilder userScb = new SqlCommandBuilder(userDataAdapter);
+        //    da.Update(dataSet, "tbl_usr");
+        //    dataSet.AcceptChanges();
+        //}
     }
-    //public void SelecttUsrCommit(DataSet dataSet)
-    //{
-    //    SqlDataAdapter da = this.SqlDA;
-    //    SqlCommandBuilder scb = new SqlCommandBuilder(da);
-    //    //SqlCommandBuilder userScb = new SqlCommandBuilder(userDataAdapter);
-    //    da.Update(dataSet, "tbl_usr");
-    //    dataSet.AcceptChanges();
-    //}
 }

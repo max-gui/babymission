@@ -10,6 +10,9 @@ using System.Web.UI;
 using System.Web.UI.WebControls;
 using System.Web.UI.WebControls.WebParts;
 using System.Web.UI.HtmlControls;
+
+using xm_mis.App_Code.db;
+
 /// <summary>
 ///custCompProcess 的摘要说明
 /// </summary>
@@ -46,6 +49,21 @@ public class custCompProcess : SelectLogic
         MyDst.Tables["tbl_customer_company"].DefaultView.RowFilter = strFilter;
 
         IntRtn = MyDst.Tables["tbl_customer_company"].DefaultView.Count;
+    }
+
+    public void RealCompView()
+    {
+        MyDst = tcc.SelectView();
+
+        string end = DateTime.Now.ToShortDateString();
+
+        string strFilter =
+            " endTime > " + "'" + end + "'";
+        MyDst.Tables["tbl_customer_company"].DefaultView.RowFilter = strFilter;
+
+        //TAB_DATA_USERDatabase db = (TAB_DATA_USERDatabase)InitDatabaseProc("Database", "DataBase.TAB_DATA_USERDatabase");
+        //MyDst = db.SelectView();
+        //StrRtn = db.selectNum().ToString();
     }
 
     public override void Del()

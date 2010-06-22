@@ -10,133 +10,136 @@ using System.Data;
 /// <summary>
 ///tbl_usr_title 的摘要说明
 /// </summary>
-public class tbl_usr_title : DataBase
+namespace xm_mis.App_Code.db
 {
-	public tbl_usr_title()
-	{
-		//
-		//TODO: 在此处添加构造函数逻辑
-		//
-	}
-
-    public void SelfUsrTitleUpdate(int usrTitleId, int usrId, int titleId)
+    public class tbl_usr_title : DataBase
     {
-        #region sqlPara declare
-        //usrTitleId
-        SqlParameter sqlParaUsrTitleId = null;
-        ////endTime
-        //SqlParameter sqlParaEnd = null;
-        //usrId
-        SqlParameter sqlParaUsrId = null;
-        //titleId
-        SqlParameter sqlParaTitleId = null;
-        #endregion
+        public tbl_usr_title()
+        {
+            //
+            //TODO: 在此处添加构造函数逻辑
+            //
+        }
 
-        SqlCommand sqlCmd = null;
+        public void SelfUsrTitleUpdate(int usrTitleId, int usrId, int titleId)
+        {
+            #region sqlPara declare
+            //usrTitleId
+            SqlParameter sqlParaUsrTitleId = null;
+            ////endTime
+            //SqlParameter sqlParaEnd = null;
+            //usrId
+            SqlParameter sqlParaUsrId = null;
+            //titleId
+            SqlParameter sqlParaTitleId = null;
+            #endregion
 
-        string strSQL = "tbl_usr_title_update";
+            SqlCommand sqlCmd = null;
 
-        sqlCmd = this.SqlCom;
-        sqlCmd.CommandText = strSQL;
-        sqlCmd.CommandType = CommandType.StoredProcedure;
+            string strSQL = "tbl_usr_title_update";
 
-        #region sqlParaInit
-        //DateTime st = DateTime.Now;
+            sqlCmd = this.SqlCom;
+            sqlCmd.CommandText = strSQL;
+            sqlCmd.CommandType = CommandType.StoredProcedure;
 
-        sqlParaUsrTitleId = new SqlParameter("@usrTitleId", usrTitleId);
-        //sqlParaEnd = new SqlParameter("@delEndTime", st);
-        sqlParaUsrId = new SqlParameter("@newUsrId", usrId);
-        sqlParaTitleId = new SqlParameter("@newTitleId", titleId);
-        #endregion
+            #region sqlParaInit
+            //DateTime st = DateTime.Now;
 
-        #region sqlParaAdd
-        sqlCmd.Parameters.Clear();
-        sqlCmd.Parameters.Add(sqlParaUsrTitleId);
-        //sqlCmd.Parameters.Add(sqlParaEnd);
-        sqlCmd.Parameters.Add(sqlParaUsrId);
-        sqlCmd.Parameters.Add(sqlParaTitleId);
-        #endregion
+            sqlParaUsrTitleId = new SqlParameter("@usrTitleId", usrTitleId);
+            //sqlParaEnd = new SqlParameter("@delEndTime", st);
+            sqlParaUsrId = new SqlParameter("@newUsrId", usrId);
+            sqlParaTitleId = new SqlParameter("@newTitleId", titleId);
+            #endregion
 
-        sqlCmd.Connection.Open();
+            #region sqlParaAdd
+            sqlCmd.Parameters.Clear();
+            sqlCmd.Parameters.Add(sqlParaUsrTitleId);
+            //sqlCmd.Parameters.Add(sqlParaEnd);
+            sqlCmd.Parameters.Add(sqlParaUsrId);
+            sqlCmd.Parameters.Add(sqlParaTitleId);
+            #endregion
 
-        sqlCmd.ExecuteNonQuery();
+            sqlCmd.Connection.Open();
 
-        sqlCmd.Connection.Close();
-    }
+            sqlCmd.ExecuteNonQuery();
 
-    public void SelectAdd(string usrName, string titleName)
-    {
-        SqlParameter sqlParaUNM = null;
-        SqlParameter sqlParaTNM = null;
-        SqlParameter sqlParaSt = null;
-        SqlCommand sqlCmd = null;
+            sqlCmd.Connection.Close();
+        }
 
-        string strSQL =
-            "insert into " +
-            "tbl_usr_title " +
-            "(usrName , titleName , startTime) " +
-            "values(@usrName , @titleName , @startTime) ";
-        //"WHERE " +
-        //"isDel = @isDel ";
+        public void SelectAdd(string usrName, string titleName)
+        {
+            SqlParameter sqlParaUNM = null;
+            SqlParameter sqlParaTNM = null;
+            SqlParameter sqlParaSt = null;
+            SqlCommand sqlCmd = null;
 
-        sqlCmd = this.SqlCom;
-        sqlCmd.CommandText = strSQL;
+            string strSQL =
+                "insert into " +
+                "tbl_usr_title " +
+                "(usrName , titleName , startTime) " +
+                "values(@usrName , @titleName , @startTime) ";
+            //"WHERE " +
+            //"isDel = @isDel ";
 
-        sqlParaUNM = new SqlParameter("@usrName", usrName);
-        sqlParaTNM = new SqlParameter("@titleName", titleName);
-        DateTime st = DateTime.Now;
-        sqlParaSt = new SqlParameter("@startTime", st);
+            sqlCmd = this.SqlCom;
+            sqlCmd.CommandText = strSQL;
 
-        sqlCmd.Parameters.Clear();
-        sqlCmd.Parameters.Add(sqlParaUNM);
-        sqlCmd.Parameters.Add(sqlParaTNM);
-        sqlCmd.Parameters.Add(sqlParaSt);
+            sqlParaUNM = new SqlParameter("@usrName", usrName);
+            sqlParaTNM = new SqlParameter("@titleName", titleName);
+            DateTime st = DateTime.Now;
+            sqlParaSt = new SqlParameter("@startTime", st);
 
-        sqlCmd.Connection.Open();
+            sqlCmd.Parameters.Clear();
+            sqlCmd.Parameters.Add(sqlParaUNM);
+            sqlCmd.Parameters.Add(sqlParaTNM);
+            sqlCmd.Parameters.Add(sqlParaSt);
 
-        sqlCmd.ExecuteNonQuery();
+            sqlCmd.Connection.Open();
 
-        sqlCmd.Connection.Close();
-    }
+            sqlCmd.ExecuteNonQuery();
 
-    public void SelectDel(string usrName, string titleName, DateTime TitleSt)
-    {
-        SqlParameter sqlParaUNM = null;
-        SqlParameter sqlParaTNM = null;
-        SqlParameter sqlParaTSt = null;
-        SqlParameter sqlParaTEnd = null;
-        SqlParameter sqlParaTNEnd = null;
-        SqlCommand sqlCmd = null;
+            sqlCmd.Connection.Close();
+        }
 
-        string strSQL =
-            "update " +
-            "tbl_usr_title " +
-            "set " +
-            "endTime = @nendTime " +
-            "where usrName = @usrName and titleName = @titleName and startTime = @startTime and endTime = @endTime";
-        //"WHERE " +
-        //"isDel = @isDel ";
+        public void SelectDel(string usrName, string titleName, DateTime TitleSt)
+        {
+            SqlParameter sqlParaUNM = null;
+            SqlParameter sqlParaTNM = null;
+            SqlParameter sqlParaTSt = null;
+            SqlParameter sqlParaTEnd = null;
+            SqlParameter sqlParaTNEnd = null;
+            SqlCommand sqlCmd = null;
 
-        sqlCmd = this.SqlCom;
-        sqlCmd.CommandText = strSQL;
+            string strSQL =
+                "update " +
+                "tbl_usr_title " +
+                "set " +
+                "endTime = @nendTime " +
+                "where usrName = @usrName and titleName = @titleName and startTime = @startTime and endTime = @endTime";
+            //"WHERE " +
+            //"isDel = @isDel ";
 
-        sqlParaUNM = new SqlParameter("@usrName", usrName);
-        sqlParaTNM = new SqlParameter("@titleName", titleName);
-        sqlParaTSt = new SqlParameter("@startTime", TitleSt);
-        sqlParaTEnd = new SqlParameter("@endTime", DateTime.Parse("9999-12-31"));
-        sqlParaTNEnd = new SqlParameter("@nendTime", DateTime.Now);
+            sqlCmd = this.SqlCom;
+            sqlCmd.CommandText = strSQL;
 
-        sqlCmd.Parameters.Clear();
-        sqlCmd.Parameters.Add(sqlParaUNM);
-        sqlCmd.Parameters.Add(sqlParaTNM);
-        sqlCmd.Parameters.Add(sqlParaTSt);
-        sqlCmd.Parameters.Add(sqlParaTEnd);
-        sqlCmd.Parameters.Add(sqlParaTNEnd);
+            sqlParaUNM = new SqlParameter("@usrName", usrName);
+            sqlParaTNM = new SqlParameter("@titleName", titleName);
+            sqlParaTSt = new SqlParameter("@startTime", TitleSt);
+            sqlParaTEnd = new SqlParameter("@endTime", DateTime.Parse("9999-12-31"));
+            sqlParaTNEnd = new SqlParameter("@nendTime", DateTime.Now);
 
-        sqlCmd.Connection.Open();
+            sqlCmd.Parameters.Clear();
+            sqlCmd.Parameters.Add(sqlParaUNM);
+            sqlCmd.Parameters.Add(sqlParaTNM);
+            sqlCmd.Parameters.Add(sqlParaTSt);
+            sqlCmd.Parameters.Add(sqlParaTEnd);
+            sqlCmd.Parameters.Add(sqlParaTNEnd);
 
-        sqlCmd.ExecuteNonQuery();
+            sqlCmd.Connection.Open();
 
-        sqlCmd.Connection.Close();
+            sqlCmd.ExecuteNonQuery();
+
+            sqlCmd.Connection.Close();
+        }
     }
 }

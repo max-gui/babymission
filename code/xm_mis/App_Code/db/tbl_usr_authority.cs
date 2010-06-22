@@ -10,121 +10,124 @@ using System.Data;
 /// <summary>
 ///tbl_usr_authority 的摘要说明
 /// </summary>
-public class tbl_usr_authority : DataBase
+namespace xm_mis.App_Code.db
 {
-	public tbl_usr_authority()
-	{
-		//
-		//TODO: 在此处添加构造函数逻辑
-		//
-	}
-
-    public void UsrAuthAdd(int usrId, int authorityId)
+    public class tbl_usr_authority : DataBase
     {
-        SqlParameter sqlParaUNM = null;
-        SqlParameter sqlParaAu = null;
-        SqlParameter sqlParaSt = null;
-        SqlCommand sqlCmd = null;
+        public tbl_usr_authority()
+        {
+            //
+            //TODO: 在此处添加构造函数逻辑
+            //
+        }
 
-        string strSQL =
-            "insert into " +
-            "tbl_usr_authority " +
-            "(usrId , authorityId , startTime) " +
-            "values(@usrId , @authorityId , @startTime) ";
+        public void UsrAuthAdd(int usrId, int authorityId)
+        {
+            SqlParameter sqlParaUNM = null;
+            SqlParameter sqlParaAu = null;
+            SqlParameter sqlParaSt = null;
+            SqlCommand sqlCmd = null;
 
-        sqlCmd = this.SqlCom;
-        sqlCmd.CommandText = strSQL;
-        sqlCmd.CommandType = CommandType.Text;
+            string strSQL =
+                "insert into " +
+                "tbl_usr_authority " +
+                "(usrId , authorityId , startTime) " +
+                "values(@usrId , @authorityId , @startTime) ";
 
-        DateTime st = DateTime.Now;
+            sqlCmd = this.SqlCom;
+            sqlCmd.CommandText = strSQL;
+            sqlCmd.CommandType = CommandType.Text;
 
-        sqlParaUNM = new SqlParameter("@usrId", usrId);
-        sqlParaAu = new SqlParameter("@authorityId", authorityId);
-        sqlParaSt = new SqlParameter("@startTime", st);
+            DateTime st = DateTime.Now;
 
-        sqlCmd.Parameters.Clear();
-        sqlCmd.Parameters.Add(sqlParaUNM);
-        sqlCmd.Parameters.Add(sqlParaAu);
-        sqlCmd.Parameters.Add(sqlParaSt);
+            sqlParaUNM = new SqlParameter("@usrId", usrId);
+            sqlParaAu = new SqlParameter("@authorityId", authorityId);
+            sqlParaSt = new SqlParameter("@startTime", st);
 
-        sqlCmd.Connection.Open();
+            sqlCmd.Parameters.Clear();
+            sqlCmd.Parameters.Add(sqlParaUNM);
+            sqlCmd.Parameters.Add(sqlParaAu);
+            sqlCmd.Parameters.Add(sqlParaSt);
 
-        sqlCmd.ExecuteNonQuery();
+            sqlCmd.Connection.Open();
 
-        sqlCmd.Connection.Close();
-    }
+            sqlCmd.ExecuteNonQuery();
 
-    public void UsrAuthDel(int usrAuhId)
-    {
-        SqlParameter sqlParaUsrAuthId = null;
-        SqlCommand sqlCmd = null;
+            sqlCmd.Connection.Close();
+        }
 
-        string strSQL =
-            "delete  " +
-            "from tbl_usr_authority " +
-            "where usrAuhId = @usrAuhId";
+        public void UsrAuthDel(int usrAuhId)
+        {
+            SqlParameter sqlParaUsrAuthId = null;
+            SqlCommand sqlCmd = null;
 
-        sqlCmd = this.SqlCom;
-        sqlCmd.CommandText = strSQL;
-        sqlCmd.CommandType = CommandType.Text;
+            string strSQL =
+                "delete  " +
+                "from tbl_usr_authority " +
+                "where usrAuhId = @usrAuhId";
 
-        sqlParaUsrAuthId = new SqlParameter("@usrAuhId", usrAuhId);
-        
-        sqlCmd.Parameters.Clear();
-        sqlCmd.Parameters.Add(sqlParaUsrAuthId);
-        
-        sqlCmd.Connection.Open();
+            sqlCmd = this.SqlCom;
+            sqlCmd.CommandText = strSQL;
+            sqlCmd.CommandType = CommandType.Text;
 
-        sqlCmd.ExecuteNonQuery();
+            sqlParaUsrAuthId = new SqlParameter("@usrAuhId", usrAuhId);
 
-        sqlCmd.Connection.Close();
-    }
+            sqlCmd.Parameters.Clear();
+            sqlCmd.Parameters.Add(sqlParaUsrAuthId);
 
-    public DataSet SelectUsrAuthView(DataSet dataSet)
-    {
-        //       SqlParameter sqlParaName = null;
-        //SqlParameter sqlParaIsDel = null;
-        SqlCommand sqlCmd = null;
+            sqlCmd.Connection.Open();
 
-        string strSQL =
-            "SELECT " +
-            "* " +
-            "FROM view_usr_autority ";
+            sqlCmd.ExecuteNonQuery();
 
-        sqlCmd = this.SqlCom;
-        sqlCmd.CommandText = strSQL;
-        sqlCmd.CommandType = CommandType.Text;
+            sqlCmd.Connection.Close();
+        }
 
-        //sqlParaName = new SqlParameter("@usrName", SqlDbType.Char, 10);
-        //sqlParaName.Value = dataSet.Tables["view_usr_info"].Rows[0]["usrName"].ToString().Trim();
-        //sqlParaIsDel = new SqlParameter("@isDel", SqlDbType.Char, 10);
-        //sqlParaIsDel.Value = bool.FalseString.ToString().Trim();
-        //sqlCmd.Parameters.Add(sqlParaName);
-        //sqlCmd.Parameters.Clear();
-        //sqlCmd.Parameters.Add(sqlParaIsDel);
+        public DataSet SelectUsrAuthView(DataSet dataSet)
+        {
+            //       SqlParameter sqlParaName = null;
+            //SqlParameter sqlParaIsDel = null;
+            SqlCommand sqlCmd = null;
 
-        SqlDataAdapter userDataAdapter = this.SqlDA;
+            string strSQL =
+                "SELECT " +
+                "* " +
+                "FROM view_usr_autority ";
 
-        //SqlCommandBuilder userScb = new SqlCommandBuilder(userDataAdapter);
-        DataSet myDataSet = new DataSet();
-        userDataAdapter.Fill(myDataSet, "view_usr_autority");
+            sqlCmd = this.SqlCom;
+            sqlCmd.CommandText = strSQL;
+            sqlCmd.CommandType = CommandType.Text;
 
-        return myDataSet;
-    }
+            //sqlParaName = new SqlParameter("@usrName", SqlDbType.Char, 10);
+            //sqlParaName.Value = dataSet.Tables["view_usr_info"].Rows[0]["usrName"].ToString().Trim();
+            //sqlParaIsDel = new SqlParameter("@isDel", SqlDbType.Char, 10);
+            //sqlParaIsDel.Value = bool.FalseString.ToString().Trim();
+            //sqlCmd.Parameters.Add(sqlParaName);
+            //sqlCmd.Parameters.Clear();
+            //sqlCmd.Parameters.Add(sqlParaIsDel);
 
-    public void SelectUsrAuthCommit(DataSet dataSet)
-    {
-        //sqlParaName = new SqlParameter("@usrName", SqlDbType.Char, 10);
-        //sqlParaName.Value = dataSet.Tables["view_usr_info"].Rows[0]["usrName"].ToString().Trim();
-        //       sqlParaIsDel = new SqlParameter("@isDel", SqlDbType.Char, 10);
-        //       sqlParaIsDel.Value = bool.FalseString.ToString().Trim();
-        //sqlCmd.Parameters.Add(sqlParaName);
-        //       sqlCmd.Parameters.Add(sqlParaIsDel);
+            SqlDataAdapter userDataAdapter = this.SqlDA;
 
-        SqlDataAdapter da = this.SqlDA;
-        SqlCommandBuilder scb = new SqlCommandBuilder(da);
-        //SqlCommandBuilder userScb = new SqlCommandBuilder(userDataAdapter);
-        da.Update(dataSet, "tbl_usr_authority");
-        dataSet.AcceptChanges();
+            //SqlCommandBuilder userScb = new SqlCommandBuilder(userDataAdapter);
+            DataSet myDataSet = new DataSet();
+            userDataAdapter.Fill(myDataSet, "view_usr_autority");
+
+            return myDataSet;
+        }
+
+        public void SelectUsrAuthCommit(DataSet dataSet)
+        {
+            //sqlParaName = new SqlParameter("@usrName", SqlDbType.Char, 10);
+            //sqlParaName.Value = dataSet.Tables["view_usr_info"].Rows[0]["usrName"].ToString().Trim();
+            //       sqlParaIsDel = new SqlParameter("@isDel", SqlDbType.Char, 10);
+            //       sqlParaIsDel.Value = bool.FalseString.ToString().Trim();
+            //sqlCmd.Parameters.Add(sqlParaName);
+            //       sqlCmd.Parameters.Add(sqlParaIsDel);
+
+            SqlDataAdapter da = this.SqlDA;
+            SqlCommandBuilder scb = new SqlCommandBuilder(da);
+            //SqlCommandBuilder userScb = new SqlCommandBuilder(userDataAdapter);
+            da.Update(dataSet, "tbl_usr_authority");
+            dataSet.AcceptChanges();
+        }
     }
 }

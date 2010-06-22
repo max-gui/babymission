@@ -8,6 +8,8 @@ using System.Web.Services;
 using System.Web.Services.Protocols;
 using System.Reflection;
 
+using xm_mis.App_Code.db;
+
 /// <summary>
 ///SelectLogic 的摘要说明
 /// </summary>

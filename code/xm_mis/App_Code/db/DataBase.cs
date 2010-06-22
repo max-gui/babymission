@@ -12,37 +12,40 @@ using System.Data.SqlClient;
 /// <summary>
 ///DataBase 的摘要说明
 /// </summary>
-abstract public class DataBase
+namespace xm_mis.App_Code.db
 {
-	private SqlCommand sqlCom = null;
-    private SqlTransaction sqlTrans = null;
-    private SqlDataAdapter sqlDA = null;
-
-    public DataBase( )
+    abstract public class DataBase
     {
-        SQLServConnection mySqlConn = new SQLServConnection();
-        sqlCom = mySqlConn.DBCom as SqlCommand;
+        private SqlCommand sqlCom = null;
+        private SqlTransaction sqlTrans = null;
+        private SqlDataAdapter sqlDA = null;
 
-        sqlDA = new SqlDataAdapter(sqlCom);
+        public DataBase()
+        {
+            SQLServConnection mySqlConn = new SQLServConnection();
+            sqlCom = mySqlConn.DBCom as SqlCommand;
 
-        sqlTrans = mySqlConn.DBTrans as SqlTransaction;
-    }
+            sqlDA = new SqlDataAdapter(sqlCom);
 
-    public SqlTransaction SqlTrans
-    {
-        set { sqlTrans = value; }
-        get { return sqlTrans; }
-    }
+            sqlTrans = mySqlConn.DBTrans as SqlTransaction;
+        }
 
-    public SqlCommand SqlCom
-    {
-        set { sqlCom = value; }
-        get { return sqlCom; }
-    }
+        public SqlTransaction SqlTrans
+        {
+            set { sqlTrans = value; }
+            get { return sqlTrans; }
+        }
 
-    public SqlDataAdapter SqlDA
-    {
-        set { sqlDA = value; }
-        get { return sqlDA; }
+        public SqlCommand SqlCom
+        {
+            set { sqlCom = value; }
+            get { return sqlCom; }
+        }
+
+        public SqlDataAdapter SqlDA
+        {
+            set { sqlDA = value; }
+            get { return sqlDA; }
+        }
     }
 }
