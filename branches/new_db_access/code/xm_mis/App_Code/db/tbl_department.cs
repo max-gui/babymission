@@ -10,215 +10,218 @@ using System.Data;
 /// <summary>
 ///tbl_department 的摘要说明
 /// </summary>
-public class tbl_department :DataBase
+namespace xm_mis.App_Code.db
 {
-	public tbl_department()
-	{
-		//
-		//TODO: 在此处添加构造函数逻辑
-		//
-	}
-
-    //public int SelectNull()
-    //{
-    //    int selId = -1;
-    //    SqlCommand sqlCmd = null;
-
-    //    string strSQL =
-    //        "SELECT " +
-    //        "departmentId " +
-    //        "FROM tbl_department " +
-    //        "WHERE " +
-    //        "departmentName = '无'";//@titleName";
-
-    //    sqlCmd = this.SqlCom;
-    //    sqlCmd.CommandText = strSQL;
-
-    //    sqlCmd.Connection.Open();
-        
-    //    using (SqlDataReader sdr = sqlCmd.ExecuteReader())
-    //    {
-    //        while (sdr.Read())
-    //        {
-    //            selId = sdr.GetInt32(0);
-    //        }
-    //    }
-
-    //    sqlCmd.Connection.Close();
-
-    //    return selId;
-    //}
-
-    public DataSet SelectSelfDepatView(DataSet dataSet)
+    public class tbl_department : DataBase
     {
-        SqlCommand sqlCmd = null;
+        public tbl_department()
+        {
+            //
+            //TODO: 在此处添加构造函数逻辑
+            //
+        }
 
-        string strSQL =
-            "SELECT " +
-            "* " +
-            "FROM tbl_department ";
+        //public int SelectNull()
+        //{
+        //    int selId = -1;
+        //    SqlCommand sqlCmd = null;
 
-        sqlCmd = this.SqlCom;
-        sqlCmd.CommandText = strSQL;
-        sqlCmd.CommandType = CommandType.Text;
+        //    string strSQL =
+        //        "SELECT " +
+        //        "departmentId " +
+        //        "FROM tbl_department " +
+        //        "WHERE " +
+        //        "departmentName = '无'";//@titleName";
 
-        SqlDataAdapter userDataAdapter = this.SqlDA;
+        //    sqlCmd = this.SqlCom;
+        //    sqlCmd.CommandText = strSQL;
 
-        DataSet myDataSet = new DataSet();
-        userDataAdapter.Fill(myDataSet, "tbl_department");
+        //    sqlCmd.Connection.Open();
 
-        return myDataSet;
-    }
+        //    using (SqlDataReader sdr = sqlCmd.ExecuteReader())
+        //    {
+        //        while (sdr.Read())
+        //        {
+        //            selId = sdr.GetInt32(0);
+        //        }
+        //    }
 
-    public void SelectSelfDepatCommit(DataSet dataSet)
-    {
-        //sqlParaName = new SqlParameter("@usrName", SqlDbType.Char, 10);
-        //sqlParaName.Value = dataSet.Tables["view_usr_info"].Rows[0]["usrName"].ToString().Trim();
-        //       sqlParaIsDel = new SqlParameter("@isDel", SqlDbType.Char, 10);
-        //       sqlParaIsDel.Value = bool.FalseString.ToString().Trim();
-        //sqlCmd.Parameters.Add(sqlParaName);
-        //       sqlCmd.Parameters.Add(sqlParaIsDel);
-        
-        SqlDataAdapter da = this.SqlDA;
-        SqlConnection sqlCon = this.SqlCom.Connection;
-        da.InsertCommand = new SqlCommand("tbl_department_Insert", sqlCon);
-        da.DeleteCommand = new SqlCommand("tbl_department_delete", sqlCon);
-        da.UpdateCommand = new SqlCommand("tbl_department_update", sqlCon);
-        da.InsertCommand.CommandType = CommandType.StoredProcedure;
-        da.DeleteCommand.CommandType = CommandType.StoredProcedure;
-        da.UpdateCommand.CommandType = CommandType.StoredProcedure;
-        SqlCommandBuilder scb = new SqlCommandBuilder(da);
-        //SqlCommandBuilder userScb = new SqlCommandBuilder(userDataAdapter);
-        da.Update(dataSet, "tbl_department");
-        dataSet.AcceptChanges();
-    }
+        //    sqlCmd.Connection.Close();
 
-    public void SelfDepDel(int depId)
-    {
-        #region sqlPara declare
-        //realName
-        SqlParameter sqlParaDepId = null;
-        //usrContact
-        SqlParameter sqlParaDepEnd = null;
-        #endregion
+        //    return selId;
+        //}
 
-        SqlCommand sqlCmd = null;
+        public DataSet SelectSelfDepatView(DataSet dataSet)
+        {
+            SqlCommand sqlCmd = null;
 
-        string strSQL = "tbl_department_delete";
+            string strSQL =
+                "SELECT " +
+                "* " +
+                "FROM tbl_department ";
 
-        sqlCmd = this.SqlCom;
-        sqlCmd.CommandText = strSQL;
-        sqlCmd.CommandType = CommandType.StoredProcedure;
+            sqlCmd = this.SqlCom;
+            sqlCmd.CommandText = strSQL;
+            sqlCmd.CommandType = CommandType.Text;
 
-        #region sqlParaInit
-        DateTime st = DateTime.Now;
+            SqlDataAdapter userDataAdapter = this.SqlDA;
 
-        sqlParaDepId = new SqlParameter("@delDepartmentId", depId);
-        sqlParaDepEnd = new SqlParameter("@delEndTime", st);
-        #endregion
+            DataSet myDataSet = new DataSet();
+            userDataAdapter.Fill(myDataSet, "tbl_department");
 
-        #region sqlParaAdd
-        sqlCmd.Parameters.Clear();
-        sqlCmd.Parameters.Add(sqlParaDepId);
-        sqlCmd.Parameters.Add(sqlParaDepEnd);
-        #endregion
+            return myDataSet;
+        }
 
-        sqlCmd.Connection.Open();
+        public void SelectSelfDepatCommit(DataSet dataSet)
+        {
+            //sqlParaName = new SqlParameter("@usrName", SqlDbType.Char, 10);
+            //sqlParaName.Value = dataSet.Tables["view_usr_info"].Rows[0]["usrName"].ToString().Trim();
+            //       sqlParaIsDel = new SqlParameter("@isDel", SqlDbType.Char, 10);
+            //       sqlParaIsDel.Value = bool.FalseString.ToString().Trim();
+            //sqlCmd.Parameters.Add(sqlParaName);
+            //       sqlCmd.Parameters.Add(sqlParaIsDel);
 
-        sqlCmd.ExecuteNonQuery();
+            SqlDataAdapter da = this.SqlDA;
+            SqlConnection sqlCon = this.SqlCom.Connection;
+            da.InsertCommand = new SqlCommand("tbl_department_Insert", sqlCon);
+            da.DeleteCommand = new SqlCommand("tbl_department_delete", sqlCon);
+            da.UpdateCommand = new SqlCommand("tbl_department_update", sqlCon);
+            da.InsertCommand.CommandType = CommandType.StoredProcedure;
+            da.DeleteCommand.CommandType = CommandType.StoredProcedure;
+            da.UpdateCommand.CommandType = CommandType.StoredProcedure;
+            SqlCommandBuilder scb = new SqlCommandBuilder(da);
+            //SqlCommandBuilder userScb = new SqlCommandBuilder(userDataAdapter);
+            da.Update(dataSet, "tbl_department");
+            dataSet.AcceptChanges();
+        }
 
-        sqlCmd.Connection.Close();
-    }
+        public void SelfDepDel(int depId)
+        {
+            #region sqlPara declare
+            //realName
+            SqlParameter sqlParaDepId = null;
+            //usrContact
+            SqlParameter sqlParaDepEnd = null;
+            #endregion
 
-    public void SelfDepUpdate(int depId , string depName)
-    {
-        #region sqlPara declare
-        //depId
-        SqlParameter sqlParaDepId = null;
-        ////depEnd
-        //SqlParameter sqlParaDepEnd = null;
-        //depName
-        SqlParameter sqlParaDepName = null;
-        #endregion
+            SqlCommand sqlCmd = null;
 
-        SqlCommand sqlCmd = null;
+            string strSQL = "tbl_department_delete";
 
-        string strSQL = "tbl_department_update";
+            sqlCmd = this.SqlCom;
+            sqlCmd.CommandText = strSQL;
+            sqlCmd.CommandType = CommandType.StoredProcedure;
 
-        sqlCmd = this.SqlCom;
-        sqlCmd.CommandText = strSQL;
-        sqlCmd.CommandType = CommandType.StoredProcedure;
+            #region sqlParaInit
+            DateTime st = DateTime.Now;
 
-        #region sqlParaInit
-        //DateTime st = DateTime.Now;
+            sqlParaDepId = new SqlParameter("@delDepartmentId", depId);
+            sqlParaDepEnd = new SqlParameter("@delEndTime", st);
+            #endregion
 
-        sqlParaDepId = new SqlParameter("@departmentId", depId);
-        //sqlParaDepEnd = new SqlParameter("@delEndTime", st);
-        sqlParaDepName = new SqlParameter("@newDepartmentName", depName);
-        #endregion
+            #region sqlParaAdd
+            sqlCmd.Parameters.Clear();
+            sqlCmd.Parameters.Add(sqlParaDepId);
+            sqlCmd.Parameters.Add(sqlParaDepEnd);
+            #endregion
 
-        #region sqlParaAdd
-        sqlCmd.Parameters.Clear();
-        sqlCmd.Parameters.Add(sqlParaDepId);
-        //sqlCmd.Parameters.Add(sqlParaDepEnd);
-        sqlCmd.Parameters.Add(sqlParaDepName);
-        #endregion
+            sqlCmd.Connection.Open();
 
-        sqlCmd.Connection.Open();
+            sqlCmd.ExecuteNonQuery();
 
-        sqlCmd.ExecuteNonQuery();
+            sqlCmd.Connection.Close();
+        }
 
-        sqlCmd.Connection.Close();
-    }
+        public void SelfDepUpdate(int depId, string depName)
+        {
+            #region sqlPara declare
+            //depId
+            SqlParameter sqlParaDepId = null;
+            ////depEnd
+            //SqlParameter sqlParaDepEnd = null;
+            //depName
+            SqlParameter sqlParaDepName = null;
+            #endregion
 
-    public string SelfDepAdd(string depName)
-    {
-        #region sqlPara declare
-        //realName
-        SqlParameter sqlParaDepId = null;
-        //usrContact
-        SqlParameter sqlParaDepEnd = null;
-        //usrContact
-        SqlParameter sqlParaDepName = null;
-        #endregion
+            SqlCommand sqlCmd = null;
 
-        SqlCommand sqlCmd = null;
+            string strSQL = "tbl_department_update";
 
-        string strSQL = "tbl_department_Insert";
+            sqlCmd = this.SqlCom;
+            sqlCmd.CommandText = strSQL;
+            sqlCmd.CommandType = CommandType.StoredProcedure;
 
-        sqlCmd = this.SqlCom;
-        sqlCmd.CommandText = strSQL;
-        sqlCmd.CommandType = CommandType.StoredProcedure;
+            #region sqlParaInit
+            //DateTime st = DateTime.Now;
 
-        #region sqlParaInit
-        DateTime st = DateTime.Now;
+            sqlParaDepId = new SqlParameter("@departmentId", depId);
+            //sqlParaDepEnd = new SqlParameter("@delEndTime", st);
+            sqlParaDepName = new SqlParameter("@newDepartmentName", depName);
+            #endregion
 
-        sqlParaDepId = new SqlParameter("@Identity", SqlDbType.BigInt);
-        sqlParaDepEnd = new SqlParameter("@startTime", st);
-        sqlParaDepName = new SqlParameter("@departmentName", depName);
-        #endregion
+            #region sqlParaAdd
+            sqlCmd.Parameters.Clear();
+            sqlCmd.Parameters.Add(sqlParaDepId);
+            //sqlCmd.Parameters.Add(sqlParaDepEnd);
+            sqlCmd.Parameters.Add(sqlParaDepName);
+            #endregion
 
-        #region sqlParaAdd
-        sqlCmd.Parameters.Clear();
-        sqlCmd.Parameters.Add(sqlParaDepId);
-        sqlCmd.Parameters.Add(sqlParaDepEnd);
-        sqlCmd.Parameters.Add(sqlParaDepName);
-        #endregion
+            sqlCmd.Connection.Open();
 
-        #region sqlDirection
-        sqlParaDepId.Direction = ParameterDirection.Output;
-        //sqlParaDepId.Direction = ParameterDirection.Output;
-        //sqlParaTitleId.Direction = ParameterDirection.Output;
-        //sqlParaAuthId.Direction = ParameterDirection.Output;
-        #endregion
+            sqlCmd.ExecuteNonQuery();
 
-        sqlCmd.Connection.Open();
+            sqlCmd.Connection.Close();
+        }
 
-        sqlCmd.ExecuteNonQuery();
+        public string SelfDepAdd(string depName)
+        {
+            #region sqlPara declare
+            //realName
+            SqlParameter sqlParaDepId = null;
+            //usrContact
+            SqlParameter sqlParaDepEnd = null;
+            //usrContact
+            SqlParameter sqlParaDepName = null;
+            #endregion
 
-        sqlCmd.Connection.Close();
+            SqlCommand sqlCmd = null;
 
-        string depId = sqlParaDepId.Value.ToString();
-        return depId;
+            string strSQL = "tbl_department_Insert";
+
+            sqlCmd = this.SqlCom;
+            sqlCmd.CommandText = strSQL;
+            sqlCmd.CommandType = CommandType.StoredProcedure;
+
+            #region sqlParaInit
+            DateTime st = DateTime.Now;
+
+            sqlParaDepId = new SqlParameter("@Identity", SqlDbType.BigInt);
+            sqlParaDepEnd = new SqlParameter("@startTime", st);
+            sqlParaDepName = new SqlParameter("@departmentName", depName);
+            #endregion
+
+            #region sqlParaAdd
+            sqlCmd.Parameters.Clear();
+            sqlCmd.Parameters.Add(sqlParaDepId);
+            sqlCmd.Parameters.Add(sqlParaDepEnd);
+            sqlCmd.Parameters.Add(sqlParaDepName);
+            #endregion
+
+            #region sqlDirection
+            sqlParaDepId.Direction = ParameterDirection.Output;
+            //sqlParaDepId.Direction = ParameterDirection.Output;
+            //sqlParaTitleId.Direction = ParameterDirection.Output;
+            //sqlParaAuthId.Direction = ParameterDirection.Output;
+            #endregion
+
+            sqlCmd.Connection.Open();
+
+            sqlCmd.ExecuteNonQuery();
+
+            sqlCmd.Connection.Close();
+
+            string depId = sqlParaDepId.Value.ToString();
+            return depId;
+        }
     }
 }

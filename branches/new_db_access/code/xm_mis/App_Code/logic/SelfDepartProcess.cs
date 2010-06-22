@@ -10,6 +10,9 @@ using System.Web.UI;
 using System.Web.UI.WebControls;
 using System.Web.UI.WebControls.WebParts;
 using System.Web.UI.HtmlControls;
+
+using xm_mis.App_Code.db;
+
 /// <summary>
 ///SelfDepartProcess 的摘要说明
 /// </summary>

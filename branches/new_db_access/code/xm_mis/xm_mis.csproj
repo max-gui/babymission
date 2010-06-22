@@ -55,6 +55,7 @@
     <Content Include="Account\Login.aspx" />
     <Content Include="Account\Register.aspx" />
     <Content Include="Main\custInfoManager\custCompManager\custCompAdd.aspx" />
+    <Content Include="Main\custInfoManager\custCompManager\custManAdd.aspx" />
     <Content Include="Main\DefaultMainSite.aspx" />
     <Content Include="Main\NoAuthority.aspx" />
     <Content Include="Main\self_depart_title\selfDep\SelfDepAdd.aspx" />
@@ -105,6 +106,7 @@
     <Compile Include="App_Code\db\DataBase.cs" />
     <Compile Include="App_Code\db\tbl_authority.cs" />
     <Compile Include="App_Code\db\tbl_customer_company.cs" />
+    <Content Include="App_Code\db\tbl_customer_manager.cs" />
     <Compile Include="App_Code\db\tbl_department.cs" />
     <Compile Include="App_Code\db\tbl_title.cs" />
     <Compile Include="App_Code\db\tbl_usr.cs" />
@@ -115,6 +117,7 @@
     <Compile Include="App_Code\db_connection\SQLServConnection.cs" />
     <Compile Include="App_Code\logic\AuthProcess.cs" />
     <Compile Include="App_Code\logic\custCompProcess.cs" />
+    <Content Include="App_Code\logic\custManProcess.cs" />
     <Compile Include="App_Code\logic\SelectLogic.cs" />
     <Compile Include="App_Code\logic\SelfDepartProcess.cs" />
     <Compile Include="App_Code\logic\SelfTitleProcess.cs" />
@@ -136,6 +139,13 @@
     </Compile>
     <Compile Include="Main\custInfoManager\custCompManager\custCompAdd.aspx.designer.cs">
       <DependentUpon>custCompAdd.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Main\custInfoManager\custCompManager\custManAdd.aspx.cs">
+      <DependentUpon>custManAdd.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Main\custInfoManager\custCompManager\custManAdd.aspx.designer.cs">
+      <DependentUpon>custManAdd.aspx</DependentUpon>
     </Compile>
     <Compile Include="Main\DefaultMainSite.aspx.cs">
       <DependentUpon>DefaultMainSite.aspx</DependentUpon>

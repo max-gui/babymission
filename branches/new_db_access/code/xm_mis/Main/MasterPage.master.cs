@@ -42,7 +42,9 @@ namespace xm_mis.Main
                 case ("custCompAdd"):
                     Response.Redirect("~/Main/custInfoManager/custCompManager/custCompAdd.aspx");
                     break;
-
+                case ("custManAdd"):
+                    Response.Redirect("~/Main/custInfoManager/custCompManager/custManAdd.aspx");
+                    break;
             }
         }
     }

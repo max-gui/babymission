@@ -7,6 +7,9 @@ using System.Web.Services;
 using System.Web.Services.Protocols;
 using System.Data.SqlClient;
 using System.Data;
+
+using xm_mis.App_Code.db;
+
 /// <summary>
 ///tbl_customer_company 的摘要说明
 /// </summary>
