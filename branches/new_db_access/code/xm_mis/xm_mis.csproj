@@ -104,7 +104,6 @@
     <Compile Include="Account\Register.aspx.designer.cs">
       <DependentUpon>Register.aspx</DependentUpon>
     </Compile>
-    <Compile Include="Class1.cs" />
     <Compile Include="db\DataBase.cs" />
     <Compile Include="db\tbl_authority.cs" />
     <Compile Include="db\tbl_customer_company.cs" />
