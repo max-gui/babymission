@@ -1,0 +1,35 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<publishData>
+  <publishProfile publishUrl="ftp://xmel.sh.cn" deleteExistingFiles="True" ftpAnonymousLogin="False" ftpPassiveMode="True" msdeploySite="" msdeploySiteID="" msdeployRemoteSitePhysicalPath="" msdeployAllowUntrustedCertificate="False" msdeploySkipExtraFilesOnServer="True" msdeployMarkAsApp="False" profileName="配置文件1" publishMethod="FTP" replaceMatchingFiles="False" userName="mis" savePWD="True" userPWD="AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAAoaXuUIGkhEmQoAgk35kMMAAAAAACAAAAAAAQZgAAAAEAACAAAAA9QTZShtJl8NsLdONHhJpiXlhevdjm4h4FPH0yz29pNgAAAAAOgAAAAAIAACAAAADmidc2ws9FgwKabwTUY6JZh9kJIPzkomPW3hrXa40gjBAAAAB9P4IR2OqZOiKfF3qGtuvOQAAAAC1dYIWRUT5uiMO2xRqAXOUk112GJHfIC5JhTqMn14jAlFtsOgp+0EQ5tchK+j/M8luMQitiUhrQQM5EaxXLakM=" SelectedForPublish="True">
+    <file relUrl="Main/self_depart_title/selfDep/SelfDepartment.aspx" publishTime="07/05/2010 09:08:01" />
+    <file relUrl="Main/self_depart_title/selfDep/SelfDepAdd.aspx" publishTime="07/05/2010 09:08:01" />
+    <file relUrl="bin/xm_mis.pdb" publishTime="07/05/2010 12:10:27" />
+    <file relUrl="Global.asax" publishTime="07/05/2010 09:10:49" />
+    <file relUrl="Main/custInfoManager/custCompManager/custCompEditing.aspx" publishTime="07/05/2010 09:07:52" />
+    <file relUrl="Main/usrSelfModify/usrSelfPwdModify.aspx" publishTime="07/05/2010 09:08:16" />
+    <file relUrl="Main/NoAuthority.aspx" publishTime="07/05/2010 09:08:16" />
+    <file relUrl="Main/self_depart_title/selfTitle/SelfTitle.aspx" publishTime="07/05/2010 09:08:15" />
+    <file relUrl="About.aspx" publishTime="07/05/2010 09:10:49" />
+    <file relUrl="Scripts/jquery-1.4.1.js" publishTime="07/05/2010 09:10:39" />
+    <file relUrl="bin/xm_mis.dll" publishTime="07/05/2010 12:10:27" />
+    <file relUrl="Site.Master" publishTime="07/05/2010 09:10:49" />
+    <file relUrl="Main/custInfoManager/custCompManager/custCompAdd.aspx" publishTime="07/05/2010 09:07:52" />
+    <file relUrl="Main/DefaultMainSite.aspx" publishTime="07/05/2010 09:08:16" />
+    <file relUrl="Account/Web.config" publishTime="07/05/2010 09:10:44" />
+    <file relUrl="Account/Register.aspx" publishTime="07/05/2010 09:10:44" />
+    <file relUrl="Account/Login.aspx" publishTime="07/05/2010 09:10:44" />
+    <file relUrl="Main/self_depart_title/selfTitle/SelfTitleAdd.aspx" publishTime="07/05/2010 09:08:15" />
+    <file relUrl="Scripts/jquery-1.4.1.min.js" publishTime="07/05/2010 09:10:39" />
+    <file relUrl="Main/MasterPage.master" publishTime="07/05/2010 09:08:16" />
+    <file relUrl="Default.aspx" publishTime="07/05/2010 09:10:49" />
+    <file relUrl="Main/custInfoManager/custCompManager/custManAdd.aspx" publishTime="07/05/2010 09:07:52" />
+    <file relUrl="Main/usrSelfModify/usrSelfContactModify.aspx" publishTime="07/05/2010 09:08:16" />
+    <file relUrl="Main/usrManagerment/usrInfoDel.aspx" publishTime="07/05/2010 09:07:56" />
+    <file relUrl="Main/custInfoManager/custCompManager/custCompEdit.aspx" publishTime="07/05/2010 09:07:52" />
+    <file relUrl="Web.config" publishTime="07/05/2010 12:11:01" />
+    <file relUrl="Styles/Site.css" publishTime="07/05/2010 09:07:45" />
+    <file relUrl="Main/usrManagerment/usrDepartTitleManagerment.aspx" publishTime="07/05/2010 09:07:57" />
+    <file relUrl="Main/usrManagerment/usrAuthManagerment.aspx" publishTime="07/05/2010 09:07:57" />
+    <file relUrl="Scripts/jquery-1.4.1-vsdoc.js" publishTime="07/05/2010 09:10:39" />
+  </publishProfile>
+</publishData>
