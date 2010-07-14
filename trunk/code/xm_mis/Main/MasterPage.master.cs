@@ -24,15 +24,15 @@ namespace xm_mis.Main
                 case ("titleEdit"):
                     Response.Redirect("~/Main/self_depart_title/selfTitle/SelfTitle.aspx");
                     break;
+                case ("usrInfoModify"):
+                    Response.Redirect("~/Main/usrManagerment/usrInfoManagerment.aspx");
+                    break;
                 case ("usrAuth"):
                     Response.Redirect("~/Main/usrManagerment/usrAuthManagerment.aspx");
                     break;
                 case ("usrDepartTitle"):
                     Response.Redirect("~/Main/usrManagerment/usrDepartTitleManagerment.aspx");
-                    break;
-                case ("usrDel"):
-                    Response.Redirect("~/Main/usrManagerment/usrInfoDel.aspx");
-                    break;
+                    break;               
                 case ("selfPwdModify"):
                     Response.Redirect("~/Main/usrSelfModify/usrSelfPwdModify.aspx");
                     break;
@@ -48,6 +48,7 @@ namespace xm_mis.Main
                 case ("custCompEdit"):
                     Response.Redirect("~/Main/custInfoManager/custCompManager/custCompEdit.aspx");
                     break;    
+                    
             }
         }
     }

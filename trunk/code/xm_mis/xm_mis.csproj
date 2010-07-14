@@ -70,7 +70,7 @@
     <Content Include="Main\self_depart_title\selfTitle\SelfTitleAdd.aspx" />
     <Content Include="Main\usrManagerment\usrAuthManagerment.aspx" />
     <Content Include="Main\usrManagerment\usrDepartTitleManagerment.aspx" />
-    <Content Include="Main\usrManagerment\usrInfoDel.aspx" />
+    <Content Include="Main\usrManagerment\usrInfoManagerment.aspx" />
     <Content Include="Main\usrSelfModify\usrSelfContactModify.aspx" />
     <Content Include="Main\usrSelfModify\usrSelfPwdModify.aspx" />
     <Content Include="Styles\Site.css" />
@@ -232,12 +232,12 @@
     <Compile Include="Main\usrManagerment\usrDepartTitleManagerment.aspx.designer.cs">
       <DependentUpon>usrDepartTitleManagerment.aspx</DependentUpon>
     </Compile>
-    <Compile Include="Main\usrManagerment\usrInfoDel.aspx.cs">
-      <DependentUpon>usrInfoDel.aspx</DependentUpon>
+    <Compile Include="Main\usrManagerment\usrInfoManagerment.aspx.cs">
+      <DependentUpon>usrInfoManagerment.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="Main\usrManagerment\usrInfoDel.aspx.designer.cs">
-      <DependentUpon>usrInfoDel.aspx</DependentUpon>
+    <Compile Include="Main\usrManagerment\usrInfoManagerment.aspx.designer.cs">
+      <DependentUpon>usrInfoManagerment.aspx</DependentUpon>
     </Compile>
     <Compile Include="Main\usrSelfModify\usrSelfContactModify.aspx.cs">
       <DependentUpon>usrSelfContactModify.aspx</DependentUpon>

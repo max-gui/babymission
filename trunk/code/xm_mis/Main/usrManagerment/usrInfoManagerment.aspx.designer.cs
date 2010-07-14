@@ -8,9 +8,9 @@
 //------------------------------------------------------------------------------
 
 namespace xm_mis.Main.usrManagerment {
-    
-    
-    public partial class usrInfoDel {
+
+
+    public partial class usrInfoManagerment {
         
         /// <summary>
         /// usrGV 控件。
@@ -22,13 +22,13 @@ namespace xm_mis.Main.usrManagerment {
         protected global::System.Web.UI.WebControls.GridView usrGV;
         
         /// <summary>
-        /// btnOk 控件。
+        /// btnDel 控件。
         /// </summary>
         /// <remarks>
         /// 自动生成的字段。
         /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Button btnOk;
+        protected global::System.Web.UI.WebControls.Button btnDel;
         
         /// <summary>
         /// btnCancel 控件。
@@ -38,5 +38,14 @@ namespace xm_mis.Main.usrManagerment {
         /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
         /// </remarks>
         protected global::System.Web.UI.WebControls.Button btnCancel;
+        
+        /// <summary>
+        /// btnAdd 控件。
+        /// </summary>
+        /// <remarks>
+        /// 自动生成的字段。
+        /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button btnAdd;
     }
 }

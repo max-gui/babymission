@@ -9,7 +9,7 @@ using System.Data;
 using xm_mis.logic;
 namespace xm_mis.Main.usrManagerment
 {
-    public partial class usrInfoDel : System.Web.UI.Page
+    public partial class usrInfoManagerment : System.Web.UI.Page
     {
         protected void Page_Load(object sender, EventArgs e)
         {
@@ -63,17 +63,50 @@ namespace xm_mis.Main.usrManagerment
             usrGV.Enabled = false;
 
             Button btn = null;
-            btn = btnOk;
+            btn = btnDel;
             btn.Visible = true;
             btn = btnCancel;
             btn.Visible = true;
+            btn = btnAdd;
+            btn.Visible = false;
         }
         protected void usrGV_Sorting(object sender, GridViewSortEventArgs e)
         {
 
         }
 
-        protected void btnOk_Click(object sender, EventArgs e)
+        protected void usrGV_PageIndexChanging(object sender, GridViewPageEventArgs e)
+        {
+            usrGV.PageIndex = e.NewPageIndex;
+
+            usrGV.DataSource = Session["upDtSources"];//["dtSources"] as DataTable;  
+            usrGV.DataBind();
+        }
+        protected void usrGV_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        protected void btnCancel_Click(object sender, EventArgs e)
+        {
+            Button btn = null;
+            btn = btnDel;
+            btn.Visible = false;
+            btn = sender as Button;
+            btn.Visible = false;
+            btn = btnAdd;
+            btn.Visible = true;
+
+            usrGV.SelectedIndex = -1;
+            usrGV.Enabled = true;
+        }
+
+        protected void btnAdd_Click(object sender, EventArgs e)
+        {
+            Response.Redirect("~/Account/Register.aspx");
+        }
+
+        protected void btnDel_Click(object sender, EventArgs e)
         {
             int index = usrGV.SelectedIndex;
             int itemIdex = usrGV.Rows[index].DataItemIndex;
@@ -96,30 +129,8 @@ namespace xm_mis.Main.usrManagerment
             btn.Visible = false;
             btn = btnCancel;
             btn.Visible = false;
-
-            usrGV.SelectedIndex = -1;
-            usrGV.Enabled = true;
-        }
-
-        protected void usrGV_PageIndexChanging(object sender, GridViewPageEventArgs e)
-        {
-            usrGV.PageIndex = e.NewPageIndex;
-
-            usrGV.DataSource = Session["upDtSources"];//["dtSources"] as DataTable;  
-            usrGV.DataBind();
-        }
-        protected void usrGV_SelectedIndexChanged(object sender, EventArgs e)
-        {
-
-        }
-
-        protected void btnCancel_Click(object sender, EventArgs e)
-        {
-            Button btn = null;
-            btn = btnOk;
-            btn.Visible = false;
-            btn = sender as Button;
-            btn.Visible = false;
+            btn = btnAdd;
+            btn.Visible = true;
 
             usrGV.SelectedIndex = -1;
             usrGV.Enabled = true;

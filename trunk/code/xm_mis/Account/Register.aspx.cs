@@ -41,7 +41,7 @@ namespace xm_mis.Account
             {
                 string sn = txtName.Text.ToString().Trim();
                 string sun = txtUsrName.Text.ToString().Trim();
-                string spw = txtPassWord.Text.ToString().Trim();
+                //string spw = txtPassWord.Text.ToString().Trim();
                 string sc = txtContact.Text.ToString().Trim();
                 //int sc = int.Parse(txtContact.Text.ToString().Trim());
 
@@ -52,7 +52,7 @@ namespace xm_mis.Account
                 DataColumn colName = new DataColumn("realName", System.Type.GetType("System.String"));
                 DataColumn colUsrName = new DataColumn("usrName", System.Type.GetType("System.String"));
                 DataColumn colContact = new DataColumn("usrContact", System.Type.GetType("System.String"));
-                DataColumn colPwd = new DataColumn("usrPassWord", System.Type.GetType("System.String"));
+                //DataColumn colPwd = new DataColumn("usrPassWord", System.Type.GetType("System.String"));
 
                 DataTable userTable = new DataTable("tbl_usr");
 
@@ -69,12 +69,12 @@ namespace xm_mis.Account
                 userTable.Columns.Add(colName);
                 userTable.Columns.Add(colUsrName);
                 userTable.Columns.Add(colContact);
-                userTable.Columns.Add(colPwd);
+                //userTable.Columns.Add(colPwd);
 
                 userRow = userTable.NewRow();
                 userRow["realName"] = sn;
                 userRow["usrName"] = sun;
-                userRow["usrPassWord"] = spw;
+                //userRow["usrPassWord"] = spw;
                 userRow["usrContact"] = sc;
                 userTable.Rows.Add(userRow);
 
@@ -93,7 +93,7 @@ namespace xm_mis.Account
                         DataRow dr = dt.NewRow();
                         dr["realName"] = sn;
                         dr["usrName"] = sun;
-                        dr["usrPassWord"] = spw;
+                        //dr["usrPassWord"] = spw;
                         dr["usrContact"] = sc;
 
                         dt.Rows.Add(dr);
@@ -103,15 +103,15 @@ namespace xm_mis.Account
                         up.Add();
                         //up.commit();
 
-                        int nullAuth = 0;
-                        Session["totleAuthority"] = nullAuth;
-                        Session["usrId"] = up.StrRtn;
+                        //int nullAuth = 0;
+                        //Session["totleAuthority"] = nullAuth;
+                        //Session["usrId"] = up.StrRtn;
 
-                        FormsAuthentication.SetAuthCookie(sn, false);
+                        //FormsAuthentication.SetAuthCookie(sn, false);
 
-                        string continueUrl = "~/Main/DefaultMainSite.aspx";//Request.QueryString["ReturnUrl"];
+                        //string continueUrl = "~/Main/DefaultMainSite.aspx";//Request.QueryString["ReturnUrl"];
 
-                        Response.Redirect(continueUrl);
+                        Response.Redirect("~/Main/usrManagerment/usrInfoManagerment.aspx");
                         //aspxName = myLogin.StrRtn + "Main.aspx";
                         //Server.Transfer(aspxName);
                     }
@@ -208,52 +208,52 @@ namespace xm_mis.Account
 
             return flag;
         }
-        protected bool txtPassWord_TextCheck()
-        {
-            bool flag = true;
-            if (string.IsNullOrWhiteSpace(txtPassWord.Text.ToString().Trim()))
-            {
-                lblPassWord.Text = "*必填项!";
-                flag = false;
-            }
-            else if (txtPassWord.Text.ToString().Trim().Length > 10)
-            {
-                lblPassWord.Text = "密码太长!";
-                //Session["flagUsrName"] = bool.FalseString.ToString().Trim();
-                flag = false;
-            }
-            else
-            {
-                lblPassWord.Text = string.Empty;
-                //Session["flagPassWord"] = bool.TrueString.ToString().Trim();
-                //btnOk();
-            }
+        //protected bool txtPassWord_TextCheck()
+        //{
+        //    bool flag = true;
+        //    if (string.IsNullOrWhiteSpace(txtPassWord.Text.ToString().Trim()))
+        //    {
+        //        lblPassWord.Text = "*必填项!";
+        //        flag = false;
+        //    }
+        //    else if (txtPassWord.Text.ToString().Trim().Length > 10)
+        //    {
+        //        lblPassWord.Text = "密码太长!";
+        //        //Session["flagUsrName"] = bool.FalseString.ToString().Trim();
+        //        flag = false;
+        //    }
+        //    else
+        //    {
+        //        lblPassWord.Text = string.Empty;
+        //        //Session["flagPassWord"] = bool.TrueString.ToString().Trim();
+        //        //btnOk();
+        //    }
 
-            return flag;
-        }
-        protected bool txtRPassWord_TextCheck()
-        {
-            bool flag = true;
-            if (string.IsNullOrWhiteSpace(txtRPassWord.Text.ToString().Trim()))
-            {
-                lblRPassWord.Text = "*必填项!";
-                flag = false;
-            }
-            else if (!(txtRPassWord.Text.ToString().Equals(txtPassWord.Text.ToString())))
-            {
-                lblRPassWord.Text = "两次输入的密码不同!";
-                //Session["flagUsrName"] = bool.FalseString.ToString().Trim();
-                flag = false;
-            }
-            else
-            {
-                lblRPassWord.Text = string.Empty;
-                //Session["flagPassWord"] = bool.TrueString.ToString().Trim();
-                //btnOk();
-            }
+        //    return flag;
+        //}
+        //protected bool txtRPassWord_TextCheck()
+        //{
+        //    bool flag = true;
+        //    if (string.IsNullOrWhiteSpace(txtRPassWord.Text.ToString().Trim()))
+        //    {
+        //        lblRPassWord.Text = "*必填项!";
+        //        flag = false;
+        //    }
+        //    else if (!(txtRPassWord.Text.ToString().Equals(txtPassWord.Text.ToString())))
+        //    {
+        //        lblRPassWord.Text = "两次输入的密码不同!";
+        //        //Session["flagUsrName"] = bool.FalseString.ToString().Trim();
+        //        flag = false;
+        //    }
+        //    else
+        //    {
+        //        lblRPassWord.Text = string.Empty;
+        //        //Session["flagPassWord"] = bool.TrueString.ToString().Trim();
+        //        //btnOk();
+        //    }
 
-            return flag;
-        }
+        //    return flag;
+        //}
         protected bool txtContact_TextCheck()
         {
             bool flag = true;
@@ -319,14 +319,14 @@ namespace xm_mis.Account
             {
                 flag = false;
             }
-            else if (!txtPassWord_TextCheck())
-            {
-                flag = false;
-            }
-            else if (!txtRPassWord_TextCheck())
-            {
-                flag = false;
-            }
+            //else if (!txtPassWord_TextCheck())
+            //{
+            //    flag = false;
+            //}
+            //else if (!txtRPassWord_TextCheck())
+            //{
+            //    flag = false;
+            //}
             else if (!txtContact_TextCheck())
             {
                 flag = false;
