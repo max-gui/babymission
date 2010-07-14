@@ -33,19 +33,6 @@
             Text="*必填项"></asp:Label>
     </p>
     <p>
-        密码：&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
-        <asp:TextBox ID="txtPassWord" runat="server" TextMode="Password"></asp:TextBox>
-&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;<asp:Label ID="lblPassWord" runat="server" Font-Size="Large" 
-            ForeColor="Red" Text="*必填项"></asp:Label>
-        &nbsp;&nbsp;&nbsp;&nbsp;</p>
-    <p>
-        密码确认：&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
-        <asp:TextBox ID="txtRPassWord" runat="server" TextMode="Password"></asp:TextBox>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-        <asp:Label ID="lblRPassWord" runat="server" Font-Size="Large" ForeColor="Red" 
-            Text="*必填项"></asp:Label>
-    </p>
-    <p>
         联系方式：&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
         <asp:TextBox ID="txtContact" runat="server"></asp:TextBox>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
@@ -55,7 +42,7 @@
     <p>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
         <asp:Button ID="btnReg" runat="server" onclick="btnReg_Click" 
-            style="height: 21px" Text="注册" />
+            style="height: 21px" Text="注册新用户" />
         <br />
         <br />
     </p>

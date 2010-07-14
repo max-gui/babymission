@@ -8,8 +8,8 @@
         &nbsp;</h2>
     <p>
         请输入用户名和密码。 
-        <asp:HyperLink ID="RegisterHyperLink" runat="server" EnableViewState="false">注册</asp:HyperLink>
-        如果您没有帐户。</p>
+        <%--<asp:HyperLink ID="RegisterHyperLink" runat="server" EnableViewState="false">注册</asp:HyperLink>--%>
+        如果您没有帐户,请和管理员联系。</p>
     <p>
         &nbsp;</p>
     <p>
