@@ -1,6 +1,4 @@
-﻿#define DEBUG
-//#undef DEBUG
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -34,11 +32,8 @@ namespace xm_mis.db_connection
         private void ConnectInit()
         {
             string c_str;
-#if DEBUG
             c_str = "My_DB";
-#else
-            c_str = "My_DB_Release";
-#endif
+
             connStrSet =
                ConfigurationManager.ConnectionStrings[c_str];
             dbFac =

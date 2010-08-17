@@ -7,126 +7,108 @@
 // </自动生成>
 //------------------------------------------------------------------------------
 
-namespace xm_mis.Main.custInfoManager.custCompManager {
+namespace xm_mis.Main.contractManager {
     
     
-    public partial class custManAdd {
+    public partial class subContractEditing {
         
         /// <summary>
-        /// txtName 控件。
+        /// lblMainContractTag 控件。
         /// </summary>
         /// <remarks>
         /// 自动生成的字段。
         /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtName;
+        protected global::System.Web.UI.WebControls.Label lblMainContractTag;
         
         /// <summary>
-        /// lblName 控件。
+        /// lblProjectTag 控件。
         /// </summary>
         /// <remarks>
         /// 自动生成的字段。
         /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lblName;
+        protected global::System.Web.UI.WebControls.Label lblProjectTag;
         
         /// <summary>
-        /// ddlCustComp 控件。
+        /// lblCust 控件。
         /// </summary>
         /// <remarks>
         /// 自动生成的字段。
         /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
         /// </remarks>
-        protected global::System.Web.UI.WebControls.DropDownList ddlCustComp;
+        protected global::System.Web.UI.WebControls.Label lblCust;
         
         /// <summary>
-        /// lblCustComp 控件。
+        /// lblMainContractMoney 控件。
         /// </summary>
         /// <remarks>
         /// 自动生成的字段。
         /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lblCustComp;
+        protected global::System.Web.UI.WebControls.Label lblMainContractMoney;
         
         /// <summary>
-        /// txtDep 控件。
+        /// lblMainContractDateLine 控件。
         /// </summary>
         /// <remarks>
         /// 自动生成的字段。
         /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtDep;
+        protected global::System.Web.UI.WebControls.Label lblMainContractDateLine;
         
         /// <summary>
-        /// lblDep 控件。
+        /// lblMainContractPayment 控件。
         /// </summary>
         /// <remarks>
         /// 自动生成的字段。
         /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lblDep;
+        protected global::System.Web.UI.WebControls.Label lblMainContractPayment;
         
         /// <summary>
-        /// txtTitle 控件。
+        /// contractProductLsB 控件。
         /// </summary>
         /// <remarks>
         /// 自动生成的字段。
         /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtTitle;
+        protected global::System.Web.UI.WebControls.ListBox contractProductLsB;
         
         /// <summary>
-        /// lblTitle 控件。
+        /// subContractGV 控件。
         /// </summary>
         /// <remarks>
         /// 自动生成的字段。
         /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lblTitle;
+        protected global::System.Web.UI.WebControls.GridView subContractGV;
         
         /// <summary>
-        /// txtContact 控件。
+        /// btnAdd 控件。
         /// </summary>
         /// <remarks>
         /// 自动生成的字段。
         /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtContact;
+        protected global::System.Web.UI.WebControls.Button btnAdd;
         
         /// <summary>
-        /// lblContact 控件。
+        /// btnAcceptDel 控件。
         /// </summary>
         /// <remarks>
         /// 自动生成的字段。
         /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lblContact;
+        protected global::System.Web.UI.WebControls.Button btnAcceptDel;
         
         /// <summary>
-        /// txtEmail 控件。
+        /// btnDelCancel 控件。
         /// </summary>
         /// <remarks>
         /// 自动生成的字段。
         /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtEmail;
-        
-        /// <summary>
-        /// lblEmail 控件。
-        /// </summary>
-        /// <remarks>
-        /// 自动生成的字段。
-        /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lblEmail;
-        
-        /// <summary>
-        /// btnOk 控件。
-        /// </summary>
-        /// <remarks>
-        /// 自动生成的字段。
-        /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Button btnOk;
+        protected global::System.Web.UI.WebControls.Button btnDelCancel;
     }
 }

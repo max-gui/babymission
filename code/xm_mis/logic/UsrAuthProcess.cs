@@ -31,6 +31,11 @@ namespace xm_mis.logic
         {
         }
 
+        public void UsrAuthReSum(string usrId)
+        {
+            StrRtn = tua.UsrAuthReSum(usrId);
+        }
+
         public void UsrAuthAdd(int usrId, int authorityId)
         {
             tua.UsrAuthAdd(usrId, authorityId);

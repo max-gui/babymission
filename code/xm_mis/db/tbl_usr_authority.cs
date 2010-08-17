@@ -18,6 +18,45 @@ namespace xm_mis.db
             //
         }
 
+        public string UsrAuthReSum(string usrId)
+        {
+            SqlParameter sqlParaUsrId = null;
+            SqlParameter sqlParaNow = null;
+            SqlParameter sqlParaNewSum = null;
+
+            SqlCommand sqlCmd = null;
+
+            string strSQL = "tbl_usr_authSum";
+
+            sqlCmd = this.SqlCom;
+            sqlCmd.CommandText = strSQL;
+            sqlCmd.CommandType = CommandType.StoredProcedure;
+
+            DateTime st = DateTime.Now;
+
+            sqlParaUsrId = new SqlParameter("@usrId", usrId);
+            sqlParaNow = new SqlParameter("@now", st);
+            sqlParaNewSum = new SqlParameter("@totleAuthRtn", SqlDbType.Int);
+
+            sqlCmd.Parameters.Clear();
+            sqlCmd.Parameters.Add(sqlParaUsrId);
+            sqlCmd.Parameters.Add(sqlParaNow);
+            sqlCmd.Parameters.Add(sqlParaNewSum);
+
+            #region sqlDirection
+            sqlParaNewSum.Direction = ParameterDirection.Output;
+            #endregion
+
+            sqlCmd.Connection.Open();
+
+            sqlCmd.ExecuteNonQuery();
+
+            sqlCmd.Connection.Close();
+
+            string newSum = sqlParaNewSum.Value.ToString();
+            return newSum;            
+        }
+
         public void UsrAuthAdd(int usrId, int authorityId)
         {
             SqlParameter sqlParaUNM = null;

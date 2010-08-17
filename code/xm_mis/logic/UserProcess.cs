@@ -202,7 +202,7 @@ namespace xm_mis.logic
 
         public override void View()
         {
-            MyDst = vuiDB.SelectUsrView(MyDst);
+            //MyDst = vuiDB.SelectUsrView(MyDst);
         }
 
         public override void Search()

@@ -80,6 +80,7 @@ namespace xm_mis.db
 
             sqlCmd = this.SqlCom;
             sqlCmd.CommandText = strSQL;
+            sqlCmd.CommandType = CommandType.Text;
 
             sqlParaUNM = new SqlParameter("@usrName", usrName);
             sqlParaTNM = new SqlParameter("@titleName", titleName);
@@ -118,6 +119,7 @@ namespace xm_mis.db
 
             sqlCmd = this.SqlCom;
             sqlCmd.CommandText = strSQL;
+            sqlCmd.CommandType = CommandType.Text;
 
             sqlParaUNM = new SqlParameter("@usrName", usrName);
             sqlParaTNM = new SqlParameter("@titleName", titleName);

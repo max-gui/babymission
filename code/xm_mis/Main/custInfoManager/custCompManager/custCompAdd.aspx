@@ -27,5 +27,7 @@
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
         <asp:Button ID="btnOk" runat="server" onclick="btnOk_Click" 
             style="height: 21px" Text="确认添加" />
-        &nbsp;</p>
+        &nbsp;&nbsp;&nbsp;&nbsp;
+    <asp:Button ID="btnNo" runat="server" onclick="btnNo_Click" Text="放弃" />
+    </p>
 </asp:Content>

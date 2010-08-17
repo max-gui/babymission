@@ -66,7 +66,7 @@ namespace xm_mis.logic
 
         public void SelfCustCompDel(string custCompId)
         {
-            tcc.SelfCustCompDel(custCompId);
+            tcc.CustCompDel(custCompId);
         }
 
         public override void Del()
@@ -81,6 +81,11 @@ namespace xm_mis.logic
             string compId = tcc.SelectAdd(MyDst);
 
             StrRtn = compId;
+        }
+
+        public void custCompUpdate(int custCompId, string custCompName, string custCompAddr, string custCompTag)
+        {
+            tcc.CustCompUpdate(custCompId, custCompName, custCompAddr, custCompTag);
         }
 
         public override void Updata()
@@ -99,7 +104,7 @@ namespace xm_mis.logic
 
         public override void View()
         {
-            MyDst = tcc.SelectView();
+            //MyDst = tcc.SelectView();
         }
 
         public override void Search()

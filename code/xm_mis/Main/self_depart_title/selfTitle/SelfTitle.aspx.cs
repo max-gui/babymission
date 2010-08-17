@@ -16,7 +16,7 @@ namespace xm_mis.Main.self_depart_title.selfTitle
             if (!(null == Session["totleAuthority"]))
             {
                 int usrAuth = 0;
-                string strUsrAuth = Session["totleAuthority"].ToString().Trim();
+                string strUsrAuth = Session["totleAuthority"] as string;
                 usrAuth = int.Parse(strUsrAuth);
                 int flag = 0x1 << 3;
 

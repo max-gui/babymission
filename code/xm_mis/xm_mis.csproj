@@ -38,6 +38,9 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Microsoft.CSharp" />
+    <Reference Include="Microsoft.ReportViewer.WebForms, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Core" />
@@ -58,16 +61,41 @@
     <Content Include="About.aspx" />
     <Content Include="Account\Login.aspx" />
     <Content Include="Account\Register.aspx" />
+    <Content Include="Main\contractManager\addContract.aspx" />
+    <Content Include="Main\contractManager\contractView.aspx" />
+    <Content Include="Main\contractManager\mainContractProductSel.aspx" />
+    <Content Include="Main\contractManager\subContractAdd.aspx" />
+    <Content Include="Main\contractManager\subContractEdit.aspx" />
+    <Content Include="Main\contractManager\subContractEditing.aspx" />
+    <Content Include="Main\contractManager\subContractProductSel.aspx" />
     <Content Include="Main\custInfoManager\custCompManager\custCompAdd.aspx" />
     <Content Include="Main\custInfoManager\custCompManager\custCompEdit.aspx" />
     <Content Include="Main\custInfoManager\custCompManager\custCompEditing.aspx" />
-    <Content Include="Main\custInfoManager\custCompManager\custManAdd.aspx" />
+    <Content Include="Main\custInfoManager\custManManager\custManAdd.aspx" />
+    <Content Include="Main\custInfoManager\supplierManager\supplierAdd.aspx" />
+    <Content Include="Main\custInfoManager\supplierManager\supplierEdit.aspx" />
+    <Content Include="Main\custInfoManager\supplierManager\supplierEditing.aspx" />
+    <Content Include="Main\custInfoManager\supplierManManager\supplierManAdd.aspx" />
     <Content Include="Main\DefaultMainSite.aspx" />
+    <Content Include="Main\infoViewManager\paymentInfo\paymentExamine.aspx" />
+    <Content Include="Main\infoViewManager\paymentInfo\paymentView.aspx" />
+    <Content Include="Main\infoViewManager\receiptExamine.aspx" />
+    <Content Include="Main\infoViewManager\receiptView.aspx" />
     <Content Include="Main\NoAuthority.aspx" />
+    <Content Include="Main\paymentReceiptManager\paymentAdd.aspx" />
+    <Content Include="Main\paymentReceiptManager\paymentApply.aspx" />
+    <Content Include="Main\paymentReceiptManager\mainContractReceiptView.aspx" />
+    <Content Include="Main\paymentReceiptManager\subContractPaymentView.aspx" />
+    <Content Include="Main\paymentReceiptManager\receiptAdd.aspx" />
+    <Content Include="Main\paymentReceiptManager\receiptApply.aspx" />
+    <Content Include="Main\projectTagInfoManager\projectSearch.aspx" />
+    <Content Include="Main\projectTagInfoManager\projectTagAdd.aspx" />
     <Content Include="Main\self_depart_title\selfDep\SelfDepAdd.aspx" />
     <Content Include="Main\self_depart_title\selfDep\SelfDepartment.aspx" />
     <Content Include="Main\self_depart_title\selfTitle\SelfTitle.aspx" />
     <Content Include="Main\self_depart_title\selfTitle\SelfTitleAdd.aspx" />
+    <Content Include="Main\stockInfoManager\productInfoManager\productAdd.aspx" />
+    <Content Include="Main\stockInfoManager\productInfoManager\productView.aspx" />
     <Content Include="Main\usrManagerment\usrAuthManagerment.aspx" />
     <Content Include="Main\usrManagerment\usrDepartTitleManagerment.aspx" />
     <Content Include="Main\usrManagerment\usrInfoManagerment.aspx" />
@@ -113,14 +141,26 @@
     </Compile>
     <Compile Include="db\DataBase.cs" />
     <Compile Include="db\tbl_authority.cs" />
+    <Compile Include="db\tbl_mainContrctProduct.cs" />
     <Compile Include="db\tbl_customer_company.cs" />
     <Compile Include="db\tbl_customer_manager.cs" />
     <Compile Include="db\tbl_department.cs" />
+    <Compile Include="db\tbl_mainContract.cs" />
+    <Compile Include="db\tbl_paymentApply.cs" />
+    <Compile Include="db\tbl_product.cs" />
+    <Compile Include="db\tbl_projectTagInfo.cs" />
+    <Compile Include="db\tbl_receiptApply.cs" />
+    <Compile Include="db\tbl_subContract.cs" />
+    <Compile Include="db\tbl_subContrctProduct.cs" />
+    <Compile Include="db\tbl_supplier_company.cs" />
+    <Compile Include="db\tbl_supplier_manager.cs" />
     <Compile Include="db\tbl_title.cs" />
     <Compile Include="db\tbl_usr.cs" />
     <Compile Include="db\tbl_usr_authority.cs" />
     <Compile Include="db\tbl_usr_department.cs" />
     <Compile Include="db\tbl_usr_title.cs" />
+    <Compile Include="db\view_mainContract_project_usr.cs" />
+    <Compile Include="db\view_subContract_supplier.cs" />
     <Compile Include="db\view_usr_info.cs" />
     <Compile Include="db_connection\SQLServConnection.cs" />
     <Compile Include="Default.aspx.cs">
@@ -134,13 +174,72 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="logic\AuthProcess.cs" />
+    <Compile Include="logic\MainContractProductProcess.cs" />
     <Compile Include="logic\custCompProcess.cs" />
     <Compile Include="logic\custManProcess.cs" />
+    <Compile Include="logic\MainContractProcess.cs" />
+    <Compile Include="logic\PaymentApplyProcess.cs" />
+    <Compile Include="logic\ProductProcess.cs" />
+    <Compile Include="logic\ProjectTagProcess.cs" />
+    <Compile Include="logic\ReceiptApplyProcess.cs" />
     <Compile Include="logic\SelectLogic.cs" />
     <Compile Include="logic\SelfDepartProcess.cs" />
     <Compile Include="logic\SelfTitleProcess.cs" />
+    <Compile Include="logic\subContractProcess.cs" />
+    <Compile Include="logic\SubContractProductProcess.cs" />
+    <Compile Include="logic\SupplierManProcess.cs" />
+    <Compile Include="logic\SupplierProcess.cs" />
     <Compile Include="logic\UserProcess.cs" />
     <Compile Include="logic\UsrAuthProcess.cs" />
+    <Compile Include="Main\contractManager\addContract.aspx.cs">
+      <DependentUpon>addContract.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Main\contractManager\addContract.aspx.designer.cs">
+      <DependentUpon>addContract.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Main\contractManager\contractView.aspx.cs">
+      <DependentUpon>contractView.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Main\contractManager\contractView.aspx.designer.cs">
+      <DependentUpon>contractView.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Main\contractManager\mainContractProductSel.aspx.cs">
+      <DependentUpon>mainContractProductSel.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Main\contractManager\mainContractProductSel.aspx.designer.cs">
+      <DependentUpon>mainContractProductSel.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Main\contractManager\subContractAdd.aspx.cs">
+      <DependentUpon>subContractAdd.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Main\contractManager\subContractAdd.aspx.designer.cs">
+      <DependentUpon>subContractAdd.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Main\contractManager\subContractEdit.aspx.cs">
+      <DependentUpon>subContractEdit.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Main\contractManager\subContractEdit.aspx.designer.cs">
+      <DependentUpon>subContractEdit.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Main\contractManager\subContractEditing.aspx.cs">
+      <DependentUpon>subContractEditing.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Main\contractManager\subContractEditing.aspx.designer.cs">
+      <DependentUpon>subContractEditing.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Main\contractManager\subContractProductSel.aspx.cs">
+      <DependentUpon>subContractProductSel.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Main\contractManager\subContractProductSel.aspx.designer.cs">
+      <DependentUpon>subContractProductSel.aspx</DependentUpon>
+    </Compile>
     <Compile Include="Main\custInfoManager\custCompManager\custCompAdd.aspx.cs">
       <DependentUpon>custCompAdd.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -162,12 +261,40 @@
     <Compile Include="Main\custInfoManager\custCompManager\custCompEditing.aspx.designer.cs">
       <DependentUpon>custCompEditing.aspx</DependentUpon>
     </Compile>
-    <Compile Include="Main\custInfoManager\custCompManager\custManAdd.aspx.cs">
+    <Compile Include="Main\custInfoManager\custManManager\custManAdd.aspx.cs">
       <DependentUpon>custManAdd.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="Main\custInfoManager\custCompManager\custManAdd.aspx.designer.cs">
+    <Compile Include="Main\custInfoManager\custManManager\custManAdd.aspx.designer.cs">
       <DependentUpon>custManAdd.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Main\custInfoManager\supplierManager\supplierAdd.aspx.cs">
+      <DependentUpon>supplierAdd.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Main\custInfoManager\supplierManager\supplierAdd.aspx.designer.cs">
+      <DependentUpon>supplierAdd.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Main\custInfoManager\supplierManager\supplierEdit.aspx.cs">
+      <DependentUpon>supplierEdit.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Main\custInfoManager\supplierManager\supplierEdit.aspx.designer.cs">
+      <DependentUpon>supplierEdit.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Main\custInfoManager\supplierManager\supplierEditing.aspx.cs">
+      <DependentUpon>supplierEditing.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Main\custInfoManager\supplierManager\supplierEditing.aspx.designer.cs">
+      <DependentUpon>supplierEditing.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Main\custInfoManager\supplierManManager\supplierManAdd.aspx.cs">
+      <DependentUpon>supplierManAdd.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Main\custInfoManager\supplierManManager\supplierManAdd.aspx.designer.cs">
+      <DependentUpon>supplierManAdd.aspx</DependentUpon>
     </Compile>
     <Compile Include="Main\DefaultMainSite.aspx.cs">
       <DependentUpon>DefaultMainSite.aspx</DependentUpon>
@@ -175,6 +302,34 @@
     </Compile>
     <Compile Include="Main\DefaultMainSite.aspx.designer.cs">
       <DependentUpon>DefaultMainSite.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Main\infoViewManager\paymentInfo\paymentExamine.aspx.cs">
+      <DependentUpon>paymentExamine.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Main\infoViewManager\paymentInfo\paymentExamine.aspx.designer.cs">
+      <DependentUpon>paymentExamine.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Main\infoViewManager\paymentInfo\paymentView.aspx.cs">
+      <DependentUpon>paymentView.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Main\infoViewManager\paymentInfo\paymentView.aspx.designer.cs">
+      <DependentUpon>paymentView.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Main\infoViewManager\receiptExamine.aspx.cs">
+      <DependentUpon>receiptExamine.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Main\infoViewManager\receiptExamine.aspx.designer.cs">
+      <DependentUpon>receiptExamine.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Main\infoViewManager\receiptView.aspx.cs">
+      <DependentUpon>receiptView.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Main\infoViewManager\receiptView.aspx.designer.cs">
+      <DependentUpon>receiptView.aspx</DependentUpon>
     </Compile>
     <Compile Include="Main\MasterPage.master.cs">
       <DependentUpon>MasterPage.master</DependentUpon>
@@ -189,6 +344,62 @@
     </Compile>
     <Compile Include="Main\NoAuthority.aspx.designer.cs">
       <DependentUpon>NoAuthority.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Main\paymentReceiptManager\paymentAdd.aspx.cs">
+      <DependentUpon>paymentAdd.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Main\paymentReceiptManager\paymentAdd.aspx.designer.cs">
+      <DependentUpon>paymentAdd.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Main\paymentReceiptManager\paymentApply.aspx.cs">
+      <DependentUpon>paymentApply.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Main\paymentReceiptManager\paymentApply.aspx.designer.cs">
+      <DependentUpon>paymentApply.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Main\paymentReceiptManager\mainContractReceiptView.aspx.cs">
+      <DependentUpon>mainContractReceiptView.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Main\paymentReceiptManager\mainContractReceiptView.aspx.designer.cs">
+      <DependentUpon>mainContractReceiptView.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Main\paymentReceiptManager\subContractPaymentView.aspx.cs">
+      <DependentUpon>subContractPaymentView.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Main\paymentReceiptManager\subContractPaymentView.aspx.designer.cs">
+      <DependentUpon>subContractPaymentView.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Main\paymentReceiptManager\receiptAdd.aspx.cs">
+      <DependentUpon>receiptAdd.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Main\paymentReceiptManager\receiptAdd.aspx.designer.cs">
+      <DependentUpon>receiptAdd.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Main\paymentReceiptManager\receiptApply.aspx.cs">
+      <DependentUpon>receiptApply.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Main\paymentReceiptManager\receiptApply.aspx.designer.cs">
+      <DependentUpon>receiptApply.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Main\projectTagInfoManager\projectSearch.aspx.cs">
+      <DependentUpon>projectSearch.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Main\projectTagInfoManager\projectSearch.aspx.designer.cs">
+      <DependentUpon>projectSearch.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Main\projectTagInfoManager\projectTagAdd.aspx.cs">
+      <DependentUpon>projectTagAdd.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Main\projectTagInfoManager\projectTagAdd.aspx.designer.cs">
+      <DependentUpon>projectTagAdd.aspx</DependentUpon>
     </Compile>
     <Compile Include="Main\self_depart_title\selfDep\SelfDepAdd.aspx.cs">
       <DependentUpon>SelfDepAdd.aspx</DependentUpon>
@@ -217,6 +428,20 @@
     </Compile>
     <Compile Include="Main\self_depart_title\selfTitle\SelfTitleAdd.aspx.designer.cs">
       <DependentUpon>SelfTitleAdd.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Main\stockInfoManager\productInfoManager\productAdd.aspx.cs">
+      <DependentUpon>productAdd.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Main\stockInfoManager\productInfoManager\productAdd.aspx.designer.cs">
+      <DependentUpon>productAdd.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Main\stockInfoManager\productInfoManager\productView.aspx.cs">
+      <DependentUpon>productView.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Main\stockInfoManager\productInfoManager\productView.aspx.designer.cs">
+      <DependentUpon>productView.aspx</DependentUpon>
     </Compile>
     <Compile Include="Main\usrManagerment\usrAuthManagerment.aspx.cs">
       <DependentUpon>usrAuthManagerment.aspx</DependentUpon>
@@ -280,7 +505,7 @@
         <WebProjectProperties>
           <UseIIS>False</UseIIS>
           <AutoAssignPort>True</AutoAssignPort>
-          <DevelopmentServerPort>10965</DevelopmentServerPort>
+          <DevelopmentServerPort>6964</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
           <IISUrl>
           </IISUrl>

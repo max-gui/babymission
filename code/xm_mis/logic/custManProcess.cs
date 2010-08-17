@@ -19,6 +19,19 @@ namespace xm_mis.logic
         }
 
         private tbl_customer_manager tcm = null;
+        private string custCompId = string.Empty;
+
+        public string CustCompId
+        {
+            get
+            {
+                return custCompId;
+            }
+            set
+            {
+                custCompId = value;
+            }
+        }
 
         public override void Process()
         {
@@ -49,12 +62,23 @@ namespace xm_mis.logic
             string end = DateTime.Now.ToShortDateString();
 
             string strFilter =
-                " endTime > " + "'" + end + "'";
-            MyDst.Tables["tbl_customer_company"].DefaultView.RowFilter = strFilter;
+                 " endTime > " + "'" + end + "'" +
+                 " and custCompyId = " + custCompId;
+            MyDst.Tables["tbl_customer_manager"].DefaultView.RowFilter = strFilter;
 
             //TAB_DATA_USERDatabase db = (TAB_DATA_USERDatabase)("Database", "DataBase.TAB_DATA_USERDatabase");
             //MyDst = db.SelectView();
             //StrRtn = db.selectNum().ToString();
+        }
+        
+        public void custCompManUpdate(int custManId, string compManName, string compManCont, string compManEmail, string compManDep,string compManTitle)
+        {
+            tcm.custCompManUpdate(custManId, compManName, compManCont, compManEmail, compManDep, compManTitle);
+        }
+
+        public void CustCompManDel(string custCompManId)
+        {
+            tcm.CustCompManDel(custCompManId);
         }
 
         public override void Del()

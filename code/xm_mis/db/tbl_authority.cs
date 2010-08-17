@@ -18,35 +18,35 @@ namespace xm_mis.db
             //
         }
 
-        public int SelectNull()
-        {
-            int selAu = -1;
-            SqlCommand sqlCmd = null;
+        //public int SelectNull()
+        //{
+        //    int selAu = -1;
+        //    SqlCommand sqlCmd = null;
 
-            string strSQL =
-                "SELECT " +
-                "authority " +
-                "FROM tbl_authority " +
-                "WHERE " +
-                "authorityName = '无'";//@titleName";
+        //    string strSQL =
+        //        "SELECT " +
+        //        "authority " +
+        //        "FROM tbl_authority " +
+        //        "WHERE " +
+        //        "authorityName = '无'";//@titleName";
 
-            sqlCmd = this.SqlCom;
-            sqlCmd.CommandText = strSQL;
+        //    sqlCmd = this.SqlCom;
+        //    sqlCmd.CommandText = strSQL;
 
-            sqlCmd.Connection.Open();
+        //    sqlCmd.Connection.Open();
 
-            using (SqlDataReader sdr = sqlCmd.ExecuteReader())
-            {
-                while (sdr.Read())
-                {
-                    selAu = sdr.GetInt32(0);
-                }
-            }
+        //    using (SqlDataReader sdr = sqlCmd.ExecuteReader())
+        //    {
+        //        while (sdr.Read())
+        //        {
+        //            selAu = sdr.GetInt32(0);
+        //        }
+        //    }
 
-            sqlCmd.Connection.Close();
+        //    sqlCmd.Connection.Close();
 
-            return selAu;
-        }
+        //    return selAu;
+        //}
 
         public DataSet SelectAuthorityView()
         {

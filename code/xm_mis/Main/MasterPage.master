@@ -23,6 +23,9 @@
         <DynamicMenuStyle BackColor="#F7F6F3" />
         <DynamicSelectedStyle BackColor="#5D7B9D" />
         <Items>
+            <asp:MenuItem Text="公共信息" Value="公共信息">
+                <asp:MenuItem Text="项目号信息" Value="projectTagInfo"></asp:MenuItem>
+            </asp:MenuItem>
             <asp:MenuItem Text="个人信息更改" Value="个人信息更改">
                 <asp:MenuItem Text="密码修改" Value="selfPwdModify"></asp:MenuItem>
                 <asp:MenuItem Text="联系方式修改" Value="selfContectModify"></asp:MenuItem>
@@ -37,10 +40,27 @@
                 <asp:MenuItem Text="公司职位管理" Value="titleEdit"></asp:MenuItem>
             </asp:MenuItem>
             <asp:MenuItem Text="客户信息管理" Value="客户信息管理">
-                <asp:MenuItem Text="添加新客户公司" Value="custCompAdd"></asp:MenuItem>
                 <asp:MenuItem Text="客户公司信息维护" Value="custCompEdit"></asp:MenuItem>
-                <asp:MenuItem Text="添加新客户项目经理" Value="custManAdd"></asp:MenuItem>
-                <asp:MenuItem Text="客户项目经理信息维护" Value="custManEdit"></asp:MenuItem>
+                <asp:MenuItem Text="供应商信息管理" Value="supplierEdit"></asp:MenuItem>
+            </asp:MenuItem>
+            <asp:MenuItem Text="项目信息管理" Value="项目信息管理">
+                <asp:MenuItem Text="项目信息查询" Value="projectSearch"></asp:MenuItem>
+                <asp:MenuItem Text="新项目号申请" Value="newProject"></asp:MenuItem>
+            </asp:MenuItem>
+            <asp:MenuItem Text="合同信息管理" Value="合同信息管理">
+                <asp:MenuItem Text="合同信息查询" Value="contractView"></asp:MenuItem>
+                <asp:MenuItem Text="新建合同" Value="addContract"></asp:MenuItem>
+                <asp:MenuItem Text="编辑副合同信息" Value="subContractEdit"></asp:MenuItem>
+            </asp:MenuItem>
+            <asp:MenuItem Text="付款与开票管理" Value="付款与开票管理">
+                <asp:MenuItem Text="付款与开票查询" Value="mainContractReceiptView"></asp:MenuItem>
+            </asp:MenuItem>
+            <asp:MenuItem Text="库存管理" Value="库存管理">
+                <asp:MenuItem Text="货物品种管理" Value="productView"></asp:MenuItem>
+            </asp:MenuItem>
+            <asp:MenuItem Text="项目相关性息" Value="项目相关性息">
+                <asp:MenuItem Text="票务信息" Value="receiptView"></asp:MenuItem>
+                <asp:MenuItem Text="款项信息" Value="paymentView"></asp:MenuItem>
             </asp:MenuItem>
         </Items>
         <StaticHoverStyle BackColor="#7C6F57" ForeColor="White" />

@@ -13,11 +13,10 @@ namespace xm_mis.Main.usrManagerment
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-
             if (!(null == Session["totleAuthority"]))
             {
                 int usrAuth = 0;
-                string strUsrAuth = Session["totleAuthority"].ToString().Trim();
+                string strUsrAuth = Session["totleAuthority"] as string;
                 usrAuth = int.Parse(strUsrAuth);
                 int flag = 0x1 << 3;
 
@@ -276,6 +275,7 @@ namespace xm_mis.Main.usrManagerment
                 }
             }
 
+            uap.UsrAuthReSum(usrId);
             uap.View();
 
             DataTable usrAuTable = uap.MyDst.Tables["view_usr_autority"];
