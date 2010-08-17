@@ -192,7 +192,7 @@ namespace xm_mis.db
             #region sqlParaInit
             DateTime st = DateTime.Now;
 
-            sqlParaDepId = new SqlParameter("@Identity", SqlDbType.BigInt);
+            sqlParaDepId = new SqlParameter("@Identity", SqlDbType.Int);
             sqlParaDepEnd = new SqlParameter("@startTime", st);
             sqlParaDepName = new SqlParameter("@departmentName", depName);
             #endregion

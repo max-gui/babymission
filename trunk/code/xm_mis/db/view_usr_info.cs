@@ -37,6 +37,7 @@ namespace xm_mis.db
 
             sqlCmd = this.SqlCom;
             sqlCmd.CommandText = strSQL;
+            sqlCmd.CommandType = CommandType.Text;
             //userRow["endTime"]
             string usrNm = dataSet.Tables["tbl_usr"].Rows[0]["usrName"].ToString();
             sqlParaNM = new SqlParameter("@usrName", usrNm);
@@ -58,37 +59,38 @@ namespace xm_mis.db
             return myDataSet;
         }
 
-        public DataSet SelectUsrView(DataSet dataSet)
-        {
-            //SqlParameter sqlParaName = null;
-            //SqlParameter sqlParaPassWord = null;
-            SqlCommand sqlCmd = null;
+        //public DataSet SelectUsrView(DataSet dataSet)
+        //{
+        //    //SqlParameter sqlParaName = null;
+        //    //SqlParameter sqlParaPassWord = null;
+        //    SqlCommand sqlCmd = null;
 
-            string strSQL =
-                "SELECT " +
-                "* " +
-                "FROM view_usr_info ";// +
-            //"WHERE " +
-            //"usrName = @usrName and usrPassWord = @usrPassWord";
+        //    string strSQL =
+        //        "SELECT " +
+        //        "* " +
+        //        "FROM view_usr_info ";// +
+        //    //"WHERE " +
+        //    //"usrName = @usrName and usrPassWord = @usrPassWord";
 
-            sqlCmd = this.SqlCom;
-            sqlCmd.CommandText = strSQL;
+        //    sqlCmd = this.SqlCom;
+        //    sqlCmd.CommandText = strSQL;
+        //    sqlCmd.CommandType = CommandType.Text;
 
-            //sqlParaName = new SqlParameter("@usrName", SqlDbType.Char, 10);
-            //sqlParaName.Value = dataSet.Tables["view_usr_info"].Rows[0]["usrName"].ToString().Trim();
-            //sqlParaPassWord = new SqlParameter("@usrPassWord", SqlDbType.Char, 10);
-            //sqlParaPassWord.Value = dataSet.Tables["view_usr_info"].Rows[0]["usrPassWord"].ToString().Trim();
-            //sqlCmd.Parameters.Add(sqlParaName);
-            //sqlCmd.Parameters.Add(sqlParaPassWord);
+        //    //sqlParaName = new SqlParameter("@usrName", SqlDbType.Char, 10);
+        //    //sqlParaName.Value = dataSet.Tables["view_usr_info"].Rows[0]["usrName"].ToString().Trim();
+        //    //sqlParaPassWord = new SqlParameter("@usrPassWord", SqlDbType.Char, 10);
+        //    //sqlParaPassWord.Value = dataSet.Tables["view_usr_info"].Rows[0]["usrPassWord"].ToString().Trim();
+        //    //sqlCmd.Parameters.Add(sqlParaName);
+        //    //sqlCmd.Parameters.Add(sqlParaPassWord);
 
-            SqlDataAdapter userDataAdapter = this.SqlDA;
-            SqlDA.InsertCommand = sqlCmd;
-            //SqlCommandBuilder userScb = new SqlCommandBuilder(userDataAdapter);
-            DataSet myDataSet = new DataSet();
-            userDataAdapter.Fill(myDataSet, "view_usr_info");
+        //    SqlDataAdapter userDataAdapter = this.SqlDA;
+        //    SqlDA.InsertCommand = sqlCmd;
+        //    //SqlCommandBuilder userScb = new SqlCommandBuilder(userDataAdapter);
+        //    DataSet myDataSet = new DataSet();
+        //    userDataAdapter.Fill(myDataSet, "view_usr_info");
 
-            return myDataSet;
-        }
+        //    return myDataSet;
+        //}
 
         public DataSet SelectUsrDepartTitleView(DataSet dataSet)
         {
@@ -105,6 +107,7 @@ namespace xm_mis.db
 
             sqlCmd = this.SqlCom;
             sqlCmd.CommandText = strSQL;
+            sqlCmd.CommandType = CommandType.Text;
 
             //sqlParaName = new SqlParameter("@usrName", SqlDbType.Char, 10);
             //sqlParaName.Value = dataSet.Tables["view_usr_info"].Rows[0]["usrName"].ToString().Trim();

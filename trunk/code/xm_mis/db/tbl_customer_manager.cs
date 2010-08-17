@@ -53,17 +53,17 @@ namespace xm_mis.db
             string custManEmail = dataSet.Tables["tbl_customer_manager"].Rows[0]["custManEmail"].ToString();
             string custManDepart = dataSet.Tables["tbl_customer_manager"].Rows[0]["custManDepart"].ToString();
             string custManTitle = dataSet.Tables["tbl_customer_manager"].Rows[0]["custManTitle"].ToString();
-            long custCompyId = long.Parse(dataSet.Tables["tbl_customer_manager"].Rows[0]["custCompyId"].ToString());
+            int custCompyId = int.Parse(dataSet.Tables["tbl_customer_manager"].Rows[0]["custCompyId"].ToString());
             DateTime st = DateTime.Now;
 
             sqlParaCustManName = new SqlParameter("@custManName", custManName);
-            sqlParaCustManContact = new SqlParameter("@custManContact", custManName);
-            sqlParaCustManEmail = new SqlParameter("@custManEmail", custManContact);
-            sqlParaCustManDepart = new SqlParameter("@custManDepart", custManEmail);
+            sqlParaCustManContact = new SqlParameter("@custManContact", custManContact);
+            sqlParaCustManEmail = new SqlParameter("@custManEmail", custManEmail);
+            sqlParaCustManDepart = new SqlParameter("@custManDepart", custManDepart);
             sqlParaCustManTitle = new SqlParameter("@custManTitle", custManTitle);
             sqlParaCustCompyId = new SqlParameter("@custCompyId", custCompyId);
             sqlParaSt = new SqlParameter("@startTime", st);
-            sqlParaId = new SqlParameter("@Identity", SqlDbType.BigInt, 0, "custManId");
+            sqlParaId = new SqlParameter("@Identity", SqlDbType.Int, 0, "custManId");
             #endregion
 
             #region sqlParaAdd
@@ -91,6 +91,98 @@ namespace xm_mis.db
             string custManId = sqlParaId.Value.ToString();
             return custManId;
         }
+        
+        public void custCompManUpdate(int custManId, string compManName, string compManCont, string compManEmail, string compManDep,string compManTitle)
+        {
+            #region sqlPara declare
+            //custManId
+            SqlParameter sqlParaCustManId = null;
+            //custManName
+            SqlParameter sqlParaCustManName = null;
+            //custManContact
+            SqlParameter sqlParaCustManCont = null;
+            //custManEmail
+            SqlParameter sqlParaCustManEmail = null;
+            //custManDepart
+            SqlParameter sqlParaCustManDepart = null;
+            //custManTitle
+            SqlParameter sqlParaCustManTitle = null;
+            #endregion
+
+            SqlCommand sqlCmd = null;
+
+            string strSQL = "tbl_customer_manager_update";
+
+            sqlCmd = this.SqlCom;
+            sqlCmd.CommandText = strSQL;
+            sqlCmd.CommandType = CommandType.StoredProcedure;
+
+            #region sqlParaInit
+
+            sqlParaCustManId = new SqlParameter("@custManId", custManId);
+            //sqlParaDepEnd = new SqlParameter("@delEndTime", st);
+            sqlParaCustManName = new SqlParameter("@newCustManName", compManName);
+            sqlParaCustManCont = new SqlParameter("@newCustManCont", compManCont);
+            sqlParaCustManEmail = new SqlParameter("@newCustManEmail", compManEmail);
+            sqlParaCustManDepart = new SqlParameter("@newCustManDep", compManDep);
+            sqlParaCustManTitle = new SqlParameter("@newCustManTitle", compManTitle);
+            #endregion
+
+            #region sqlParaAdd
+            sqlCmd.Parameters.Clear();
+            sqlCmd.Parameters.Add(sqlParaCustManId);
+            //sqlCmd.Parameters.Add(sqlParaDepEnd);
+            sqlCmd.Parameters.Add(sqlParaCustManName);
+            sqlCmd.Parameters.Add(sqlParaCustManCont);
+            sqlCmd.Parameters.Add(sqlParaCustManEmail);
+            sqlCmd.Parameters.Add(sqlParaCustManDepart);
+            sqlCmd.Parameters.Add(sqlParaCustManTitle);
+            #endregion
+
+            sqlCmd.Connection.Open();
+
+            sqlCmd.ExecuteNonQuery();
+
+            sqlCmd.Connection.Close();
+        }
+
+        public void CustCompManDel(string custCompManId)
+        {
+            #region sqlPara declare
+            //custCompManId
+            SqlParameter sqlParaCustCompManId = null;
+            //custCompManEnd
+            SqlParameter sqlParaCustCompManEnd = null;
+            #endregion
+
+            SqlCommand sqlCmd = null;
+
+            string strSQL = "tbl_customer_manager_delete";
+
+            sqlCmd = this.SqlCom;
+            sqlCmd.CommandText = strSQL;
+            sqlCmd.CommandType = CommandType.StoredProcedure;
+
+            #region sqlParaInit
+            int custCompManIdTemp = int.Parse(custCompManId);
+            DateTime st = DateTime.Now;
+
+            sqlParaCustCompManId = new SqlParameter("@delCustManId", custCompManIdTemp);
+            sqlParaCustCompManEnd = new SqlParameter("@delEndTime", st);
+            #endregion
+
+            #region sqlParaAdd
+            sqlCmd.Parameters.Clear();
+            sqlCmd.Parameters.Add(sqlParaCustCompManId);
+            sqlCmd.Parameters.Add(sqlParaCustCompManEnd);
+            #endregion
+
+            sqlCmd.Connection.Open();
+
+            sqlCmd.ExecuteNonQuery();
+
+            sqlCmd.Connection.Close();
+        }
 
         public DataSet SelectView()
         {
@@ -99,16 +191,17 @@ namespace xm_mis.db
             string strSQL =
                 "SELECT " +
                 "* " +
-                "FROM tbl_customer_company ";
+                "FROM tbl_customer_manager ";
 
             sqlCmd = this.SqlCom;
             sqlCmd.CommandText = strSQL;
 
             SqlDataAdapter userDataAdapter = this.SqlDA;
             SqlDA.SelectCommand = sqlCmd;
+            sqlCmd.CommandType = CommandType.Text;
 
             DataSet myDataSet = new DataSet();
-            userDataAdapter.Fill(myDataSet, "tbl_customer_company");
+            userDataAdapter.Fill(myDataSet, "tbl_customer_manager");
 
             return myDataSet;
         }

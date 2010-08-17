@@ -18,41 +18,41 @@ namespace xm_mis.db
             //
         }
 
-        public int SelectNew(string usrName)
-        {
-            int selId = -1;
-            SqlParameter sqlParaUN = null;
-            SqlCommand sqlCmd = null;
+        //public int SelectNew(string usrName)
+        //{
+        //    int selId = -1;
+        //    SqlParameter sqlParaUN = null;
+        //    SqlCommand sqlCmd = null;
 
-            string strSQL =
-                "SELECT " +
-                "usrId " +
-                "FROM tbl_usr " +
-                "WHERE " +
-                "usrName = @usrName";//@titleName";
+        //    string strSQL =
+        //        "SELECT " +
+        //        "usrId " +
+        //        "FROM tbl_usr " +
+        //        "WHERE " +
+        //        "usrName = @usrName";//@titleName";
 
-            sqlCmd = this.SqlCom;
-            sqlCmd.CommandText = strSQL;
+        //    sqlCmd = this.SqlCom;
+        //    sqlCmd.CommandText = strSQL;
 
-            sqlParaUN = new SqlParameter("@usrName", usrName);
+        //    sqlParaUN = new SqlParameter("@usrName", usrName);
 
-            sqlCmd.Parameters.Clear();
-            sqlCmd.Parameters.Add(sqlParaUN);
+        //    sqlCmd.Parameters.Clear();
+        //    sqlCmd.Parameters.Add(sqlParaUN);
 
-            sqlCmd.Connection.Open();
+        //    sqlCmd.Connection.Open();
 
-            using (SqlDataReader sdr = sqlCmd.ExecuteReader())
-            {
-                while (sdr.Read())
-                {
-                    selId = sdr.GetInt32(0);
-                }
-            }
+        //    using (SqlDataReader sdr = sqlCmd.ExecuteReader())
+        //    {
+        //        while (sdr.Read())
+        //        {
+        //            selId = sdr.GetInt32(0);
+        //        }
+        //    }
 
-            sqlCmd.Connection.Close();
+        //    sqlCmd.Connection.Close();
 
-            return selId;
-        }
+        //    return selId;
+        //}
 
         public string SelectAdd(DataSet dataSet)
         {
@@ -63,18 +63,10 @@ namespace xm_mis.db
             SqlParameter sqlParaUC = null;
             //usrName
             SqlParameter sqlParaUN = null;
-            //usrPwd
-            SqlParameter sqlParaPW = null;
             //start
             SqlParameter sqlParaSt = null;
             //newUsrId
             SqlParameter sqlParaId = null;
-            ////
-            //SqlParameter sqlParaDepId = null;
-            ////
-            //SqlParameter sqlParaTitleId = null;
-            ////
-            //SqlParameter sqlParaAuthId = null;
             #endregion
 
             SqlCommand sqlCmd = null;
@@ -89,18 +81,16 @@ namespace xm_mis.db
             string rn = dataSet.Tables["addTable"].Rows[0]["realName"].ToString().Trim();
             string uc = dataSet.Tables["addTable"].Rows[0]["usrContact"].ToString().Trim();
             string un = dataSet.Tables["addTable"].Rows[0]["usrName"].ToString().Trim();
-            string pw = dataSet.Tables["addTable"].Rows[0]["usrPassWord"].ToString().Trim();
             DateTime st = DateTime.Now;
 
             sqlParaRN = new SqlParameter("@realName", rn);
             sqlParaUC = new SqlParameter("@usrContact", uc);
             sqlParaUN = new SqlParameter("@usrName", un);
-            sqlParaPW = new SqlParameter("@usrPassWord", pw);
             sqlParaSt = new SqlParameter("@startTime", st);
-            sqlParaId = new SqlParameter("@Identity", SqlDbType.BigInt, 0, "usrId");
-            //sqlParaDepId = new SqlParameter("@departmentId", SqlDbType.BigInt);
-            //sqlParaTitleId = new SqlParameter("@titleId", SqlDbType.BigInt);
-            //sqlParaAuthId = new SqlParameter("@authorityId", SqlDbType.BigInt);
+            sqlParaId = new SqlParameter("@Identity", SqlDbType.Int, 0, "usrId");
+            //sqlParaDepId = new SqlParameter("@departmentId", SqlDbType.Int);
+            //sqlParaTitleId = new SqlParameter("@titleId", SqlDbType.Int);
+            //sqlParaAuthId = new SqlParameter("@authorityId", SqlDbType.Int);
             #endregion
 
             #region sqlParaAdd
@@ -108,7 +98,6 @@ namespace xm_mis.db
             sqlCmd.Parameters.Add(sqlParaRN);
             sqlCmd.Parameters.Add(sqlParaUC);
             sqlCmd.Parameters.Add(sqlParaUN);
-            sqlCmd.Parameters.Add(sqlParaPW);
             sqlCmd.Parameters.Add(sqlParaSt);
             sqlCmd.Parameters.Add(sqlParaId);
             //sqlCmd.Parameters.Add(sqlParaDepId);
@@ -301,41 +290,41 @@ namespace xm_mis.db
             sqlCmd.Connection.Close();
         }
 
-        public DataSet SelectUsr(DataSet dataSet)
-        {
-            SqlParameter sqlParaName = null;
-            //SqlParameter sqlParaPassWord = null;
-            //SqlParameter sqlParaContact = null;
-            SqlCommand sqlCmd = null;
+        //public DataSet SelectUsr(DataSet dataSet)
+        //{
+        //    SqlParameter sqlParaName = null;
+        //    //SqlParameter sqlParaPassWord = null;
+        //    //SqlParameter sqlParaContact = null;
+        //    SqlCommand sqlCmd = null;
 
-            string strSQL =
-                "select " +
-                "usrId , realName , usrName , usrPassWord , usrContact " +
-                "from tbl_usr " +
-                "WHERE " +
-                "usrName = @usrName ";
+        //    string strSQL =
+        //        "select " +
+        //        "usrId , realName , usrName , usrPassWord , usrContact " +
+        //        "from tbl_usr " +
+        //        "WHERE " +
+        //        "usrName = @usrName ";
 
-            sqlCmd = this.SqlCom;
-            sqlCmd.CommandText = strSQL;
+        //    sqlCmd = this.SqlCom;
+        //    sqlCmd.CommandText = strSQL;
 
-            sqlParaName = new SqlParameter("@usrName", SqlDbType.Char, 10);
-            sqlParaName.Value = dataSet.Tables["tbl_usr"].Rows[0]["usrName"].ToString().Trim();
-            //sqlParaPassWord = new SqlParameter("@usrPassWord", SqlDbType.Char, 10);
-            //sqlParaPassWord.Value = dataSet.Tables["tbl_usr"].Rows[0]["usrPassWord"].ToString().Trim();
-            //sqlParaContact = new SqlParameter("@usrContact", SqlDbType.Char, 10);
-            //sqlParaContact.Value = dataSet.Tables["tbl_usr"].Rows[0]["usrContact"].ToString().Trim();
+        //    sqlParaName = new SqlParameter("@usrName", SqlDbType.Char, 10);
+        //    sqlParaName.Value = dataSet.Tables["tbl_usr"].Rows[0]["usrName"].ToString().Trim();
+        //    //sqlParaPassWord = new SqlParameter("@usrPassWord", SqlDbType.Char, 10);
+        //    //sqlParaPassWord.Value = dataSet.Tables["tbl_usr"].Rows[0]["usrPassWord"].ToString().Trim();
+        //    //sqlParaContact = new SqlParameter("@usrContact", SqlDbType.Char, 10);
+        //    //sqlParaContact.Value = dataSet.Tables["tbl_usr"].Rows[0]["usrContact"].ToString().Trim();
 
-            sqlCmd.Parameters.Add(sqlParaName);
-            //sqlCmd.Parameters.Add(sqlParaPassWord);
-            //sqlCmd.Parameters.Add(sqlParaContact);
+        //    sqlCmd.Parameters.Add(sqlParaName);
+        //    //sqlCmd.Parameters.Add(sqlParaPassWord);
+        //    //sqlCmd.Parameters.Add(sqlParaContact);
 
-            SqlDataAdapter userDataAdapter = this.SqlDA;
-            //SqlCommandBuilder userScb = new SqlCommandBuilder(userDataAdapter);
-            DataSet myDataSet = new DataSet();
-            userDataAdapter.Fill(myDataSet, "tbl_usr");
+        //    SqlDataAdapter userDataAdapter = this.SqlDA;
+        //    //SqlCommandBuilder userScb = new SqlCommandBuilder(userDataAdapter);
+        //    DataSet myDataSet = new DataSet();
+        //    userDataAdapter.Fill(myDataSet, "tbl_usr");
 
-            return myDataSet;
-        }
+        //    return myDataSet;
+        //}
 
         public DataSet SelectView()
         {
@@ -356,6 +345,7 @@ namespace xm_mis.db
 
             sqlCmd = this.SqlCom;
             sqlCmd.CommandText = strSQL;
+            sqlCmd.CommandType = CommandType.Text;
             //userRow["endTime"]
             //string usrNm = dataSet.Tables["tbl_usr"].Rows[0]["usrName"].ToString();
             //sqlParaNM = new SqlParameter("@usrName", usrNm);

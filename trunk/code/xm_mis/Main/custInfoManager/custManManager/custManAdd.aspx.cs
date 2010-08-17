@@ -7,7 +7,7 @@ using System.Web.UI.WebControls;
 
 using System.Data;
 using xm_mis.logic;
-namespace xm_mis.Main.custInfoManager.custCompManager
+namespace xm_mis.Main.custInfoManager.custManManager
 {
     public partial class custManAdd : System.Web.UI.Page
     {
@@ -16,7 +16,7 @@ namespace xm_mis.Main.custInfoManager.custCompManager
             if (!(null == Session["totleAuthority"]))
             {
                 int usrAuth = 0;
-                string strUsrAuth = Session["totleAuthority"].ToString();
+                string strUsrAuth = Session["totleAuthority"] as string;
                 usrAuth = int.Parse(strUsrAuth);
                 int flag = 0x3 << 4;
 
@@ -28,39 +28,37 @@ namespace xm_mis.Main.custInfoManager.custCompManager
                 Response.Redirect("~/Account/Login.aspx");
             }
 
+            if (null == Session["selCustCompDr"])
+            {
+                Response.Redirect("~/Main/custInfoManager/custCompManager/custCompEditing.aspx");
+            }
+            
             if (!IsPostBack)
             {
-                DataSet custCompDst = new DataSet();
+                DataRow sessionDr = Session["selCustCompDr"] as DataRow;
 
-                custCompProcess custCompView = new custCompProcess(custCompDst);
-
-                custCompView.RealCompView();
-
-                DataTable custCompTable = custCompView.MyDst.Tables["tbl_customer_company"];
-
-                ddlCustComp.DataSource = custCompTable;
-                ddlCustComp.DataTextField = "custCompName";
-                ddlCustComp.DataValueField = "custCompyId";
-
-                ddlCustComp.DataBind();
-            }            
+                lblCustComp.Text = sessionDr["custCompName"].ToString();
+            }
         }
 
         protected void btnOk_Click(object sender, EventArgs e)
         {
             if (inputCheck())
             {
+                DataRow sessionDr = Session["selCustCompDr"] as DataRow;
+                string compId = sessionDr["custCompyId"].ToString().Trim();
+
                 string cmn = txtName.Text.ToString().Trim();
                 string cmd = txtDep.Text.ToString().Trim();
                 string cmt = txtTitle.Text.ToString().Trim();
                 string cmc = txtContact.Text.ToString().Trim();
                 string cme = txtEmail.Text.ToString().Trim();
-                string ccnId = ddlCustComp.SelectedValue.ToString().Trim();
+                string ccId = compId;
 
                 #region dataset
                 DataSet dataSet = new DataSet();
                 DataRow custManRow = null;
-
+                
                 DataColumn custManName = new DataColumn("custManName", System.Type.GetType("System.String"));
                 DataColumn custManDep = new DataColumn("custManDepart", System.Type.GetType("System.String"));
                 DataColumn custManTitle = new DataColumn("custManTitle", System.Type.GetType("System.String"));
@@ -68,59 +66,34 @@ namespace xm_mis.Main.custInfoManager.custCompManager
                 DataColumn custManEmail = new DataColumn("custManEmail", System.Type.GetType("System.String"));
                 DataColumn custCompId = new DataColumn("custCompyId", System.Type.GetType("System.String"));
 
-                DataTable compTable = new DataTable("tbl_customer_manager");
+                DataTable custCompTable = new DataTable("tbl_customer_manager");
 
-                compTable.Columns.Add(custManName);
-                compTable.Columns.Add(custManDep);
-                compTable.Columns.Add(custManTitle);
-                compTable.Columns.Add(custManContact);
-                compTable.Columns.Add(custManEmail);
-                compTable.Columns.Add(custCompId);
+                custCompTable.Columns.Add(custManName);
+                custCompTable.Columns.Add(custManDep);
+                custCompTable.Columns.Add(custManTitle);
+                custCompTable.Columns.Add(custManContact);
+                custCompTable.Columns.Add(custManEmail);
+                custCompTable.Columns.Add(custCompId);
 
-                custManRow = compTable.NewRow();
+                custManRow = custCompTable.NewRow();
                 custManRow["custManName"] = cmn;
                 custManRow["custManDepart"] = cmd;
                 custManRow["custManTitle"] = cmt;
                 custManRow["custManContact"] = cmc;
                 custManRow["custManEmail"] = cme;
-                custManRow["custCompyId"] = ccnId;
-                compTable.Rows.Add(custManRow);
+                custManRow["custCompyId"] = ccId;
+                custCompTable.Rows.Add(custManRow);
 
-                dataSet.Tables.Add(compTable);
+                dataSet.Tables.Add(custCompTable);
                 #endregion
 
-                DataSet dsCheck = new DataSet();
                 custManProcess cmp = new custManProcess(dataSet);
 
                 cmp.Add();
-                int rowRtn = -1;
 
-                rowRtn = cmp.IntRtn;
-                if (0 == rowRtn)
-                {
-                    rowRtn = cmp.IntRtn;
+                string continueUrl = "~/Main/custInfoManager/custCompManager/custCompEditing.aspx";//Request.QueryString["ReturnUrl"];
 
-                    if (0 == rowRtn)
-                    {
-                        cmp.MyDst = dataSet;
-
-                        cmp.Add();
-
-                        string newCompId = cmp.StrRtn;
-
-                        string continueUrl = "~/Main/DefaultMainSite.aspx";//Request.QueryString["ReturnUrl"];
-
-                        Response.Redirect(continueUrl);
-                    }
-                    else
-                    {
-                        lblTitle.Text = "公司简称已存在!";
-                    }
-                }
-                else
-                {
-                    lblName.Text = "公司名已存在!";
-                }
+                Response.Redirect(continueUrl);                
             }
         }
 
@@ -147,6 +120,25 @@ namespace xm_mis.Main.custInfoManager.custCompManager
 
             return flag;
         }
+
+        //protected bool ddlCustComp_TextCheck()
+        //{
+        //    bool flag = true;
+        //    if (string.IsNullOrWhiteSpace(ddlCustComp.SelectedValue.ToString().Trim()))
+        //    {
+        //        lblCustComp.Text = "*必填项!";
+        //        flag = false;
+        //    }
+        //    else
+        //    {
+        //        lblCustComp.Text = string.Empty;
+        //        //Session["flagUsrName"] = bool.TrueString.ToString().Trim();
+        //        //btnOk();
+        //    }
+
+        //    return flag;
+        //}
+
         protected bool txtDep_TextCheck()
         {
             bool flag = true;
@@ -210,9 +202,10 @@ namespace xm_mis.Main.custInfoManager.custCompManager
             }
             else
             {
+                long sc = 0;
                 try
                 {
-                    long sc = long.Parse(txtContact.Text.ToString().Trim());
+                    sc = long.Parse(txtContact.Text.ToString().Trim());
                     lblContact.Text = string.Empty;
                     //Session["flagContact"] = bool.TrueString.ToString().Trim();
                 }
@@ -257,6 +250,10 @@ namespace xm_mis.Main.custInfoManager.custCompManager
             {
                 flag = false;
             }
+            //else if (!ddlCustComp_TextCheck())
+            //{
+            //    flag = false;
+            //}
             else if (!txtDep_TextCheck())
             {
                 flag = false;
@@ -265,13 +262,26 @@ namespace xm_mis.Main.custInfoManager.custCompManager
             {
                 flag = false;
             }
+            else if (!txtContact_TextCheck())
+            {
+                flag = false;
+            }
+            else if (!txtEmail_TextCheck())
+            {
+                flag = false;
+            }
 
             return flag;
         }
 
-        protected void ddlCustComp_SelectedIndexChanged(object sender, EventArgs e)
+        protected void btnNo_Click(object sender, EventArgs e)
         {
-            lblCustComp.Text = string.Empty;
+            Response.Redirect("~/Main/custInfoManager/custCompManager/custCompEditing.aspx");
         }
+
+        //protected void ddlCustComp_SelectedIndexChanged(object sender, EventArgs e)
+        //{
+        //    lblCustComp.Text = string.Empty;
+        //}
     }
 }

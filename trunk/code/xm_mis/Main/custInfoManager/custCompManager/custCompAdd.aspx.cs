@@ -16,7 +16,7 @@ namespace xm_mis.Main.custInfoManager.custCompManager
             if (!(null == Session["totleAuthority"]))
             {
                 int usrAuth = 0;
-                string strUsrAuth = Session["totleAuthority"].ToString();
+                string strUsrAuth = Session["totleAuthority"] as string;
                 usrAuth = int.Parse(strUsrAuth);
                 int flag = 0x3 << 4;
 
@@ -62,7 +62,7 @@ namespace xm_mis.Main.custInfoManager.custCompManager
                 DataSet dsCheck = new DataSet();
                 custCompProcess ccp = new custCompProcess(dsCheck);
 
-                ccp.View();
+                ccp.RealCompView();
                 int rowRtn = -1;
 
                 ccp.DoCheckCompName(cn);
@@ -80,9 +80,7 @@ namespace xm_mis.Main.custInfoManager.custCompManager
 
                         string newCompId = ccp.StrRtn;
 
-                        string continueUrl = "~/Main/DefaultMainSite.aspx";//Request.QueryString["ReturnUrl"];
-
-                        Response.Redirect(continueUrl);
+                        Response.Redirect("~/Main/custInfoManager/custCompManager/custCompEdit.aspx");
                     }
                     else
                     {
@@ -183,6 +181,11 @@ namespace xm_mis.Main.custInfoManager.custCompManager
             }
 
             return flag;
+        }
+
+        protected void btnNo_Click(object sender, EventArgs e)
+        {
+            Response.Redirect("~/Main/custInfoManager/custCompManager/custCompEdit.aspx");
         }
     }
 }

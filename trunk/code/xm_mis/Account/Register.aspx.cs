@@ -271,9 +271,10 @@ namespace xm_mis.Account
             }
             else
             {
+                long sc = 0;
                 try
                 {
-                    long sc = long.Parse(txtContact.Text.ToString().Trim());
+                    sc = long.Parse(txtContact.Text.ToString().Trim());
                     lblContact.Text = string.Empty;
                     //Session["flagContact"] = bool.TrueString.ToString().Trim();
                 }
@@ -333,6 +334,11 @@ namespace xm_mis.Account
             }
 
             return flag;
+        }
+
+        protected void btnNo_Click(object sender, EventArgs e)
+        {
+            Response.Redirect("~/Main/usrManagerment/usrInfoManagerment.aspx");
         }
 
     }

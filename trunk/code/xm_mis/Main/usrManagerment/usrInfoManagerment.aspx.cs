@@ -16,7 +16,7 @@ namespace xm_mis.Main.usrManagerment
             if (!(null == Session["totleAuthority"]))
             {
                 int usrAuth = 0;
-                string strUsrAuth = Session["totleAuthority"].ToString().Trim();
+                string strUsrAuth = Session["totleAuthority"] as string;
                 usrAuth = int.Parse(strUsrAuth);
                 int flag = 0x1 << 3;
 
@@ -97,7 +97,10 @@ namespace xm_mis.Main.usrManagerment
             btn = btnAdd;
             btn.Visible = true;
 
+            usrGV.DataSource = Session["upDtSources"];//["dtSources"] as DataTable;
+
             usrGV.SelectedIndex = -1;
+            usrGV.DataBind();
             usrGV.Enabled = true;
         }
 

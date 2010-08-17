@@ -15,41 +15,79 @@ namespace xm_mis.Main
         }
         protected void MainMenu_MenuItemClick(object sender, MenuEventArgs e)
         {
+            string strUsrAuth = Session["totleAuthority"] as string;
+            string usrId = Session["usrId"] as string;
+            Session.Clear();
+
+            Session["totleAuthority"] = strUsrAuth;
+            Session["usrId"] = usrId;
+
             string s = e.Item.Value.ToString().Trim();
+            string strUrl = string.Empty;
             switch (s)
             {
                 case ("departEdit"):
-                    Response.Redirect("~/Main/self_depart_title/selfDep/SelfDepartment.aspx");
+                    strUrl = "~/Main/self_depart_title/selfDep/SelfDepartment.aspx";
                     break;
                 case ("titleEdit"):
-                    Response.Redirect("~/Main/self_depart_title/selfTitle/SelfTitle.aspx");
+                    strUrl = "~/Main/self_depart_title/selfTitle/SelfTitle.aspx";
                     break;
                 case ("usrInfoModify"):
-                    Response.Redirect("~/Main/usrManagerment/usrInfoManagerment.aspx");
+                    strUrl = "~/Main/usrManagerment/usrInfoManagerment.aspx";
                     break;
                 case ("usrAuth"):
-                    Response.Redirect("~/Main/usrManagerment/usrAuthManagerment.aspx");
+                    strUrl = "~/Main/usrManagerment/usrAuthManagerment.aspx";
                     break;
                 case ("usrDepartTitle"):
-                    Response.Redirect("~/Main/usrManagerment/usrDepartTitleManagerment.aspx");
+                    strUrl = "~/Main/usrManagerment/usrDepartTitleManagerment.aspx";
                     break;               
                 case ("selfPwdModify"):
-                    Response.Redirect("~/Main/usrSelfModify/usrSelfPwdModify.aspx");
+                    strUrl = "~/Main/usrSelfModify/usrSelfPwdModify.aspx";
                     break;
                 case ("selfContectModify"):
-                    Response.Redirect("~/Main/usrSelfModify/usrSelfContactModify.aspx");
+                    strUrl = "~/Main/usrSelfModify/usrSelfContactModify.aspx";
                     break;
-                case ("custCompAdd"):
-                    Response.Redirect("~/Main/custInfoManager/custCompManager/custCompAdd.aspx");
-                    break;
-                case ("custManAdd"):
-                    Response.Redirect("~/Main/custInfoManager/custCompManager/custManAdd.aspx");
-                    break;
+                //case ("custCompAdd"):
+                //    strUrl = "~/Main/custInfoManager/custCompManager/custCompAdd.aspx";
+                //    break;
+                //case ("custManAdd"):
+                    //strUrl = "~/Main/custInfoManager/custCompManager/custManAdd.aspx";
+                    //break;
                 case ("custCompEdit"):
-                    Response.Redirect("~/Main/custInfoManager/custCompManager/custCompEdit.aspx");
-                    break;    
-                    
+                    strUrl = "~/Main/custInfoManager/custCompManager/custCompEdit.aspx";
+                    break;
+                case ("supplierEdit"):
+                    strUrl = "~/Main/custInfoManager/supplierManager/supplierEdit.aspx";
+                    break;
+                case ("projectSearch"):
+                    strUrl = "~/Main/projectTagInfoManager/projectSearch.aspx";
+                    break;
+                case ("newProject"):
+                    strUrl = "~/Main/projectTagInfoManager/projectTagAdd.aspx";
+                    break;
+                case ("productView"):
+                    strUrl = "~/Main/stockInfoManager/productInfoManager/productView.aspx";
+                    break;
+                case ("contractView"):
+                    strUrl = "~/Main/contractManager/contractView.aspx";
+                    break;
+                case ("addContract"):
+                    strUrl = "~/Main/contractManager/addContract.aspx";
+                    break;
+                case ("subContractEdit"):
+                    strUrl = "~/Main/contractManager/subContractEdit.aspx";
+                    break;
+                case ("mainContractReceiptView"):
+                    strUrl = "~/Main/paymentReceiptManager/mainContractReceiptView.aspx";
+                    break;
+                case ("receiptView"):
+                    strUrl = "~/Main/infoViewManager/receiptView.aspx";
+                    break;
+                case ("paymentView"):
+                    strUrl = "~/Main/infoViewManager/paymentInfo/paymentView.aspx";
+                    break;
             }
+            Response.Redirect(strUrl);
         }
     }
 }
