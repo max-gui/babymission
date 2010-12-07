@@ -15,16 +15,18 @@ namespace xm_mis.Main.self_depart_title.selfTitle
         {
             if (!(null == Session["totleAuthority"]))
             {
-                int usrAuth = 0;
-                string strUsrAuth = Session["totleAuthority"] as string;
-                usrAuth = int.Parse(strUsrAuth);
-                int flag = 0x1 << 3;
+                AuthAttributes usrAuthAttr = (AuthAttributes)Session["totleAuthority"];
 
-                if ((usrAuth & flag) == 0)
+                bool flag = usrAuthAttr.HasOneFlag(AuthAttributes.selfCompany);
+                if (!flag)
+                {
                     Response.Redirect("~/Main/NoAuthority.aspx");
+                }
             }
             else
             {
+                string url = Request.FilePath;
+                Session["backUrl"] = url;
                 Response.Redirect("~/Account/Login.aspx");
             }
         }
@@ -45,9 +47,9 @@ namespace xm_mis.Main.self_depart_title.selfTitle
             {
                 strRtn = "职位名称不能为空！";
             }
-            else if (titleName.Length > 25)
+            else if (titleName.Length > 50)
             {
-                strRtn = "职位名称不能超过25个字！";
+                strRtn = "职位名称不能超过50个字！";
             }
             else if (dt.Rows.Contains(titleName))
             {
@@ -57,9 +59,9 @@ namespace xm_mis.Main.self_depart_title.selfTitle
             {
                 strRtn = "职位名称不能为空！  ";
             }
-            else if (titleName.Equals("职位名称不能超过25个字！"))
+            else if (titleName.Equals("职位名称不能超过50个字！"))
             {
-                strRtn = "职位名称不能超过25个字！  ";
+                strRtn = "职位名称不能超过50个字！  ";
             }
             else if (titleName.Equals("职位名称不能重复！"))
             {

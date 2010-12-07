@@ -22,10 +22,10 @@ namespace xm_mis.logic
             //
             // TODO: 在此处添加构造函数逻辑
             //
-            tp = (tbl_projectTagInfo)InitDatabaseProc("xm_mis.db.tbl_projectTagInfo");
+            tp = (tbl_projectTagInfo_old)InitDatabaseProc("xm_mis.db.tbl_projectTagInfo_old");
         }
 
-        private tbl_projectTagInfo tp = null;
+        private tbl_projectTagInfo_old tp = null;
         private string usrId = string.Empty;
 
         public string UsrId
@@ -44,9 +44,9 @@ namespace xm_mis.logic
         {
         }
 
-        public string compProjectCount(DateTime dateCount, string custCompId)
+        public string compProjectCount(string custCompId)
         {
-            return tp.CompProjectCount(dateCount, custCompId);
+            return tp.CompProjectCount(custCompId);
         }
 
         //public void DoCheckCompName(string compName)
@@ -69,34 +69,53 @@ namespace xm_mis.logic
 
         public void RealProjTagView(string userId)
         {
-            MyDst = tp.SelectView();
+            MyDst = tp.projectTag_view();
 
-            string end = DateTime.Now.ToShortDateString();
+            string end = DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss.fff");
+            string projectDetail = "sell";
 
             string strFilter =
                 " endTime > " + "'" + end + "'" +
-                " and usrId = " + "'" + userId + "'";
-            MyDst.Tables["view_project_tag"].DefaultView.RowFilter = strFilter;
+                " and doneTime > " + "'" + end + "'" +
+                " and applymentUsrId = " + "'" + userId + "'" +
+                " and projectDetail = " + "'" + projectDetail + "'";
+            MyDst.Tables["projectTag_view"].DefaultView.RowFilter = strFilter;
 
             //TAB_DATA_USERDatabase db = (TAB_DATA_USERDatabase)("Database", "DataBase.TAB_DATA_USERDatabase");
             //MyDst = db.SelectView();
             //StrRtn = db.selectNum().ToString();
         }
 
-        public void RealProjTagView()
+        public void RealProjTagList(string projectDetail)
         {
-            MyDst = tp.SelectView();
+            MyDst = tp.RealProjTagList();
 
-            string end = DateTime.Now.ToShortDateString();
+            string end = DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss.fff");
 
             string strFilter =
-                " endTime > " + "'" + end + "'";
+                " endTime > " + "'" + end + "'" +
+                " and projectDetail = " + "'" + projectDetail + "'";
             MyDst.Tables["view_project_tag"].DefaultView.RowFilter = strFilter;
 
             //TAB_DATA_USERDatabase db = (TAB_DATA_USERDatabase)("Database", "DataBase.TAB_DATA_USERDatabase");
             //MyDst = db.SelectView();
             //StrRtn = db.selectNum().ToString();
         }
+
+        //public void RealProjTagView()
+        //{
+        //    MyDst = tp.SelectView();
+
+        //    string end = DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss.fff");
+
+        //    string strFilter =
+        //        " endTime > " + "'" + end + "'";
+        //    MyDst.Tables["view_project_tag"].DefaultView.RowFilter = strFilter;
+
+        //    //TAB_DATA_USERDatabase db = (TAB_DATA_USERDatabase)("Database", "DataBase.TAB_DATA_USERDatabase");
+        //    //MyDst = db.SelectView();
+        //    //StrRtn = db.selectNum().ToString();
+        //}
 
         //public void SelfCustCompDel(string custCompId)
         //{

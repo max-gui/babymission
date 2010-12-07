@@ -76,13 +76,31 @@ namespace xm_mis.Main.infoViewManager.paymentInfo {
         protected global::System.Web.UI.WebControls.Label lblCustPayMax;
         
         /// <summary>
-        /// lblSelfPay 控件。
+        /// lblSelfToPay 控件。
         /// </summary>
         /// <remarks>
         /// 自动生成的字段。
         /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lblSelfPay;
+        protected global::System.Web.UI.WebControls.Label lblSelfToPay;
+        
+        /// <summary>
+        /// lblSelfHasPay 控件。
+        /// </summary>
+        /// <remarks>
+        /// 自动生成的字段。
+        /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lblSelfHasPay;
+        
+        /// <summary>
+        /// lblSelfTotlePay 控件。
+        /// </summary>
+        /// <remarks>
+        /// 自动生成的字段。
+        /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lblSelfTotlePay;
         
         /// <summary>
         /// txtPayExplication 控件。

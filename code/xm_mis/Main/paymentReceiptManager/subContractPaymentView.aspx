@@ -29,10 +29,9 @@
         <Columns>
             <asp:BoundField DataField="subContractTag" HeaderText="副合同编号" />
             <asp:BoundField DataField="supplierName" HeaderText="供应商" />
-            <asp:BoundField DataField="cash" HeaderText="合同金额" />
+            <asp:BoundField DataField="cash" DataFormatString="{0:c}" HeaderText="合同金额" />
             <asp:BoundField DataField="dateLine" HeaderText="供货日期" />
             <asp:BoundField DataField="paymentMode" HeaderText="付款方式" />
-            <asp:BoundField DataField="selfPay" HeaderText="已付款额" />
             <asp:TemplateField HeaderText="已收票额">
                 <ItemTemplate>
                     <asp:DropDownList ID="ddlReceipt" runat="server" Enabled="False">
@@ -42,10 +41,11 @@
             <asp:TemplateField>
                 <ItemTemplate>
                     <asp:LinkButton ID="receiptEdit" runat="server" CausesValidation="False" OnCommand="receiptEdit_Click"
-                        CommandName="receiptEdit" Text="修改已开票额">
+                        CommandName="receiptEdit" Text="修改">
                     </asp:LinkButton>
                 </ItemTemplate>
             </asp:TemplateField>
+            <asp:BoundField DataField="receivingPercent" HeaderText="已付款额" DataFormatString="{0:p}" />
             <asp:TemplateField>
                 <ItemTemplate>
                     <asp:Button ID="btnPayApply" runat="server" onclick="btnPayApply_Click"

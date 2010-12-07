@@ -17,10 +17,14 @@
             Text="lblSubContractPayment"></asp:Label>
     </p>
     <p>
-        供应商已开票： 
+        客户已付款： 
         <asp:Label ID="lblCustPayMax" runat="server" Text="lblCustPayMax"></asp:Label>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
-        申请开票：<asp:Label ID="lblSelfPay" runat="server" Text="lblSelfPay"></asp:Label>
+        申请付款：<asp:Label ID="lblSelfToPay" runat="server" Text="lblSelfToPay"></asp:Label>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 我方已付款：<asp:Label ID="lblSelfHasPay" 
+            runat="server" Text="lblSelfHasPay"></asp:Label>
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 我方付款总计：<asp:Label 
+            ID="lblSelfTotlePay" runat="server" Text="lblSelfTotlePay"></asp:Label>
     </p>
     <p>
         申请内容：&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
@@ -41,7 +45,7 @@
             Text="批准" Visible="False" />
         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
         <asp:Button 
-            ID="btnNo" runat="server" onclick="btnNo_Click" Text="驳回" 
+            ID="btnNo" runat="server" onclick="btnNo_Click" Text="暂缓" 
             Visible="False" />
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
         <asp:Button ID="btnRtn" runat="server" onclick="btnRtn_Click" 

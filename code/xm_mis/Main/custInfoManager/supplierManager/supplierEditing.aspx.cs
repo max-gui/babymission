@@ -15,16 +15,18 @@ namespace xm_mis.Main.custInfoManager.supplierManager
         {
             if (!(null == Session["totleAuthority"]))
             {
-                int usrAuth = 0;
-                string strUsrAuth = Session["totleAuthority"] as string;
-                usrAuth = int.Parse(strUsrAuth);
-                int flag = 0x3 << 4;
+                AuthAttributes usrAuthAttr = (AuthAttributes)Session["totleAuthority"];
 
-                if ((usrAuth & flag) == 0)
+                bool flag = usrAuthAttr.HasOneFlag(AuthAttributes.custManager);
+                if (!flag)
+                {
                     Response.Redirect("~/Main/NoAuthority.aspx");
+                }
             }
             else
             {
+                string url = Request.FilePath;
+                Session["backUrl"] = url;
                 Response.Redirect("~/Account/Login.aspx");
             }
 
@@ -193,9 +195,9 @@ namespace xm_mis.Main.custInfoManager.supplierManager
             {
                 strRtn = "不能为空！";
             }
-            else if (testValue.Length > 25)
+            else if (testValue.Length > 50)
             {
-                strRtn = "不能超过25个字！";
+                strRtn = "不能超过50个字！";
             }
             //else if (dt.Rows.Contains(depValue))
             //{
@@ -205,9 +207,9 @@ namespace xm_mis.Main.custInfoManager.supplierManager
             {
                 strRtn = "不能为空！  ";
             }
-            else if (testValue.Equals("不能超过25个字！"))
+            else if (testValue.Equals("不能超过50个字！"))
             {
-                strRtn = "不能超过25个字！  ";
+                strRtn = "不能超过50个字！  ";
             }
             //else if (depValue.Equals("不能重复！"))
             //{

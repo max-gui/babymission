@@ -54,59 +54,69 @@ namespace xm_mis.db
         //    return selId;
         //}
 
-        public string SelectAdd(DataSet dataSet)
+        public string SelectAdd(DataSet dataSet, ref string error)
         {
             #region sqlPara declare
-            //realName
-            SqlParameter sqlParaRN = null;
-            //usrContact
-            SqlParameter sqlParaUC = null;
             //usrName
-            SqlParameter sqlParaUN = null;
-            //start
-            SqlParameter sqlParaSt = null;
-            //newUsrId
-            SqlParameter sqlParaId = null;
+            SqlParameter sqlParaUsrName = null;
+            //realName
+            SqlParameter sqlParaRealName = null;
+            //usrMobile
+            SqlParameter sqlParaUsrMobile = null;
+            //usrEmail
+            SqlParameter sqlParaUsrEmail = null;
+            //departmentId
+            SqlParameter sqlParaDepartmentId = null;
+            //titleId
+            SqlParameter sqlParaTitleId = null;
+            //usrId
+            SqlParameter sqlParaUsrId = null;
+            //error
+            SqlParameter sqlParaError = null;
             #endregion
 
             SqlCommand sqlCmd = null;
 
-            string strSQL = "tbl_usr_Insert";
+            string strSQL = "new_user";
 
             sqlCmd = this.SqlCom;
             sqlCmd.CommandText = strSQL;
             sqlCmd.CommandType = CommandType.StoredProcedure;
 
             #region sqlParaInit
-            string rn = dataSet.Tables["addTable"].Rows[0]["realName"].ToString().Trim();
-            string uc = dataSet.Tables["addTable"].Rows[0]["usrContact"].ToString().Trim();
-            string un = dataSet.Tables["addTable"].Rows[0]["usrName"].ToString().Trim();
-            DateTime st = DateTime.Now;
+            string usrName = dataSet.Tables["addTable"].Rows[0]["usrName"].ToString().Trim();
+            string realName = dataSet.Tables["addTable"].Rows[0]["realName"].ToString().Trim();
+            string usrMobile = dataSet.Tables["addTable"].Rows[0]["usrMobile"].ToString().Trim();
+            string usrEmail = dataSet.Tables["addTable"].Rows[0]["usrEmail"].ToString().Trim();
+            string departmentId = dataSet.Tables["addTable"].Rows[0]["departmentId"].ToString().Trim();
+            string titleId = dataSet.Tables["addTable"].Rows[0]["titleId"].ToString().Trim();
+            error = string.Empty;
 
-            sqlParaRN = new SqlParameter("@realName", rn);
-            sqlParaUC = new SqlParameter("@usrContact", uc);
-            sqlParaUN = new SqlParameter("@usrName", un);
-            sqlParaSt = new SqlParameter("@startTime", st);
-            sqlParaId = new SqlParameter("@Identity", SqlDbType.Int, 0, "usrId");
-            //sqlParaDepId = new SqlParameter("@departmentId", SqlDbType.Int);
-            //sqlParaTitleId = new SqlParameter("@titleId", SqlDbType.Int);
-            //sqlParaAuthId = new SqlParameter("@authorityId", SqlDbType.Int);
+            sqlParaUsrName = new SqlParameter("@usrName", usrName);
+            sqlParaRealName = new SqlParameter("@realName", realName);
+            sqlParaUsrMobile = new SqlParameter("@usrMobile", usrMobile);
+            sqlParaUsrEmail = new SqlParameter("@usrEmail", usrEmail);
+            sqlParaDepartmentId = new SqlParameter("@departmentId", departmentId);
+            sqlParaTitleId = new SqlParameter("@titleId", titleId);
+            sqlParaUsrId = new SqlParameter("@usrId", SqlDbType.Int);
+            sqlParaError = new SqlParameter("@error", SqlDbType.NVarChar, 50);
             #endregion
 
             #region sqlParaAdd
             sqlCmd.Parameters.Clear();
-            sqlCmd.Parameters.Add(sqlParaRN);
-            sqlCmd.Parameters.Add(sqlParaUC);
-            sqlCmd.Parameters.Add(sqlParaUN);
-            sqlCmd.Parameters.Add(sqlParaSt);
-            sqlCmd.Parameters.Add(sqlParaId);
-            //sqlCmd.Parameters.Add(sqlParaDepId);
-            //sqlCmd.Parameters.Add(sqlParaTitleId);
-            //sqlCmd.Parameters.Add(sqlParaAuthId);
+            sqlCmd.Parameters.Add(sqlParaUsrName);
+            sqlCmd.Parameters.Add(sqlParaRealName);
+            sqlCmd.Parameters.Add(sqlParaUsrMobile);
+            sqlCmd.Parameters.Add(sqlParaUsrEmail);
+            sqlCmd.Parameters.Add(sqlParaDepartmentId);
+            sqlCmd.Parameters.Add(sqlParaTitleId);
+            sqlCmd.Parameters.Add(sqlParaUsrId);
+            sqlCmd.Parameters.Add(sqlParaError);
             #endregion
 
             #region sqlDirection
-            sqlParaId.Direction = ParameterDirection.Output;
+            sqlParaUsrId.Direction = ParameterDirection.Output;
+            sqlParaError.Direction = ParameterDirection.Output;
             //sqlParaDepId.Direction = ParameterDirection.Output;
             //sqlParaTitleId.Direction = ParameterDirection.Output;
             //sqlParaAuthId.Direction = ParameterDirection.Output;
@@ -118,7 +128,9 @@ namespace xm_mis.db
 
             sqlCmd.Connection.Close();
 
-            string usrId = sqlParaId.Value.ToString();
+            string usrId = sqlParaUsrId.Value.ToString();
+            error = sqlParaError.Value.ToString();
+
             return usrId;
         }
 
@@ -137,8 +149,6 @@ namespace xm_mis.db
             #region sqlPara declare
             //usrId
             SqlParameter sqlParaUsrId = null;
-            //endTIme
-            SqlParameter sqlParaEnd = null;
             #endregion
 
             SqlCommand sqlCmd = null;
@@ -150,16 +160,13 @@ namespace xm_mis.db
             sqlCmd.CommandType = CommandType.StoredProcedure;
 
             #region sqlParaInit
-            DateTime end = DateTime.Now;
 
             sqlParaUsrId = new SqlParameter("@delUsrId", usrId);
-            sqlParaEnd = new SqlParameter("@delEndTime", end);
             #endregion
 
             #region sqlParaAdd
             sqlCmd.Parameters.Clear();
             sqlCmd.Parameters.Add(sqlParaUsrId);
-            sqlCmd.Parameters.Add(sqlParaEnd);
             #endregion
 
             sqlCmd.Connection.Open();

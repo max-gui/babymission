@@ -20,7 +20,11 @@
         供应商已开票： 
         <asp:Label ID="lblCustReceiptMax" runat="server" Text="lblCustReceiptMax"></asp:Label>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
-        申请开票：<asp:Label ID="lblSelfReceipt" runat="server" Text="lblSelfReceipt"></asp:Label>
+        申请开票：<asp:Label ID="lblSelfToReceipt" runat="server" Text="lblSelfToReceipt"></asp:Label>
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 我方已开票：<asp:Label ID="lblSelfHasReceipt" 
+            runat="server" Text="lblSelfHasReceipt"></asp:Label>
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 我方开票总计：<asp:Label 
+            ID="lblSelfTotleReceipt" runat="server" Text="lblSelfTotleReceipt"></asp:Label>
     </p>
     <p>
         申请内容：&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
@@ -41,7 +45,7 @@
             Text="批准" Visible="False" />
         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
         <asp:Button 
-            ID="btnNo" runat="server" onclick="btnNo_Click" Text="驳回" 
+            ID="btnNo" runat="server" onclick="btnNo_Click" Text="暂缓" 
             Visible="False" />
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
         <asp:Button ID="btnRtn" runat="server" onclick="btnRtn_Click" 

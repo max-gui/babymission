@@ -15,16 +15,18 @@ namespace xm_mis.Main.usrManagerment
         {
             if (!(null == Session["totleAuthority"]))
             {
-                int usrAuth = 0;
-                string strUsrAuth = Session["totleAuthority"] as string;
-                usrAuth = int.Parse(strUsrAuth);
-                int flag = 0x1 << 3;
+                AuthAttributes usrAuthAttr = (AuthAttributes)Session["totleAuthority"];
 
-                if ((usrAuth & flag) == 0)
+                bool flag = usrAuthAttr.HasOneFlag(AuthAttributes.selfCompany);
+                if (!flag)
+                {
                     Response.Redirect("~/Main/NoAuthority.aspx");
+                }
             }
             else
             {
+                string url = Request.FilePath;
+                Session["backUrl"] = url;
                 Response.Redirect("~/Account/Login.aspx");
             }
 
@@ -180,16 +182,16 @@ namespace xm_mis.Main.usrManagerment
 
             if (!strDepId.Equals(oldDepId))
             {
-                int usrDepId = int.Parse(dt.Rows[index]["usrDepId"].ToString());
-                int usrId = int.Parse(dt.Rows[index]["usrId"].ToString());
+                int usrDepId = int.Parse(dt.Rows[itemIndex]["usrDepId"].ToString());
+                int usrId = int.Parse(dt.Rows[itemIndex]["usrId"].ToString());
                 int depId = int.Parse(strDepId);
 
                 up.SelfUsrDepartUpdate(usrDepId, usrId, depId);
             }
             if (!strTitleId.Equals(oldTitleId))
             {
-                int usrTitleId = int.Parse(dt.Rows[index]["usrTitleId"].ToString());
-                int usrId = int.Parse(dt.Rows[index]["usrId"].ToString());
+                int usrTitleId = int.Parse(dt.Rows[itemIndex]["usrTitleId"].ToString());
+                int usrId = int.Parse(dt.Rows[itemIndex]["usrId"].ToString());
                 int titleId = int.Parse(strTitleId);
 
                 up.SelfUsrTitleUpdate(usrTitleId, usrId, titleId);

@@ -49,7 +49,7 @@ namespace xm_mis.logic
         {
             string usrNm = MyDst.Tables["tbl_usr"].Rows[0]["usrName"].ToString();
             string pwd = MyDst.Tables["tbl_usr"].Rows[0]["usrPassWord"].ToString();
-            string end = DateTime.Now.ToShortDateString();
+            string end = DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss.fff");
 
             MyDst = tu.SelectView();
 
@@ -100,7 +100,7 @@ namespace xm_mis.logic
         {
             MyDst = vuiDB.SelectSelfUsrDepartTitleView();
 
-            string end = DateTime.Now.ToShortDateString();
+            string end = DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss.fff");
 
             string strFilter =
                 " usrEnd > " + "'" + end + "'" +
@@ -123,7 +123,7 @@ namespace xm_mis.logic
         {
             MyDst = vuiDB.SelectUsrDepartTitleView(MyDst);
 
-            string end = DateTime.Now.ToShortDateString();
+            string end = DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss.fff");
 
             string strFilter =
                 " usrEnd > " + "'" + end + "'" +
@@ -148,18 +148,19 @@ namespace xm_mis.logic
 
         //}
 
-        public override void Add()
+        public string Add_includeError()
         {
-            //string strNull = "无";
-            //int authNull = 0;
-            //string usrName = MyDst.Tables["addTable"].Rows[0]["usrName"].ToString().Trim();
-
-            string usrId = tu.SelectAdd(MyDst);
+            string error = string.Empty;
+            string usrId = tu.SelectAdd(MyDst, ref error);
 
             StrRtn = usrId;
-            //tud.SelectAdd(usrId, strNull);
-            //tut.SelectAdd(usrId, strNull);
-            //tua.SelectAdd(usrId, authNull);
+
+            return error;
+        }
+
+        public override void Add()
+        {
+
         }
 
         public void usrDepModify(string usrName, string depName, DateTime depSt, string depOldNm)

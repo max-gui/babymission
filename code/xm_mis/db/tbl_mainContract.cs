@@ -10,9 +10,9 @@ using System.Data.SqlClient;
 using System.Data;
 namespace xm_mis.db
 {
-    public class tbl_mainContract : DataBase
+    public class tbl_mainContract_old : DataBase
     {
-        public tbl_mainContract()
+        public tbl_mainContract_old()
         {
             //
             //TODO: 在此处添加构造函数逻辑
@@ -24,8 +24,8 @@ namespace xm_mis.db
             #region sqlPara declare
             //projectTagId
             SqlParameter sqlParaProjectTagId = null;
-            //contractCompName
-            SqlParameter sqlParaContractCompName = null;
+            //custCompyId
+            SqlParameter sqlParaCustCompyId = null;
             //mainContractTag
             SqlParameter sqlParaMainContractTag = null;
             //cash
@@ -34,8 +34,6 @@ namespace xm_mis.db
             SqlParameter sqlParaDateLine = null;
             //paymentMode
             SqlParameter sqlParaPaymentMode = null;
-            //startTime
-            SqlParameter sqlParaStartTime = null;
             //Identity
             SqlParameter sqlParaId = null;
             #endregion
@@ -50,33 +48,30 @@ namespace xm_mis.db
 
             #region sqlParaInit
             int proTagId = int.Parse(dataSet.Tables["tbl_mainContract"].Rows[0]["projectTagId"].ToString());
-            string contCompName = dataSet.Tables["tbl_mainContract"].Rows[0]["contractCompName"].ToString();
+            string custCompyId = dataSet.Tables["tbl_mainContract"].Rows[0]["custCompyId"].ToString();
             string MainContTag = dataSet.Tables["tbl_mainContract"].Rows[0]["mainContractTag"].ToString();
 
             string Cash = dataSet.Tables["tbl_mainContract"].Rows[0]["cash"].ToString();
             DateTime dateLine = DateTime.Parse(dataSet.Tables["tbl_mainContract"].Rows[0]["dateLine"].ToString());
             string paymentMode = dataSet.Tables["tbl_mainContract"].Rows[0]["paymentMode"].ToString();
-            DateTime st = DateTime.Now;
 
             sqlParaProjectTagId = new SqlParameter("@projectTagId", proTagId);
-            sqlParaContractCompName = new SqlParameter("@contractCompName", contCompName);
+            sqlParaCustCompyId = new SqlParameter("@custCompyId", custCompyId);
             sqlParaMainContractTag = new SqlParameter("@mainContractTag", MainContTag);
             sqlParaCash = new SqlParameter("@cash", Cash);
             sqlParaDateLine = new SqlParameter("@dateLine", dateLine);
             sqlParaPaymentMode = new SqlParameter("@paymentMode", paymentMode);
-            sqlParaStartTime = new SqlParameter("@startTime", st);
             sqlParaId = new SqlParameter("@Identity", SqlDbType.Int);
             #endregion
 
             #region sqlParaAdd
             sqlCmd.Parameters.Clear();
             sqlCmd.Parameters.Add(sqlParaProjectTagId);
-            sqlCmd.Parameters.Add(sqlParaContractCompName);
+            sqlCmd.Parameters.Add(sqlParaCustCompyId);
             sqlCmd.Parameters.Add(sqlParaMainContractTag);
             sqlCmd.Parameters.Add(sqlParaCash);
             sqlCmd.Parameters.Add(sqlParaDateLine);
             sqlCmd.Parameters.Add(sqlParaPaymentMode);
-            sqlCmd.Parameters.Add(sqlParaStartTime);
             sqlCmd.Parameters.Add(sqlParaId);
             #endregion
 
@@ -168,27 +163,27 @@ namespace xm_mis.db
         //    sqlCmd.Connection.Close();
         //}
 
-        //public DataSet SelectView()
-        //{
-        //    SqlCommand sqlCmd = null;
+        public DataSet RealProjectNeedProductView()
+        {
+            SqlCommand sqlCmd = null;
 
-        //    string strSQL =
-        //        "SELECT " +
-        //        "* " +
-        //        "FROM tbl_product ";
+            string strSQL =
+                "SELECT " +
+                "* " +
+                "FROM view_project_need_product ";
 
-        //    sqlCmd = this.SqlCom;
-        //    sqlCmd.CommandText = strSQL;
-        //    sqlCmd.CommandType = CommandType.Text;
+            sqlCmd = this.SqlCom;
+            sqlCmd.CommandText = strSQL;
+            sqlCmd.CommandType = CommandType.Text;
 
 
-        //    SqlDataAdapter userDataAdapter = this.SqlDA;
-        //    SqlDA.SelectCommand = sqlCmd;
+            SqlDataAdapter userDataAdapter = this.SqlDA;
+            SqlDA.SelectCommand = sqlCmd;
 
-        //    DataSet myDataSet = new DataSet();
-        //    userDataAdapter.Fill(myDataSet, "tbl_product");
+            DataSet myDataSet = new DataSet();
+            userDataAdapter.Fill(myDataSet, "view_project_need_product");
 
-        //    return myDataSet;
-        //}
+            return myDataSet;
+        }
     }
 }

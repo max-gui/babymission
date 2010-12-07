@@ -78,7 +78,7 @@ namespace xm_mis.logic
         //{
         //    MyDst = vmpu.SelectView();
 
-        //    string end = DateTime.Now.ToShortDateString();
+        //    string end = DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss.fff");
 
         //    string strFilter =
         //        " endTime > " + "'" + end + "'" +
@@ -94,11 +94,11 @@ namespace xm_mis.logic
         {
             MyDst = tpa.SelectView();
 
-            string end = DateTime.Now.ToShortDateString();
+            string end = DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss.fff");
 
             string strFilter =
                 " endTime > " + "'" + end + "'";
-            MyDst.Tables["tbl_paymentApply"].DefaultView.RowFilter = strFilter;
+            MyDst.Tables["view_subPayment"].DefaultView.RowFilter = strFilter;
         }
 
         public void SelfPaymentExamine(string payId, string isAccept, string paymentComment)
@@ -106,6 +106,10 @@ namespace xm_mis.logic
             tpa.SelfPaymentExamine(payId, isAccept, paymentComment);
         }
 
+        public void SelfPaymentDone()
+        {
+            tpa.SelfPaymentDone(MyDst);
+        }
         //public void ProductDel(string productId)
         //{
         //    tmc.ProductDel(productId);

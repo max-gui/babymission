@@ -97,8 +97,6 @@ namespace xm_mis.db
             #region sqlPara declare
             //realName
             SqlParameter sqlParaDepId = null;
-            //usrContact
-            SqlParameter sqlParaDepEnd = null;
             #endregion
 
             SqlCommand sqlCmd = null;
@@ -113,13 +111,11 @@ namespace xm_mis.db
             DateTime st = DateTime.Now;
 
             sqlParaDepId = new SqlParameter("@delDepartmentId", depId);
-            sqlParaDepEnd = new SqlParameter("@delEndTime", st);
             #endregion
 
             #region sqlParaAdd
             sqlCmd.Parameters.Clear();
             sqlCmd.Parameters.Add(sqlParaDepId);
-            sqlCmd.Parameters.Add(sqlParaDepEnd);
             #endregion
 
             sqlCmd.Connection.Open();
@@ -173,11 +169,9 @@ namespace xm_mis.db
         public string SelfDepAdd(string depName)
         {
             #region sqlPara declare
-            //realName
+            //depId
             SqlParameter sqlParaDepId = null;
-            //usrContact
-            SqlParameter sqlParaDepEnd = null;
-            //usrContact
+            //depName
             SqlParameter sqlParaDepName = null;
             #endregion
 
@@ -193,14 +187,12 @@ namespace xm_mis.db
             DateTime st = DateTime.Now;
 
             sqlParaDepId = new SqlParameter("@Identity", SqlDbType.Int);
-            sqlParaDepEnd = new SqlParameter("@startTime", st);
             sqlParaDepName = new SqlParameter("@departmentName", depName);
             #endregion
 
             #region sqlParaAdd
             sqlCmd.Parameters.Clear();
             sqlCmd.Parameters.Add(sqlParaDepId);
-            sqlCmd.Parameters.Add(sqlParaDepEnd);
             sqlCmd.Parameters.Add(sqlParaDepName);
             #endregion
 

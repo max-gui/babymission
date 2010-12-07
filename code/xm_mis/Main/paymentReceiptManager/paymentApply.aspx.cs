@@ -7,6 +7,7 @@ using System.Web.UI.WebControls;
 
 using System.Data;
 using xm_mis.logic;
+using xm_mis.db;
 namespace xm_mis.Main.paymentReceiptManager
 {
     public partial class paymentApply : System.Web.UI.Page
@@ -15,89 +16,110 @@ namespace xm_mis.Main.paymentReceiptManager
         {
             if (!(null == Session["totleAuthority"]))
             {
-                int usrAuth = 0;
-                string strUsrAuth = Session["totleAuthority"] as string;
-                usrAuth = int.Parse(strUsrAuth);
-                int flag = 0x1 << 7;
+                AuthAttributes usrAuthAttr = (AuthAttributes)Session["totleAuthority"];
 
-                if ((usrAuth & flag) == 0)
+                bool flag = usrAuthAttr.HasOneFlag(AuthAttributes.pay_receiptApply);
+                if (!flag)
+                {
                     Response.Redirect("~/Main/NoAuthority.aspx");
+                }
             }
             else
             {
+                string url = Request.FilePath;
+                Session["backUrl"] = url;
                 Response.Redirect("~/Account/Login.aspx");
+            }
+
+            if (Session["seldSubContract"] == null)
+            {
+                Response.Redirect("~/Main/paymentReceiptManager/subContractPaymentView.aspx");
             }
 
             if (!IsPostBack)
             {
-                DataSet MyDst = new DataSet();
+                DataRow sessionDr = Session["seldSubContract"] as DataRow;
+                string strSubContractId = sessionDr["subContractId"].ToString();
+
+                //DataSet MyDst = new DataSet();
 
                 #region selfPaymentGV
-                PaymentApplyProcess payApplyView = new PaymentApplyProcess(MyDst);
+                //PaymentApplyProcess payApplyView = new PaymentApplyProcess(MyDst);
 
-                payApplyView.RealSelfPaymentView();
-                DataTable taskTable = payApplyView.MyDst.Tables["tbl_paymentApply"];
+                //payApplyView.RealSelfPaymentView();
+                //DataTable dt = payApplyView.MyDst.Tables["view_subPayment"].DefaultView.ToTable();
 
-                DataColumn colCustMaxPay = new DataColumn("custMaxPayPercent", System.Type.GetType("System.String"));
-                DataColumn colSelfPay = new DataColumn("selfPayPercent", System.Type.GetType("System.String"));
-                DataColumn colAcceptOrNot = new DataColumn("acceptOrNot", System.Type.GetType("System.String"));
-                DataColumn colDone = new DataColumn("Done", System.Type.GetType("System.String"));
-                taskTable.Columns.Add(colCustMaxPay);
-                taskTable.Columns.Add(colSelfPay);
-                taskTable.Columns.Add(colAcceptOrNot);
-                taskTable.Columns.Add(colDone);
+                //string strFilter =
+                //    " subContractId = " + "'" + strSubContractId + "'";
+                //dt.DefaultView.RowFilter = strFilter;
+                //DataTable taskTable = dt.DefaultView.ToTable();
 
-                string strPercent = "%".ToString();
-                string strAccept = "已批准";
-                string strNotAccept = "已驳回";
-                string strUnExamine = "未审批";
-                string strNotDone = "未完成";
-                string strNotDoneTime = "9999/12/31 0:00:00";
-                string strDoneTime = string.Empty;
-                foreach (DataRow dr in taskTable.Rows)
-                {
-                    dr["custMaxPayPercent"] = dr["custMaxPay"].ToString() + strPercent;
-                    dr["selfPayPercent"] = dr["payPercent"].ToString() + strPercent;
-                    strDoneTime = dr["doneTime"].ToString();
-                    if (strDoneTime.Equals(strNotDoneTime))
-                    {
-                        dr["Done"] = strNotDone;
-                    }
-                    else
-                    {
-                        dr["Done"] = strDoneTime;
-                    }
-                    if (dr["isAccept"].ToString().Equals("unExamine"))
-                    {
-                        dr["acceptOrNot"] = strUnExamine;
-                    }
-                    else if (dr["isAccept"].ToString().Equals(bool.FalseString))
-                    {
-                        dr["acceptOrNot"] = strNotAccept;
-                    }
-                    else
-                    {
-                        dr["acceptOrNot"] = strAccept;
-                    }
-                }
+                Xm_db xmDataCont = Xm_db.GetInstance();
 
-                Session["PaymentApplyProcess"] = payApplyView;
+                int subContractId = int.Parse(strSubContractId);
+
+                var subPaymentView =
+                    from subPayment in xmDataCont.View_subPayment
+                    where subPayment.EndTime > DateTime.Now &&
+                          subPayment.SubContractId == subContractId
+                    select subPayment;
+
+                DataTable taskTable = subPaymentView.ToDataTable();
+                dt_modify(taskTable, string.Empty);
+
                 Session["dtSources"] = taskTable;
+
+                btnVisible_Init(taskTable);
 
                 selfPaymentGV.DataSource = Session["dtSources"];
                 selfPaymentGV.DataBind();
                 #endregion
+            }
+        }
 
-                DataTable dt = taskTable.DefaultView.ToTable();
-                string strFilter =
-                    "doneTime = " + "'" + "9999-12-31" + "'";
-                dt.DefaultView.RowFilter = strFilter;
+        protected void dt_modify(DataTable dt, string strFilter)
+        {
+            dt.DefaultView.RowFilter = strFilter;
 
-                if (dt.DefaultView.Count > 0)
+            DataColumn colDone = new DataColumn("Done", System.Type.GetType("System.String"));
+            dt.Columns.Add(colDone);
+
+            string strNotDone = "未完成";
+            DateTime doneTime = DateTime.Now;
+            foreach (DataRow dr in dt.Rows)
+            {
+                doneTime = (DateTime)dr["doneTime"];
+                if (doneTime > DateTime.Now)
                 {
-                    btnAdd.Visible = false;
+                    dr["Done"] = strNotDone;
+                }
+                else
+                {
+                    dr["Done"] = doneTime.ToString();
                 }
             }
+        }
+
+        void btnVisible_Init(DataTable dt)
+        {
+            DataTable testTable = dt.DefaultView.ToTable();
+
+            if (testTable.Rows.Count <= 0)
+            {
+                testTable.Clear();
+                return;
+            }
+
+            string strFilter =
+                "doneTime > " + "'" + DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss.fff") + "'";
+            testTable.DefaultView.RowFilter = strFilter;
+
+            if (testTable.DefaultView.Count > 0)
+            {
+                btnAdd.Visible = false;
+            }
+
+            testTable.Clear();
         }
 
         protected void btnAdd_Click(object sender, EventArgs e)
@@ -118,19 +140,151 @@ namespace xm_mis.Main.paymentReceiptManager
             selfPaymentGV.DataBind();
         }
 
-        protected void selfPaymentGV_RowCommand(object sender, GridViewCommandEventArgs e)
-        {
-
-        }
-
-        protected void selfPaymentGV_RowDataBound(object sender, GridViewRowEventArgs e)
-        {
-
-        }
-
         protected void selfPaymentGV_Sorting(object sender, GridViewSortEventArgs e)
         {
 
+        }
+
+        protected void toDel_Click(object sender, EventArgs e)
+        {
+            LinkButton lbt = sender as LinkButton;
+
+            selfPaymentGV.SelectedIndex = (lbt.Parent.Parent as GridViewRow).DataItemIndex;
+            selfPaymentGV.Enabled = false;
+            selfPaymentGV.DataSource = Session["dtSources"];
+            selfPaymentGV.DataBind();
+
+            btnAccept.Visible = true;
+            btnCancel.Visible = true;
+            btnAdd.Visible = false;
+            btnNo.Visible = false;
+        }
+
+        protected void toEdit_Click(object sender, EventArgs e)
+        {
+            int paymentId = int.Parse((sender as LinkButton).CommandArgument);
+            Xm_db xmDataCont = Xm_db.GetInstance();
+
+            var paymentApplyEdit =
+                from paymentApply in xmDataCont.Tbl_paymentApply
+                where paymentApply.PaymentId == paymentId &&
+                      paymentApply.IsAccept.Equals(bool.TrueString)
+                select paymentApply;
+
+            if (paymentApplyEdit.Count() == 0)
+            {
+                Session["seldPaymentId"] = paymentId.ToString();
+
+                Response.Redirect("~/Main/paymentReceiptManager/paymentEdit.aspx");
+            }
+            else
+            {
+                Page.ClientScript.ShowAlertWindow("无权修改", this.GetType());
+            }
+        }
+
+        protected void btnAccept_Click(object sender, EventArgs e)
+        {
+            int index = selfPaymentGV.SelectedIndex;
+            LinkButton lkb = selfPaymentGV.Rows[index].FindControl("toDel") as LinkButton;
+            
+            int paymentId = int.Parse(lkb.CommandArgument);
+
+            Xm_db xmDataCont = Xm_db.GetInstance();
+
+            var paymentApplyEdit =
+                from paymentApply in xmDataCont.Tbl_paymentApply
+                where paymentApply.PaymentId == paymentId &&
+                      paymentApply.IsAccept == "unDo"
+                select paymentApply;
+
+            if (paymentApplyEdit.Count() > 0)
+            {
+                paymentApplyEdit.First().EndTime = DateTime.Now;
+
+                try
+                {
+                    xmDataCont.SubmitChanges(System.Data.Linq.ConflictMode.ContinueOnConflict);
+                }
+                catch (System.Data.Linq.ChangeConflictException cce)
+                {
+                    string strEx = cce.Message;
+                    foreach (System.Data.Linq.ObjectChangeConflict occ in xmDataCont.ChangeConflicts)
+                    {
+                        occ.Resolve(System.Data.Linq.RefreshMode.KeepChanges);
+                    }
+
+                    xmDataCont.SubmitChanges();
+                }
+
+                //GridViewRow gvr = selfPaymentGV.Rows[index];
+
+                //Label lbl = gvr.FindControl("lblMessage") as Label;
+                //lbl.Visible = false;
+
+                lkb.Visible = true;
+
+                DataRow sessionDr = Session["seldSubContract"] as DataRow;
+                int subContractId = int.Parse(sessionDr["subContractId"].ToString());
+
+                var subPaymentEdit =
+                    from subPayment in xmDataCont.View_subPayment
+                    where subPayment.EndTime > DateTime.Now &&
+                          subPayment.SubContractId == subContractId
+                    select subPayment;
+
+                DataTable taskTable = subPaymentEdit.ToDataTable();
+                dt_modify(taskTable, string.Empty);
+
+                DataTable dtSource = taskTable;
+                Session["dtSources"] = dtSource;
+
+                btnVisible_Init(dtSource);
+
+                selfPaymentGV.DataSource = Session["dtSources"];
+                selfPaymentGV.DataBind();
+            }
+            else
+            {
+                //Label lbl = (lkb.Parent.Parent as GridViewRow).FindControl("lblMessage") as Label;
+                //lbl.Text = "无权删除";
+                //lbl.Visible = true;
+                Page.ClientScript.ShowAlertWindow("无权修改", this.GetType());
+            }
+
+            selfPaymentGV.SelectedIndex = -1;
+            selfPaymentGV.Enabled = true;
+
+            btnAccept.Visible = false;
+            btnCancel.Visible = false;
+
+            btnAdd.Visible = true;
+            btnNo.Visible = true;
+                
+        }
+
+        protected void btnCancel_Click(object sender, EventArgs e)
+        {
+            DataTable dtSource = Session["dtSources"] as DataTable;
+
+            selfPaymentGV.SelectedIndex = -1;
+            selfPaymentGV.Enabled = true;
+            //selfPaymentGV.DataSource = dtSource;
+            //selfPaymentGV.DataBind();
+
+            btnVisible_Init(dtSource);
+
+            btnAccept.Visible = false;
+            btnCancel.Visible = false;
+
+            btnAdd.Visible = true;
+            btnNo.Visible = true;
+
+            //int index = selfPaymentGV.SelectedIndex;
+            //GridViewRow gvr = selfPaymentGV.Rows[index];
+
+            //Label lbl = gvr.FindControl("lblMessage") as Label;
+            //lbl.Visible = false;
         }
     }
 }

@@ -18,43 +18,44 @@ namespace xm_mis.db
             //
         }
 
-        public string SelectAdd(DataSet dataSet)
+        public string SelectAdd(DataSet dataSet, ref string error)
         {
             #region sqlPara declare
             //productName
             SqlParameter sqlParaProductName = null;
-            //startTime
-            SqlParameter sqlParaStartTime = null;
-            //Identity
-            SqlParameter sqlParaId = null;
+            //productId
+            SqlParameter sqlParaProductId = null;
+            //error
+            SqlParameter sqlParaError = null;
             #endregion
 
             SqlCommand sqlCmd = null;
 
-            string strSQL = "tbl_product_Insert";
+            string strSQL = "addNewProduct";
 
             sqlCmd = this.SqlCom;
             sqlCmd.CommandText = strSQL;
             sqlCmd.CommandType = CommandType.StoredProcedure;
 
             #region sqlParaInit
-            string pn = dataSet.Tables["tbl_product"].Rows[0]["productName"].ToString().Trim();
-            DateTime st = DateTime.Now;
+            string pn = dataSet.Tables["addTable"].Rows[0]["productName"].ToString().Trim();
+            error = string.Empty;
 
             sqlParaProductName = new SqlParameter("@productName", pn);
-            sqlParaStartTime = new SqlParameter("@startTime", st);
-            sqlParaId = new SqlParameter("@Identity", SqlDbType.Int);
+            sqlParaProductId = new SqlParameter("@productId", SqlDbType.Int);
+            sqlParaError = new SqlParameter("@error", SqlDbType.NVarChar, 50);
             #endregion
 
             #region sqlParaAdd
             sqlCmd.Parameters.Clear();
             sqlCmd.Parameters.Add(sqlParaProductName);
-            sqlCmd.Parameters.Add(sqlParaStartTime);
-            sqlCmd.Parameters.Add(sqlParaId);
+            sqlCmd.Parameters.Add(sqlParaProductId);
+            sqlCmd.Parameters.Add(sqlParaError);
             #endregion
 
             #region sqlDirection
-            sqlParaId.Direction = ParameterDirection.Output;
+            sqlParaProductId.Direction = ParameterDirection.Output;
+            sqlParaError.Direction = ParameterDirection.Output;
             #endregion
 
             sqlCmd.Connection.Open();
@@ -63,7 +64,9 @@ namespace xm_mis.db
 
             sqlCmd.Connection.Close();
 
-            string productId = sqlParaId.Value.ToString();
+            string productId = sqlParaProductId.Value.ToString();
+            error = sqlParaError.Value.ToString();
+
             return productId;
         }
 
@@ -108,8 +111,6 @@ namespace xm_mis.db
             #region sqlPara declare
             //productId
             SqlParameter sqlParaProductId = null;
-            //productEnd
-            SqlParameter sqlParaProductEnd = null;
             #endregion
 
             SqlCommand sqlCmd = null;
@@ -122,16 +123,13 @@ namespace xm_mis.db
 
             #region sqlParaInit
             int productIdTemp = int.Parse(productId);
-            DateTime et = DateTime.Now;
 
             sqlParaProductId = new SqlParameter("@delProductId", productIdTemp);
-            sqlParaProductEnd = new SqlParameter("@delEndTime", et);
             #endregion
 
             #region sqlParaAdd
             sqlCmd.Parameters.Clear();
             sqlCmd.Parameters.Add(sqlParaProductId);
-            sqlCmd.Parameters.Add(sqlParaProductEnd);
             #endregion
 
             sqlCmd.Connection.Open();

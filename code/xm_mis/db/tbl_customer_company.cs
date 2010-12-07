@@ -27,8 +27,6 @@ namespace xm_mis.db
             SqlParameter sqlParaCompAddr = null;
             //CompTag
             SqlParameter sqlParaCompTag = null;
-            //start
-            SqlParameter sqlParaSt = null;
             //newCompId
             SqlParameter sqlParaId = null;
             #endregion
@@ -45,12 +43,10 @@ namespace xm_mis.db
             string cn = dataSet.Tables["tbl_customer_company"].Rows[0]["custCompName"].ToString().Trim();
             string ca = dataSet.Tables["tbl_customer_company"].Rows[0]["custCompAddress"].ToString().Trim();
             string ct = dataSet.Tables["tbl_customer_company"].Rows[0]["custCompTag"].ToString().Trim();
-            DateTime st = DateTime.Now;
 
             sqlParaCompName = new SqlParameter("@custCompName", cn);
             sqlParaCompAddr = new SqlParameter("@custCompAddress", ca);
             sqlParaCompTag = new SqlParameter("@custCompTag", ct);
-            sqlParaSt = new SqlParameter("@startTime", st);
             sqlParaId = new SqlParameter("@Identity", SqlDbType.Int, 0, "custCompyId");
             #endregion
 
@@ -59,7 +55,6 @@ namespace xm_mis.db
             sqlCmd.Parameters.Add(sqlParaCompName);
             sqlCmd.Parameters.Add(sqlParaCompAddr);
             sqlCmd.Parameters.Add(sqlParaCompTag);
-            sqlCmd.Parameters.Add(sqlParaSt);
             sqlCmd.Parameters.Add(sqlParaId);
             #endregion
 
@@ -128,8 +123,6 @@ namespace xm_mis.db
             #region sqlPara declare
             //custCompId
             SqlParameter sqlParaCustCompId = null;
-            //custCompEnd
-            SqlParameter sqlParaCustCompEnd = null;
             #endregion
 
             SqlCommand sqlCmd = null;
@@ -142,16 +135,13 @@ namespace xm_mis.db
 
             #region sqlParaInit
             int custCompIdL = int.Parse(custCompId);
-            DateTime st = DateTime.Now;
 
             sqlParaCustCompId = new SqlParameter("@delCustCompyId", custCompIdL);
-            sqlParaCustCompEnd = new SqlParameter("@delEndTime", st);
             #endregion
 
             #region sqlParaAdd
             sqlCmd.Parameters.Clear();
             sqlCmd.Parameters.Add(sqlParaCustCompId);
-            sqlCmd.Parameters.Add(sqlParaCustCompEnd);
             #endregion
 
             sqlCmd.Connection.Open();

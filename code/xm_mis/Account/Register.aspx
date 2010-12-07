@@ -19,7 +19,7 @@
         <span class="style1">请用以下表单填写注册信息</span></p>
     <p>
         真实姓名：&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
-        <asp:TextBox ID="txtName" runat="server"></asp:TextBox>
+        <asp:TextBox ID="txtRealName" runat="server"></asp:TextBox>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
         <asp:Label ID="lblName" runat="server" Font-Size="Large" ForeColor="Red" 
             Text="*必填项"></asp:Label>
@@ -33,11 +33,28 @@
             Text="*必填项"></asp:Label>
     </p>
     <p>
-        联系方式：&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
-        <asp:TextBox ID="txtContact" runat="server"></asp:TextBox>
+        联系电话：&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+        <asp:TextBox ID="txtMobile" runat="server"></asp:TextBox>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-        <asp:Label ID="lblContact" runat="server" Font-Size="Large" ForeColor="Red" 
+        <asp:Label ID="lblMobile" runat="server" Font-Size="Large" ForeColor="Red" 
             Text="*必填项"></asp:Label>
+    </p>
+    <p>
+        Email：&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+        <asp:TextBox ID="txtEmail" runat="server"></asp:TextBox>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        <asp:Label ID="lblEmail" runat="server" Font-Size="Large" ForeColor="Red" 
+            Text="*必填项"></asp:Label>
+    </p>
+    <p>
+        所属部门：&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+        <asp:DropDownList ID="ddlDepart" runat="server">
+        </asp:DropDownList>
+    </p>
+    <p>
+        职位：&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+        <asp:DropDownList ID="ddlTitle" runat="server">
+        </asp:DropDownList>
     </p>
     <p>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;

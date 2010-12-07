@@ -13,14 +13,14 @@
         <Columns>
             <asp:CommandField ShowSelectButton="True" />
             <asp:BoundField DataField="productName" HeaderText="货物的名称" />
-            <asp:BoundField DataField="productStoreNum" HeaderText="现有库存数量" 
+            <asp:BoundField DataField="sellNum" HeaderText="销售产品数量" 
                 ReadOnly="True" />
-            <asp:TemplateField>
+            <%--<asp:TemplateField>
                 <ItemTemplate>
                     <asp:Button ID="btnDel" runat="server" onclick="btnDel_Click" Text="删除" 
                         Visible="False" />
                 </ItemTemplate>
-            </asp:TemplateField>
+            </asp:TemplateField>--%>
             <asp:TemplateField>
                 <ItemTemplate>
                     <asp:Button ID="btnUpdate" runat="server" onclick="btnUpdate_Click" Text="更新" 
@@ -49,11 +49,11 @@
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
         <asp:Button ID="btnAdd" runat="server" onclick="btnAdd_Click" Text="添加新的货物品种" />
         &nbsp;&nbsp;&nbsp;&nbsp;
-        <asp:Button 
+        <%--<asp:Button 
             ID="btnAcceptDel" runat="server" onclick="btnAcceptDel_Click" Text="确认删除" 
             Visible="False" />
 &nbsp;&nbsp;&nbsp;&nbsp;
         <asp:Button ID="btnDelCancel" runat="server" onclick="btnDelCancel_Click" Text="放弃" 
-            Visible="False" />
+            Visible="False" />--%>
     </p>
 </asp:Content>

@@ -12,19 +12,21 @@ namespace xm_mis.Main.contractManager
     public partial class mainContractProductSel : System.Web.UI.Page
     {
         protected void Page_Load(object sender, EventArgs e)
-        {            
+        {
             if (!(null == Session["totleAuthority"]))
             {
-                int usrAuth = 0;
-                string strUsrAuth = Session["totleAuthority"] as string;
-                usrAuth = int.Parse(strUsrAuth);
-                int flag = 0x5 << 4;
+                AuthAttributes usrAuthAttr = (AuthAttributes)Session["totleAuthority"];
 
-                if ((usrAuth & flag) == 0)
+                bool flag = usrAuthAttr.HasOneFlag(AuthAttributes.newContract);
+                if (!flag)
+                {
                     Response.Redirect("~/Main/NoAuthority.aspx");
+                }
             }
             else
             {
+                string url = Request.FilePath;
+                Session["backUrl"] = url;
                 Response.Redirect("~/Account/Login.aspx");
             }
 
@@ -58,7 +60,7 @@ namespace xm_mis.Main.contractManager
                 {
                     DataTable dt = Session["mainProductSelDs"] as DataTable;
 
-                    string end = DateTime.Now.ToShortDateString();
+                    string end = DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss.fff");
                     string strFilter =
                         " endTime > " + "'" + end + "'";
                     dt.DefaultView.RowFilter = strFilter;
@@ -71,16 +73,32 @@ namespace xm_mis.Main.contractManager
 
         protected void productSelGV_PageIndexChanging(object sender, GridViewPageEventArgs e)
         {
+            seldAccept();
+
             productSelGV.PageIndex = e.NewPageIndex;
 
             productSelGV.DataSource = Session["mainProductSelDs"];//["dtSources"] as DataTable;  
             productSelGV.DataBind();
         }
 
-        protected void productSelGV_Sorting(object sender, GridViewSortEventArgs e)
-        {
+        //protected void productSelGV_Sorting(object sender, GridViewSortEventArgs e)
+        //{
+        //    // By default, set the sort direction to ascending.
+        //    if (productSelGV.SelectedIndex == -1)
+        //    {
+        //        seldAccept();
 
-        }
+        //        DataTable dt = Session["mainProductSelDs"] as DataTable;
+
+        //        if (dt != null)
+        //        {
+        //            //Sort the data.
+        //            dt.DefaultView.Sort = e.SortExpression.GetSortDirectionExpression(ViewState); //GetSortDirectionExpression(e.SortExpression, ViewState);
+        //            productSelGV.DataSource = Session["mainProductSelDs"];
+        //            productSelGV.DataBind();
+        //        }
+        //    }
+        //}
 
         protected void btnCancel_Click(object sender, EventArgs e)
         {
@@ -88,6 +106,13 @@ namespace xm_mis.Main.contractManager
         }
 
         protected void btnOk_Click(object sender, EventArgs e)
+        {
+            seldAccept();
+
+            Response.Redirect("~/Main/contractManager/addContract.aspx");
+        }
+
+        private void seldAccept()
         {
             DataTable dt = Session["mainProductSelDs"] as DataTable;
 
@@ -97,21 +122,19 @@ namespace xm_mis.Main.contractManager
             {
                 index = row.DataItemIndex;
 
-                cb = row.Cells[2].Controls[0] as CheckBox;
+                cb = row.Cells[1].Controls[0] as CheckBox;
                 dt.Rows[index]["checkOrNot"] = cb.Checked;
             }
 
             dt.AcceptChanges();
             Session["mainProductSelDs"] = dt;
-
-            Response.Redirect("~/Main/contractManager/addContract.aspx");
         }
 
         protected void productSelGV_RowDataBound(object sender, GridViewRowEventArgs e)
         {
             if (e.Row.RowType == DataControlRowType.DataRow)
             {
-                CheckBox cb = e.Row.Cells[2].Controls[0] as CheckBox;
+                CheckBox cb = e.Row.Cells[1].Controls[0] as CheckBox;
                 if (cb != null)
                 {
                     cb.Enabled = true;

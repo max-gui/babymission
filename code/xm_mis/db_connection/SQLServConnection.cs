@@ -32,7 +32,7 @@ namespace xm_mis.db_connection
         private void ConnectInit()
         {
             string c_str;
-            c_str = "My_DB";
+            c_str = "xm_dbConnectionString";
 
             connStrSet =
                ConfigurationManager.ConnectionStrings[c_str];
@@ -57,6 +57,11 @@ namespace xm_mis.db_connection
         {
             get { return dbTrans; }
             set { dbTrans = value; }
+        }
+
+        public DbConnection DBConn
+        {
+            get { return dbConn; }
         }
     }
 }

@@ -13,8 +13,8 @@
     <Columns>
         <asp:BoundField DataField="projectTag" HeaderText="项目号" />
         <asp:BoundField DataField="mainContractTag" HeaderText="主合同编号" />
-        <asp:BoundField DataField="contractCompName" HeaderText="客户公司名称（需方）" />
-        <asp:BoundField DataField="cash" HeaderText="合同金额" />
+        <asp:BoundField DataField="custCompName" HeaderText="客户公司" />
+        <asp:BoundField DataField="cash" DataFormatString="{0:c}" HeaderText="合同金额" />
         <asp:BoundField DataField="dateLine" HeaderText="需货日期" />
         <asp:BoundField DataField="paymentMode" HeaderText="付款方式" />
         <asp:TemplateField HeaderText="已收款额">
@@ -27,13 +27,13 @@
                     Text='<%# Bind("selfReceivingPercent") %>'></asp:TextBox>
             </EditItemTemplate>
         </asp:TemplateField>
-        <asp:BoundField DataField="selfReceiptPercent" HeaderText="已开票额" />
         <asp:TemplateField ShowHeader="False">
             <ItemTemplate>
                 <asp:LinkButton ID="payEdit" runat="server" CausesValidation="False" 
-                    CommandName="payEdit" Text="修改已付款额"></asp:LinkButton>
+                    CommandName="payEdit" Text="修改"></asp:LinkButton>
             </ItemTemplate>
         </asp:TemplateField>
+        <asp:BoundField DataField="selfReceiptPercent" HeaderText="已开票额" DataFormatString="{0:p}" />
         <asp:TemplateField>
             <ItemTemplate>
                 <asp:Button ID="btnRecieptApply" runat="server" onclick="btnRecieptApply_Click" 
@@ -43,7 +43,7 @@
         <asp:TemplateField>
             <ItemTemplate>
                 <asp:Button ID="btnSubContractEdit" runat="server" 
-                    onclick="btnSubContractEdit_Click" Text="查看副合同" />
+                    onclick="btnSubContractEdit_Click" Text="副合同" />
             </ItemTemplate>
         </asp:TemplateField>
     </Columns>

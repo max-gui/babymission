@@ -25,14 +25,15 @@
                     </AnonymousTemplate>
                     <LoggedInTemplate>
                         欢迎您，<span class="bold"><asp:LoginName ID="HeadLoginName" runat="server" /></span>!
-                        [ <asp:LoginStatus ID="HeadLoginStatus" runat="server" LogoutAction="Redirect" LogoutText="注销" LogoutPageUrl="~/"/> ]
+                        [ <asp:LoginStatus ID="HeadLoginStatus" runat="server" LogoutAction="Redirect" LogoutText="注销" LogoutPageUrl="~/Account/Login.aspx"/> ]
                     </LoggedInTemplate>
                 </asp:LoginView>
             </div>
             <div class="clear hideSkiplink">
                 <asp:Menu ID="NavigationMenu" runat="server" CssClass="menu" EnableViewState="false" IncludeStyleBlock="false" Orientation="Horizontal">
                     <Items>
-                        <asp:MenuItem NavigateUrl="~/Default.aspx" Text="主页"/>
+                        <asp:MenuItem NavigateUrl="~/Default.aspx" Text="起始页"/>
+                        <asp:MenuItem NavigateUrl="~/Main/DefaultMainSite.aspx" Text="主页"/>
                         <asp:MenuItem NavigateUrl="~/About.aspx" Text="关于"/>
                     </Items>
                 </asp:Menu>

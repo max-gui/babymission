@@ -26,32 +26,27 @@
         BorderColor="#336666" BorderStyle="Double" BorderWidth="3px" Caption="所属副合同信息" 
         CellPadding="4" GridLines="Horizontal" HorizontalAlign="Center" 
         onpageindexchanging="subContractGV_PageIndexChanging" 
-        onselectedindexchanging="subContractGV_SelectedIndexChanging" 
         onsorting="subContractGV_Sorting" style="margin-left: 0px" 
         onrowdatabound="subContractGV_RowDataBound">
         <Columns>
-            <asp:CommandField ShowSelectButton="True" />
-            <asp:BoundField DataField="subContractTag" HeaderText="副合同编号" />
+            <asp:BoundField DataField="subContractTag" HeaderText="副合同编号" SortExpression="subContractTag" />
             <asp:BoundField DataField="supplierName" HeaderText="供应商" />
-            <asp:BoundField DataField="cash" HeaderText="合同金额" />
+            <asp:BoundField DataField="cash" HeaderText="合同金额" DataFormatString="{0:c}" />
             <asp:TemplateField>
                 <ItemTemplate>
                     <asp:ListBox ID="subContractProductLsB" runat="server" Enabled="False" Rows="1">
                     </asp:ListBox>
                 </ItemTemplate>
             </asp:TemplateField>
-            <asp:BoundField DataField="dateLine" HeaderText="供货日期" />
-            <asp:BoundField DataField="paymentMode" HeaderText="付款方式" />
-            <asp:TemplateField>
+            <asp:BoundField DataField="dateLine" HeaderText="供货日期" SortExpression="dateLine" />
+            <asp:BoundField DataField="paymentMode" HeaderText="付款方式" />                    
+            <asp:TemplateField ShowHeader="False">
                 <ItemTemplate>
-                    <asp:Button ID="btnDel" runat="server" onclick="btnDel_Click" Text="删除" 
-                        Visible="False" />
-                </ItemTemplate>
-            </asp:TemplateField>
-            <asp:TemplateField>
-                <ItemTemplate>
-                    <asp:Button ID="btnCancle" runat="server" onclick="btnCancle_Click" Text="放弃更改" 
-                        Visible="False" />
+                    <%--<asp:Label ID="lblMessage" runat="server" Text="message" Visible="False"></asp:Label>--%>
+                    <asp:LinkButton ID="toDel" runat="server" CausesValidation="False" OnClick="toDel_Click"
+                    CommandName="toDel" CommandArgument='<%# Bind("subContractId") %>' Text="删除"></asp:LinkButton>
+                    <asp:LinkButton ID="toEdit" runat="server" CausesValidation="False" OnClick="toEdit_Click"
+                    CommandName="toEdit" CommandArgument='<%# Bind("subContractId") %>' Text="修改"></asp:LinkButton>
                 </ItemTemplate>
             </asp:TemplateField>
         </Columns>
@@ -70,12 +65,13 @@
         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
         <asp:Button ID="btnAdd" runat="server" onclick="btnAdd_Click" 
             Text="添加副合同" />
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+        <asp:Button ID="btnAccept" runat="server" onclick="btnAccept_Click" 
+            Text="确认提交" Visible="False" />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        <asp:Button ID="btnCancel" runat="server" onclick="btnCancel_Click" 
+            style="height: 21px" Text="取消" Visible="False" />
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-        <asp:Button 
-            ID="btnAcceptDel" runat="server" onclick="btnAcceptDel_Click" Text="确认删除" 
-            Visible="False" />
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-        <asp:Button ID="btnDelCancel" runat="server" onclick="btnDelCancel_Click" Text="放弃" 
-            Visible="False" />
-    </p>
+        </p>
 </asp:Content>

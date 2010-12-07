@@ -24,8 +24,6 @@ namespace xm_mis.db
             #region sqlPara declare
             //mainContractId
             SqlParameter sqlParaMainContractId = null;
-            //now
-            SqlParameter sqlParaNow = null;
             //receiptPercent
             SqlParameter sqlParaReceiptPercent = null;
             #endregion
@@ -43,14 +41,12 @@ namespace xm_mis.db
             DateTime st = DateTime.Now;
 
             sqlParaMainContractId = new SqlParameter("@mainContractId", mcId);
-            sqlParaNow = new SqlParameter("@now", st);
-            sqlParaReceiptPercent = new SqlParameter("@receiptPercent", SqlDbType.Int);
+            sqlParaReceiptPercent = new SqlParameter("@receiptPercent", SqlDbType.Real);
             #endregion
 
             #region sqlParaAdd
             sqlCmd.Parameters.Clear();
             sqlCmd.Parameters.Add(sqlParaMainContractId);
-            sqlCmd.Parameters.Add(sqlParaNow);
             sqlCmd.Parameters.Add(sqlParaReceiptPercent);
             #endregion
 
@@ -113,6 +109,54 @@ namespace xm_mis.db
             sqlCmd.Connection.Close();
         }
 
+        public void SelfReceiptDone(DataSet dataSet)
+        {
+            #region sqlPara declare
+            //receiptId
+            SqlParameter sqlParaReceiptId = null;
+            //receiptPercent
+            SqlParameter sqlParaReceiptPercent = null;
+            //mainContractId
+            SqlParameter sqlParaMainContractId = null;
+            //projectTagId
+            SqlParameter sqlParaProjectTagId = null;
+            #endregion
+
+            SqlCommand sqlCmd = null;
+
+            string strSQL = "selfReceipt_done";
+
+            sqlCmd = this.SqlCom;
+            sqlCmd.CommandText = strSQL;
+            sqlCmd.CommandType = CommandType.StoredProcedure;
+
+            #region sqlParaInit
+            string receiptId = dataSet.Tables["addTable"].Rows[0]["receiptId"].ToString();
+            string receiptPercent = dataSet.Tables["addTable"].Rows[0]["receiptPercent"].ToString();
+            string mainContractId = dataSet.Tables["addTable"].Rows[0]["mainContractId"].ToString();
+            string projectTagId = dataSet.Tables["addTable"].Rows[0]["projectTagId"].ToString();
+
+            sqlParaReceiptId = new SqlParameter("@receiptId", receiptId);
+            sqlParaReceiptPercent = new SqlParameter("@receiptPercent", receiptPercent);
+            sqlParaMainContractId = new SqlParameter("@mainContractId", mainContractId);
+            sqlParaProjectTagId = new SqlParameter("@projectTagId", projectTagId);
+            #endregion
+
+            #region sqlParaAdd
+            sqlCmd.Parameters.Clear();
+            sqlCmd.Parameters.Add(sqlParaReceiptId);
+            sqlCmd.Parameters.Add(sqlParaReceiptPercent);
+            sqlCmd.Parameters.Add(sqlParaMainContractId);
+            sqlCmd.Parameters.Add(sqlParaProjectTagId);
+            #endregion
+
+            sqlCmd.Connection.Open();
+
+            sqlCmd.ExecuteNonQuery();
+
+            sqlCmd.Connection.Close();
+        }
+
         public string SelectAdd(DataSet dataSet)
         {
             #region sqlPara declare
@@ -124,8 +168,6 @@ namespace xm_mis.db
             SqlParameter sqlParaReceiptPercent = null;
             //receiptExplication
             SqlParameter sqlParaReceiptExplication = null;
-            //startTime
-            SqlParameter sqlParaStartTime = null;
             //Identity
             SqlParameter sqlParaId = null;
             #endregion
@@ -143,13 +185,11 @@ namespace xm_mis.db
             string custMaxReceipt = dataSet.Tables["tbl_receiptApply"].Rows[0]["custMaxReceipt"].ToString();
             string receiptPercent = dataSet.Tables["tbl_receiptApply"].Rows[0]["receiptPercent"].ToString();
             string receiptExplication = dataSet.Tables["tbl_receiptApply"].Rows[0]["receiptExplication"].ToString();
-            DateTime st = DateTime.Now;
 
             sqlParaMainContractId = new SqlParameter("@mainContractId", mainContractId);
             sqlParaCustMaxReceipt = new SqlParameter("@custMaxReceipt", custMaxReceipt);
             sqlParaReceiptPercent = new SqlParameter("@receiptPercent", receiptPercent);
             sqlParaReceiptExplication = new SqlParameter("@receiptExplication", receiptExplication);
-            sqlParaStartTime = new SqlParameter("@startTime", st);
             sqlParaId = new SqlParameter("@Identity", SqlDbType.Int);
             #endregion
 
@@ -159,7 +199,6 @@ namespace xm_mis.db
             sqlCmd.Parameters.Add(sqlParaCustMaxReceipt);
             sqlCmd.Parameters.Add(sqlParaReceiptPercent);
             sqlCmd.Parameters.Add(sqlParaReceiptExplication);
-            sqlCmd.Parameters.Add(sqlParaStartTime);
             sqlCmd.Parameters.Add(sqlParaId);
             #endregion
 
@@ -258,7 +297,7 @@ namespace xm_mis.db
             string strSQL =
                 "SELECT " +
                 "* " +
-                "FROM tbl_receiptApply ";
+                "FROM view_mainReceipt ";
 
             sqlCmd = this.SqlCom;
             sqlCmd.CommandText = strSQL;
@@ -269,7 +308,7 @@ namespace xm_mis.db
             SqlDA.SelectCommand = sqlCmd;
 
             DataSet myDataSet = new DataSet();
-            userDataAdapter.Fill(myDataSet, "tbl_receiptApply");
+            userDataAdapter.Fill(myDataSet, "view_mainReceipt");
 
             return myDataSet;
         }

@@ -78,7 +78,7 @@ namespace xm_mis.logic
         //{
         //    MyDst = vmpu.SelectView();
 
-        //    string end = DateTime.Now.ToShortDateString();
+        //    string end = DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss.fff");
 
         //    string strFilter =
         //        " endTime > " + "'" + end + "'" +
@@ -94,11 +94,11 @@ namespace xm_mis.logic
         {
             MyDst = tra.SelectView();
 
-            string end = DateTime.Now.ToShortDateString();
+            string end = DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss.fff");
 
             string strFilter =
                 " endTime > " + "'" + end + "'";
-            MyDst.Tables["tbl_receiptApply"].DefaultView.RowFilter = strFilter;
+            MyDst.Tables["view_mainReceipt"].DefaultView.RowFilter = strFilter;
         }
 
         public void SelfReceiptExamine(string receiptId, string isAccept, string receiptComment)
@@ -106,6 +106,10 @@ namespace xm_mis.logic
             tra.SelfReceiptExamine(receiptId, isAccept, receiptComment);
         }
 
+        public void SelfReceiptDone()
+        {
+            tra.SelfReceiptDone(MyDst);
+        }
         //public void ProductDel(string productId)
         //{
         //    tmc.ProductDel(productId);

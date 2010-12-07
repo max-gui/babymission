@@ -84,7 +84,7 @@ namespace xm_mis.logic
         {
             MyDst = tua.SelectUsrAuthView(MyDst);
 
-            string end = DateTime.Now.ToShortDateString();
+            string end = DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss.fff");
 
             string strFilter =
                 " usrEnd > " + "'" + end + "'" +

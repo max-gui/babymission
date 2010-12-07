@@ -15,8 +15,8 @@
             <asp:BoundField DataField="custManName" HeaderText="客户项目经理姓名" />
             <asp:BoundField DataField="custManContact" HeaderText="客户项目经理电话" />
             <asp:BoundField DataField="custManEmail" HeaderText="客户项目经理Email" />
-            <asp:BoundField DataField="realName" HeaderText="我方项目经理姓名" />
-            <asp:BoundField DataField="usrContact" HeaderText="我方项目经理电话" />
+            <asp:BoundField DataField="applymentUsrName" HeaderText="我方项目经理姓名" />
+            <asp:BoundField DataField="applymentUsrMobile" HeaderText="我方项目经理电话" />
             <asp:BoundField DataField="startTime" HeaderText="项目号申请时间" />
         </Columns>
         <EditRowStyle BackColor="#CCFFCC" BorderStyle="Solid" Font-Names="宋体" />
@@ -30,5 +30,10 @@
         <SortedDescendingCellStyle BackColor="#E5E5E5" />
         <SortedDescendingHeaderStyle BackColor="#275353" />
     </asp:GridView>
+        </p>
+<p>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        <asp:Button 
+            ID="btnAdd" runat="server" onclick="btnAdd_Click" Text="新项目号申请" />
         &nbsp;</p>
 </asp:Content>

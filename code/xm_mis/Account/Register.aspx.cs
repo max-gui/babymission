@@ -8,6 +8,7 @@ using System.Web.UI.WebControls;
 
 using System.Data;
 using xm_mis.logic;
+using System.Net.Mail;
 namespace xm_mis.Account
 {
     public partial class Register : System.Web.UI.Page
@@ -16,9 +17,69 @@ namespace xm_mis.Account
         protected void Page_Load(object sender, EventArgs e)
         {
             //        txtName.ContinueDestinationPageUrl = Request.QueryString["ReturnUrl"];
+            if (!(null == Session["totleAuthority"]))
+            {
+                AuthAttributes usrAuthAttr = (AuthAttributes)Session["totleAuthority"];
+
+                bool flag = usrAuthAttr.HasOneFlag(AuthAttributes.projectTagApply);
+                if (!flag)
+                {
+                    Response.Redirect("~/Main/NoAuthority.aspx");
+                }
+            }
+            else
+            {
+                string url = Request.FilePath;
+                Session["backUrl"] = url;
+                Response.Redirect("~/Account/Login.aspx");
+            }
+
             if (!IsPostBack)
             {
+                DataSet dst = new DataSet();
+                DataRow dr = null;
 
+                #region ddlSelfDepartView
+
+                SelfDepartProcess ddlSelfDepartView = new SelfDepartProcess(dst);
+
+                ddlSelfDepartView.SelDepView();
+                DataTable ddlSelfDepartTable = ddlSelfDepartView.MyDst.Tables["tbl_department"].DefaultView.ToTable();
+
+                dr = ddlSelfDepartTable.NewRow();
+                dr["departmentId"] = -1;
+                dr["departmentName"] = string.Empty;
+                dr["endTime"] = "9999-12-31";
+                ddlSelfDepartTable.Rows.Add(dr);
+
+                ddlDepart.DataValueField = "departmentId";
+                ddlDepart.DataTextField = "departmentName";
+                ddlDepart.DataSource = ddlSelfDepartTable;
+                ddlDepart.DataBind();
+                ddlDepart.SelectedValue = "-1";
+
+                #endregion
+
+                #region ddlSelfTitleView
+
+                SelfTitleProcess ddlSelfTitleView = new SelfTitleProcess(dst);
+
+                ddlSelfTitleView.SelfTitleView();
+                DataTable ddlSelfTitleTable = ddlSelfTitleView.MyDst.Tables["tbl_title"].DefaultView.ToTable();
+
+                dr = ddlSelfTitleTable.NewRow();
+                dr["titleId"] = -1;
+                dr["titleName"] = string.Empty;
+                dr["endTime"] = "9999-12-31";
+                ddlSelfTitleTable.Rows.Add(dr);
+
+                ddlTitle.DataValueField = "titleId";
+                ddlTitle.DataTextField = "titleName";
+                ddlTitle.DataSource = ddlSelfTitleTable;
+                ddlTitle.DataBind();
+                ddlTitle.SelectedValue = "-1";
+
+                #endregion
             }
         }
 
@@ -39,10 +100,12 @@ namespace xm_mis.Account
         {
             if (inputCheck())
             {
-                string sn = txtName.Text.ToString().Trim();
-                string sun = txtUsrName.Text.ToString().Trim();
-                //string spw = txtPassWord.Text.ToString().Trim();
-                string sc = txtContact.Text.ToString().Trim();
+                string usrName = txtUsrName.Text.ToString().Trim();
+                string realName = txtRealName.Text.ToString().Trim();
+                string usrMobile = txtMobile.Text.ToString().Trim();
+                string usrEmail = txtEmail.Text.ToString().Trim();
+                string departmentId = ddlDepart.SelectedValue.ToString().Trim();
+                string titleId = ddlTitle.SelectedValue.ToString().Trim();
                 //int sc = int.Parse(txtContact.Text.ToString().Trim());
 
                 #region dataset
@@ -51,31 +114,27 @@ namespace xm_mis.Account
 
                 DataColumn colName = new DataColumn("realName", System.Type.GetType("System.String"));
                 DataColumn colUsrName = new DataColumn("usrName", System.Type.GetType("System.String"));
-                DataColumn colContact = new DataColumn("usrContact", System.Type.GetType("System.String"));
-                //DataColumn colPwd = new DataColumn("usrPassWord", System.Type.GetType("System.String"));
+                DataColumn colUsrMobile = new DataColumn("usrMobile", System.Type.GetType("System.String"));
+                DataColumn colUsrEmail = new DataColumn("usrEmail", System.Type.GetType("System.String"));
+                DataColumn colDepartId = new DataColumn("departmentId", System.Type.GetType("System.String"));
+                DataColumn colTitleId = new DataColumn("titleId", System.Type.GetType("System.String"));
 
-                DataTable userTable = new DataTable("tbl_usr");
-
-                //colName.DataType = System.Type.GetType("System.String");
-                //colAuth.DataType = System.Type.GetType("System.Int32");
-                //colPwd.DataType = System.Type.GetType("System.String");
-                //colId.DataType = System.Type.GetType("System.Int32");
-
-                //colName.ColumnName = "usrName";
-                //colPwd.ColumnName = "usrPassWord";
-                //colId.ColumnName = "usrId";
-                //colAuth.ColumnName = "totleAuthority";
+                DataTable userTable = new DataTable("addTable");
 
                 userTable.Columns.Add(colName);
                 userTable.Columns.Add(colUsrName);
-                userTable.Columns.Add(colContact);
-                //userTable.Columns.Add(colPwd);
+                userTable.Columns.Add(colUsrMobile);
+                userTable.Columns.Add(colUsrEmail);
+                userTable.Columns.Add(colDepartId);
+                userTable.Columns.Add(colTitleId);
 
                 userRow = userTable.NewRow();
-                userRow["realName"] = sn;
-                userRow["usrName"] = sun;
-                //userRow["usrPassWord"] = spw;
-                userRow["usrContact"] = sc;
+                userRow["realName"] = realName;
+                userRow["usrName"] = usrName;
+                userRow["usrMobile"] = usrMobile;
+                userRow["usrEmail"] = usrEmail;
+                userRow["departmentId"] = departmentId;
+                userRow["titleId"] = titleId;
                 userTable.Rows.Add(userRow);
 
                 dataSet.Tables.Add(userTable);
@@ -83,253 +142,119 @@ namespace xm_mis.Account
 
                 UserProcess up = new UserProcess(dataSet);
 
-                up.DoCheckUsrName();
-                int rowRtn = up.IntRtn;
-                if (0 == rowRtn)
+                string error = up.Add_includeError();
+
+                if (string.IsNullOrEmpty(error))
                 {
-                    using (DataTable dt =
-                                up.MyDst.Tables["tbl_usr"].DefaultView.ToTable("addTable"))
-                    {
-                        DataRow dr = dt.NewRow();
-                        dr["realName"] = sn;
-                        dr["usrName"] = sun;
-                        //dr["usrPassWord"] = spw;
-                        dr["usrContact"] = sc;
-
-                        dt.Rows.Add(dr);
-                        up.MyDst.Tables.Add(dt);
-                        //up.MyDst.Tables["tbl_usr"].Rows.Add(dr);
-
-                        up.Add();
-                        //up.commit();
-
-                        //int nullAuth = 0;
-                        //Session["totleAuthority"] = nullAuth;
-                        //Session["usrId"] = up.StrRtn;
-
-                        //FormsAuthentication.SetAuthCookie(sn, false);
-
-                        //string continueUrl = "~/Main/DefaultMainSite.aspx";//Request.QueryString["ReturnUrl"];
-
-                        Response.Redirect("~/Main/usrManagerment/usrInfoManagerment.aspx");
-                        //aspxName = myLogin.StrRtn + "Main.aspx";
-                        //Server.Transfer(aspxName);
-                    }
+                    Response.Redirect("~/Main/usrManagerment/usrInfoManagerment.aspx");
                 }
                 else
                 {
-                    lblUsrName.Text = "用户名已存在!";
+                    lblName.Text = error;
                 }
-
-                //ConnectionStringSettings cfg =
-                //    ConfigurationManager.ConnectionStrings["My DB"];
-                //DbProviderFactory factory =
-                //    DbProviderFactories.GetFactory(cfg.ProviderName);
-                //DbConnection da = factory.CreateConnection();
-                //DbCommand dcmd = factory.CreateCommand();
-                //da.ConnectionString = cfg.ConnectionString;
-                //dcmd.Connection = da;
-                //dcmd.CommandText = "select * from tbl_usr";
-
-                /*
-                using (SqlConnection cnx = 
-                    new SqlConnection(cfg.ConnectionString.ToString().Trim()))
-                {*/
-                //using (SqlDataAdapter dAdapter = new SqlDataAdapter())
-                //{
-                //    dAdapter.SelectCommand = dcmd as SqlCommand;
-                //    /*
-                //    dAdapter.SelectCommand = new SqlCommand(
-                //        "select * from tbl_usr",cnx );
-                //     * */
-                //    dAdapter.Fill(dSet, "tbl_usr");
-
-                //}
-                ////}
-
-                //DataColumn dCol1 = dSet.Tables["tbl_usr"].Columns["usrName"];
-
-                //string strTemp = dSet.Tables["tbl_usr"].Rows[0]["usrName"].ToString().Trim();
-
-
-
-
-                //string continueUrl = Request.QueryString["ReturnUrl"];
-                //if (String.IsNullOrEmpty(continueUrl))
-                //{
-                //    continueUrl = "~/";
-                //}
-                //Response.Redirect(continueUrl);
             }
         }
-        protected bool txtName_TextCheck()
+
+        protected bool txtNullOrLenth_Check(TextBox txtBx)
         {
             bool flag = true;
-            if (string.IsNullOrWhiteSpace(txtName.Text.ToString().Trim()))
+
+            string strTxt = txtBx.Text.ToString().Trim();
+            if (string.IsNullOrWhiteSpace(strTxt))
             {
-                lblName.Text = "*必填项!";
+                txtBx.Text = "不能为空！";
                 flag = false;
             }
-            else if (txtName.Text.ToString().Trim().Length > 20)
+            else if (strTxt.Length > 50)
             {
-                lblName.Text = "真实姓名太长!";
-                //Session["flagUsrName"] = bool.FalseString.ToString().Trim();
+                txtBx.Text = "不能超过50个字！";
                 flag = false;
             }
-            else
+            else if (strTxt.Equals("不能为空！"))
             {
-                lblName.Text = string.Empty;
-                //Session["flagUsrName"] = bool.TrueString.ToString().Trim();
-                //btnOk();
+                txtBx.Text = "不能为空！  ";
+                flag = false;
+            }
+            else if (strTxt.Equals("不能超过50个字！"))
+            {
+                txtBx.Text = "不能超过50个字！  ";
+                flag = false;
             }
 
             return flag;
         }
-        protected bool txtUsrName_TextCheck()
+
+        protected bool txtMobileNumber_Check(TextBox txtBx)
         {
             bool flag = true;
-            if (string.IsNullOrWhiteSpace(txtUsrName.Text.ToString().Trim()))
-            {
-                lblUsrName.Text = "*必填项!";
-                flag = false;
-            }
-            else if (txtUsrName.Text.ToString().Trim().Length > 20)
-            {
-                lblUsrName.Text = "用户名太长!";
-                //Session["flagUsrName"] = bool.FalseString.ToString().Trim();
-                flag = false;
-            }
-            else
-            {
-                lblUsrName.Text = string.Empty;
-                //Session["flagUsrName"] = bool.TrueString.ToString().Trim();
-                //btnOk();
-            }
 
-            return flag;
-        }
-        //protected bool txtPassWord_TextCheck()
-        //{
-        //    bool flag = true;
-        //    if (string.IsNullOrWhiteSpace(txtPassWord.Text.ToString().Trim()))
-        //    {
-        //        lblPassWord.Text = "*必填项!";
-        //        flag = false;
-        //    }
-        //    else if (txtPassWord.Text.ToString().Trim().Length > 10)
-        //    {
-        //        lblPassWord.Text = "密码太长!";
-        //        //Session["flagUsrName"] = bool.FalseString.ToString().Trim();
-        //        flag = false;
-        //    }
-        //    else
-        //    {
-        //        lblPassWord.Text = string.Empty;
-        //        //Session["flagPassWord"] = bool.TrueString.ToString().Trim();
-        //        //btnOk();
-        //    }
+            string strBx = string.Empty;
+            long sc = 0;
+            try
+            {
+                strBx = txtBx.Text.ToString().Trim();
+                sc = long.Parse(strBx);
+                txtBx.Text = strBx;
 
-        //    return flag;
-        //}
-        //protected bool txtRPassWord_TextCheck()
-        //{
-        //    bool flag = true;
-        //    if (string.IsNullOrWhiteSpace(txtRPassWord.Text.ToString().Trim()))
-        //    {
-        //        lblRPassWord.Text = "*必填项!";
-        //        flag = false;
-        //    }
-        //    else if (!(txtRPassWord.Text.ToString().Equals(txtPassWord.Text.ToString())))
-        //    {
-        //        lblRPassWord.Text = "两次输入的密码不同!";
-        //        //Session["flagUsrName"] = bool.FalseString.ToString().Trim();
-        //        flag = false;
-        //    }
-        //    else
-        //    {
-        //        lblRPassWord.Text = string.Empty;
-        //        //Session["flagPassWord"] = bool.TrueString.ToString().Trim();
-        //        //btnOk();
-        //    }
-
-        //    return flag;
-        //}
-        protected bool txtContact_TextCheck()
-        {
-            bool flag = true;
-            if (string.IsNullOrWhiteSpace(txtContact.Text.ToString().Trim()))
-            {
-                lblContact.Text = "*必填项!";
-                //Session["flagContact"] = bool.FalseString.ToString().Trim();
-                flag = false;
-            }
-            else if (txtContact.Text.ToString().Trim().Length != 11)
-            {
-                lblContact.Text = "手机号码应为11位!";
-                //Session["flagContact"] = bool.FalseString.ToString().Trim();
-                flag = false;
-            }
-            else
-            {
-                long sc = 0;
-                try
+                if (strBx.Length != 11)
                 {
-                    sc = long.Parse(txtContact.Text.ToString().Trim());
-                    lblContact.Text = string.Empty;
-                    //Session["flagContact"] = bool.TrueString.ToString().Trim();
-                }
-                catch (FormatException e)
-                {
-                    lblContact.Text = "手机号码只能包含数字!";
+                    txtBx.Text = "手机号码应为11位!";
                     //Session["flagContact"] = bool.FalseString.ToString().Trim();
-                    Console.WriteLine("{0} Exception caught.", e);
                     flag = false;
                 }
             }
-
-            //btnOk();
+            catch (ArgumentNullException parseEx)
+            {
+                txtBx.Text = parseEx.Message;
+                flag = false;
+            }
+            catch (FormatException parseEx)
+            {
+                txtBx.Text = parseEx.Message;
+                flag = false;
+            }
+            catch (OverflowException parseEx)
+            {
+                txtBx.Text = parseEx.Message;
+                flag = false;
+            }
 
             return flag;
         }
-        //protected void btnOk()
-        //{
-        //    btnReg.Enabled = false;
 
-        //    if (Session["flagName"].Equals(bool.FalseString.ToString().Trim()))
-        //    {            
-        //    }
-        //    else if (Session["flagUsrName"].Equals(bool.FalseString.ToString().Trim()))
-        //    {
-        //    }
-        //    else if (Session["flagPassWord"].Equals(bool.FalseString.ToString().Trim()))
-        //    {
-        //    }
-        //    else if (Session["flagContact"].Equals(bool.FalseString.ToString().Trim()))
-        //    {
-        //        btnReg.Enabled = true;
-        //    }
-        //}
+        protected bool ddlUnSelect_Check(DropDownList ddl)
+        {
+            bool flag = true;
+
+            if (ddl.SelectedValue.Equals("-1"))
+            {
+                flag = false;
+            }
+            else
+            {
+            }
+
+            return flag;
+        }
+
         protected bool inputCheck()
         {
             bool flag = true;
-            if (!txtName_TextCheck())
+
+            flag = txtNullOrLenth_Check(txtUsrName)
+                && txtNullOrLenth_Check(txtRealName)
+                && txtMobileNumber_Check(txtMobile)
+                && txtNullOrLenth_Check(txtEmail)
+                && ddlUnSelect_Check(ddlDepart)
+                && ddlUnSelect_Check(ddlTitle);
+
+            try
             {
-                flag = false;
+                MailAddress mAddr = new MailAddress(txtEmail.Text.Trim());
             }
-            else if (!txtUsrName_TextCheck())
+            catch (Exception ex)
             {
-                flag = false;
-            }
-            //else if (!txtPassWord_TextCheck())
-            //{
-            //    flag = false;
-            //}
-            //else if (!txtRPassWord_TextCheck())
-            //{
-            //    flag = false;
-            //}
-            else if (!txtContact_TextCheck())
-            {
+                txtEmail.Text = ex.Message;
                 flag = false;
             }
 

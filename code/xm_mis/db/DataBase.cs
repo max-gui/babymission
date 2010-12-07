@@ -12,6 +12,16 @@ using System.Data.SqlClient;
 using xm_mis.db_connection;
 namespace xm_mis.db
 {
+    public partial class Xm_db
+    {
+        public static Xm_db GetInstance()
+        { 
+            return new Xm_db(mySqlConn.DBConn);
+        }
+
+        private static SQLServConnection mySqlConn = new SQLServConnection();
+    }
+
     abstract public class DataBase
     {
         private SqlCommand sqlCom = null;
@@ -47,3 +57,4 @@ namespace xm_mis.db
         }
     }
 }
+

@@ -7,6 +7,7 @@ using System.Web.UI.WebControls;
 
 using System.Data;
 using xm_mis.logic;
+using xm_mis.db;
 namespace xm_mis.Main.contractManager
 {
     public partial class addContract : System.Web.UI.Page
@@ -15,21 +16,53 @@ namespace xm_mis.Main.contractManager
         {
             if (!(null == Session["totleAuthority"]))
             {
-                int usrAuth = 0;
-                string strUsrAuth = Session["totleAuthority"] as string;
-                usrAuth = int.Parse(strUsrAuth);
-                int flag = 0x5 << 4;
+                AuthAttributes usrAuthAttr = (AuthAttributes)Session["totleAuthority"];
 
-                if ((usrAuth & flag) == 0)
+                bool flag = usrAuthAttr.HasOneFlag(AuthAttributes.newContract);
+                if (!flag)
+                {
                     Response.Redirect("~/Main/NoAuthority.aspx");
+                }
             }
             else
             {
+                string url = Request.FilePath;
+                Session["backUrl"] = url;
                 Response.Redirect("~/Account/Login.aspx");
             }
 
             if (!IsPostBack)
             {
+                #region ddlCustComp
+
+                DataSet dst = new DataSet();
+
+                custCompProcess ddlCustCompView = new custCompProcess(dst);
+
+                ddlCustCompView.RealCompView();
+                DataTable ddlCustCompTable = ddlCustCompView.MyDst.Tables["tbl_customer_company"].DefaultView.ToTable();
+
+                //DataColumn[] projectKey = new DataColumn[1];
+                //projectKey[0] = ddlProjectTable.Columns["projectTagId"];
+                //ddlProjectTable.PrimaryKey = projectKey;
+
+                
+
+                DataRow dr = ddlCustCompTable.NewRow();
+                dr["custCompyId"] = -1;
+                dr["custCompName"] = string.Empty;
+                dr["endTime"] = "9999-12-31";
+                ddlCustCompTable.Rows.Add(dr);
+
+                Session["ddlProjectDtS"] = ddlCustCompTable;
+
+                ddlCustComp.DataValueField = "custCompyId";
+                ddlCustComp.DataTextField = "custCompName";
+                ddlCustComp.DataSource = Session["ddlProjectDtS"];
+                ddlCustComp.DataBind();
+
+                #endregion
+
                 #region mainContractTable
                 DataTable mainContractTable = null;
                 if (null == Session["mainContractTable"])
@@ -37,7 +70,7 @@ namespace xm_mis.Main.contractManager
                     DataRow mainContractRow = null;
 
                     DataColumn colProjectTagId = new DataColumn("projectTagId", System.Type.GetType("System.String"));
-                    DataColumn colContractCompName = new DataColumn("contractCompName", System.Type.GetType("System.String"));
+                    DataColumn colCustCompId = new DataColumn("custCompyId", System.Type.GetType("System.String"));
                     DataColumn colMainContractTag = new DataColumn("mainContractTag", System.Type.GetType("System.String"));
                     DataColumn colCash = new DataColumn("cash", System.Type.GetType("System.String"));
                     DataColumn colDateLine = new DataColumn("dateLine", System.Type.GetType("System.String"));
@@ -46,7 +79,7 @@ namespace xm_mis.Main.contractManager
                     mainContractTable = new DataTable("tbl_mainContract");
 
                     mainContractTable.Columns.Add(colProjectTagId);
-                    mainContractTable.Columns.Add(colContractCompName);
+                    mainContractTable.Columns.Add(colCustCompId);
                     mainContractTable.Columns.Add(colMainContractTag);
                     mainContractTable.Columns.Add(colCash);
                     mainContractTable.Columns.Add(colDateLine);
@@ -54,10 +87,10 @@ namespace xm_mis.Main.contractManager
 
                     mainContractRow = mainContractTable.NewRow();
                     mainContractRow["projectTagId"] = -1;
-                    mainContractRow["contractCompName"] = string.Empty;
+                    mainContractRow["custCompyId"] = -1;
                     mainContractRow["mainContractTag"] = string.Empty;
                     mainContractRow["cash"] = string.Empty;
-                    mainContractRow["dateLine"] = DateTime.Now.ToShortDateString();
+                    mainContractRow["dateLine"] = DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss.fff");
                     mainContractRow["paymentMode"] = string.Empty;
                     mainContractTable.Rows.Add(mainContractRow);
 
@@ -68,7 +101,7 @@ namespace xm_mis.Main.contractManager
                     mainContractTable = Session["mainContractTable"] as DataTable;
                 }
 
-                txtCustmor.Text = mainContractTable.Rows[0]["contractCompName"].ToString();
+                ddlCustComp.SelectedValue = mainContractTable.Rows[0]["custCompyId"].ToString();
                 txtMainContractTag.Text = mainContractTable.Rows[0]["mainContractTag"].ToString();
                 txtMoney.Text = mainContractTable.Rows[0]["cash"].ToString();
                 btnDate.Text = mainContractTable.Rows[0]["dateLine"].ToString();
@@ -93,13 +126,11 @@ namespace xm_mis.Main.contractManager
 
                 #region ddlProjectTable
                 string usrId = Session["usrId"] as string;
-
-                DataSet projectDst = new DataSet();
-
-                ProjectTagProcess ddlProjectView = new ProjectTagProcess(projectDst);
+                
+                ProjectTagProcess ddlProjectView = new ProjectTagProcess(dst);
 
                 ddlProjectView.RealProjTagView(usrId);
-                DataTable ddlProjectTable = ddlProjectView.MyDst.Tables["view_project_tag"];                
+                DataTable ddlProjectTable = ddlProjectView.MyDst.Tables["projectTag_view"].DefaultView.ToTable();                
 
                 DataColumn[] projectKey = new DataColumn[1];
                 projectKey[0] = ddlProjectTable.Columns["projectTagId"];
@@ -107,11 +138,12 @@ namespace xm_mis.Main.contractManager
 
                 Session["ddlProjectDtS"] = ddlProjectTable;
 
-                DataRow dr = ddlProjectTable.NewRow();
+                dr = ddlProjectTable.NewRow();
                 dr["projectTagId"] = -1;
                 dr["projectTag"] = string.Empty;
                 dr["endTime"] = "9999-12-31";
-                dr["usrId"] = usrId;
+                dr["applymentUsrId"] = usrId;
+                dr["custCompyId"] = -1;
                 ddlProjectTable.Rows.Add(dr);
 
                 ddlProjectTag.DataValueField = "projectTagId";
@@ -126,7 +158,7 @@ namespace xm_mis.Main.contractManager
         protected DataTable getInput()
         {            
             string projectTagId = ddlProjectTag.SelectedValue;
-            string custmor = txtCustmor.Text.ToString().Trim();
+            string custmor = ddlCustComp.SelectedValue;
             string mainContractTag = txtMainContractTag.Text.ToString().Trim();
             string cash = txtMoney.Text.ToString().Trim();
             string dateLine = btnDate.Text.ToString();
@@ -135,7 +167,7 @@ namespace xm_mis.Main.contractManager
             DataTable mainContractTable = Session["mainContractTable"] as DataTable;
 
             mainContractTable.Rows[0]["projectTagId"] = projectTagId;
-            mainContractTable.Rows[0]["contractCompName"] = custmor;
+            mainContractTable.Rows[0]["custCompyId"] = custmor;
             mainContractTable.Rows[0]["mainContractTag"] = mainContractTag;
             mainContractTable.Rows[0]["cash"] = cash;
             mainContractTable.Rows[0]["dateLine"] = dateLine;
@@ -206,6 +238,8 @@ namespace xm_mis.Main.contractManager
                 //#endregion
                 DataTable mainContractTable = getInput();
 
+                string projectOutAddress = txtProjAddr.Text.ToString();
+
                 DataTable dt = Session["mainProductSelDs"] as DataTable;
                 foreach (GridViewRow gvr in mainProductGV.Rows)
                 {
@@ -232,22 +266,64 @@ namespace xm_mis.Main.contractManager
                 MainContractProcess mcp = new MainContractProcess(dataSet);
 
                 mcp.Add();
-                string mainContractId = mcp.StrRtn;
+                string strMainContractId = mcp.StrRtn;
                 foreach (DataRow dr in contractProductTable.Rows)
                 {
-                    dr["mainContractId"] = mainContractId;
+                    dr["mainContractId"] = strMainContractId;
                 }
 
                 MainContractProductProcess mcpp = new MainContractProductProcess(dataSet);
 
                 mcpp.Add();
+                
+                Xm_db xmDataCont = Xm_db.GetInstance();
 
-                Response.Redirect("~/Main/DefaultMainSite.aspx");
+                int mainContractId = int.Parse(strMainContractId);
+
+                var mainContractEdit =
+                    (from mainContract in xmDataCont.Tbl_mainContract
+                     where mainContract.MainContractId == mainContractId
+                     select mainContract).First();
+
+                int projectTagId = mainContractEdit.ProjectTagId;
+                //int projectTagId = int.Parse(mainContractTable.Rows[0]["projectTagId"].ToString());
+                var projectEdit =
+                    (from project in xmDataCont.Tbl_projectTagInfo
+                     where project.ProjectTagId == projectTagId
+                     select project).First();
+
+                projectEdit.ProjectOutAddress = projectOutAddress;
+
+                try
+                {
+                    //xmDataCont.Refresh(System.Data.Linq.RefreshMode.KeepChanges, xmDataCont.tbl_mainContract);
+                    //xmDataCont.Refresh(System.Data.Linq.RefreshMode.KeepChanges, xmDataCont.tbl_projectTagInfo);
+                    xmDataCont.SubmitChanges(System.Data.Linq.ConflictMode.ContinueOnConflict);
+                }
+                catch (System.Data.Linq.ChangeConflictException cce)
+                {
+                    string strEx = cce.Message;
+                    foreach (System.Data.Linq.ObjectChangeConflict occ in xmDataCont.ChangeConflicts)
+                    {
+                        //No database values are merged into current.
+                        occ.Resolve(System.Data.Linq.RefreshMode.KeepChanges);                        
+                    }
+
+                    xmDataCont.SubmitChanges();
+                }
+
+                Session.Remove("ddlProjectDtS");
+                Session.Remove("mainContractTable");
+                Session.Remove("mainProductSelDs");
+                Response.Redirect("~/Main/contractManager/subContractEdit.aspx");
             }
         }
 
         protected void btnNo_Click(object sender, EventArgs e)
         {
+            Session.Remove("ddlProjectDtS");
+            Session.Remove("mainContractTable");
+            Session.Remove("mainProductSelDs");
             Response.Redirect("~/Main/DefaultMainSite.aspx");
         }
 
@@ -258,7 +334,7 @@ namespace xm_mis.Main.contractManager
 
         protected void calendarCust_SelectionChanged(object sender, EventArgs e)
         {
-            btnDate.Text = calendarCust.SelectedDate.ToShortDateString();
+            btnDate.Text = calendarCust.SelectedDate.ToString();
 
             calendarCust.Visible = false;
         }
@@ -278,10 +354,22 @@ namespace xm_mis.Main.contractManager
             mainProductGV.DataBind();
         }
 
-        protected void mainProductGV_Sorting(object sender, GridViewSortEventArgs e)
-        {
+        //protected void mainProductGV_Sorting(object sender, GridViewSortEventArgs e)
+        //{
+        //    // By default, set the sort direction to ascending.
+        //    if (mainProductGV.SelectedIndex == -1)
+        //    {
+        //        DataTable dt = Session["dtSources"] as DataTable;
 
-        }
+        //        if (dt != null)
+        //        {
+        //            //Sort the data.
+        //            dt.DefaultView.Sort = e.SortExpression.GetSortDirectionExpression(ViewState); //GetSortDirectionExpression(e.SortExpression, ViewState);
+        //            mainProductGV.DataSource = Session["dtSources"];
+        //            mainProductGV.DataBind();
+        //        }
+        //    }
+        //}
 
         protected void mainProductGV_RowDataBound(object sender, GridViewRowEventArgs e)
         {
@@ -409,9 +497,9 @@ namespace xm_mis.Main.contractManager
                 txtBx.Text = "不能为空！";
                 flag = false;
             }
-            else if (strTxt.Length > 25)
+            else if (strTxt.Length > 50)
             {
-                txtBx.Text = "不能超过25个字！";
+                txtBx.Text = "不能超过50个字！";
                 flag = false;
             }
             else if (strTxt.Equals("不能为空！"))
@@ -419,9 +507,9 @@ namespace xm_mis.Main.contractManager
                 txtBx.Text = "不能为空！  ";
                 flag = false;
             }
-            else if (strTxt.Equals("不能超过25个字！"))
+            else if (strTxt.Equals("不能超过50个字！"))
             {
-                txtBx.Text = "不能超过25个字！  ";
+                txtBx.Text = "不能超过50个字！  ";
                 flag = false;
             }
             
@@ -430,22 +518,20 @@ namespace xm_mis.Main.contractManager
 
         protected void ddlProjectTag_SelectedIndexChanged(object sender, EventArgs e)
         {
-            txtCustmor.Text = ddlProjectTag.Text;
-
             DataTable projectDt = Session["ddlProjectDtS"] as DataTable;
 
             DataRow dr = projectDt.Rows.Find(ddlProjectTag.SelectedValue.ToString());
 
-            string custName = dr["custCompName"].ToString();
-            txtCustmor.Text = custName;
+            string custCompyId = dr["custCompyId"].ToString();
+            ddlCustComp.SelectedValue = custCompyId;
             
-            if (custName.Equals(string.Empty))
+            if (custCompyId.Equals(string.Empty))
             {
-                txtCustmor.Enabled = false;
+                ddlCustComp.Enabled = false;
             }
             else
             {
-                txtCustmor.Enabled = true;
+                ddlCustComp.Enabled = true;
             }
         }
 
@@ -473,12 +559,29 @@ namespace xm_mis.Main.contractManager
             txtNullOrLenth_Check(txtBx);
         }
 
+        protected bool ddlUnSelect_Check(DropDownList ddl)
+        {
+            bool flag = true;
+
+            if (ddl.SelectedValue.Equals("-1"))
+            {
+                flag = false;
+            }
+            else
+            {
+            }
+
+            return flag;
+        }
+
         protected bool inputCheck()
         {
             bool flag = true;
                         
             flag = txtNullOrLenth_Check(txtMainContractTag)
-                && txtNullOrLenth_Check(txtCustmor) 
+                && txtNullOrLenth_Check(txtProjAddr)
+                && ddlUnSelect_Check(ddlProjectTag)
+                && ddlUnSelect_Check(ddlCustComp) 
                 && txtDoubleNumber_Check(txtMoney) 
                 && txtNullOrLenth_Check(txtPayment)
                 && mainProductGV_Check();

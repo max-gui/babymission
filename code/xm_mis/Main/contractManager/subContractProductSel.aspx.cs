@@ -15,16 +15,18 @@ namespace xm_mis.Main.contractManager
         {
             if (!(null == Session["totleAuthority"]))
             {
-                int usrAuth = 0;
-                string strUsrAuth = Session["totleAuthority"] as string;
-                usrAuth = int.Parse(strUsrAuth);
-                int flag = 0x5 << 4;
+                AuthAttributes usrAuthAttr = (AuthAttributes)Session["totleAuthority"];
 
-                if ((usrAuth & flag) == 0)
+                bool flag = usrAuthAttr.HasOneFlag(AuthAttributes.newContract);
+                if (!flag)
+                {
                     Response.Redirect("~/Main/NoAuthority.aspx");
+                }
             }
             else
             {
+                string url = Request.FilePath;
+                Session["backUrl"] = url;
                 Response.Redirect("~/Account/Login.aspx");
             }
 
@@ -55,7 +57,7 @@ namespace xm_mis.Main.contractManager
                 {
                     DataTable dt = Session["subProductSelDs"] as DataTable;
 
-                    string end = DateTime.Now.ToShortDateString();
+                    string end = DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss.fff");
                     string strFilter =
                         " endTime > " + "'" + end + "'";
                     dt.DefaultView.RowFilter = strFilter;
@@ -68,22 +70,24 @@ namespace xm_mis.Main.contractManager
 
         protected void productSelGV_PageIndexChanging(object sender, GridViewPageEventArgs e)
         {
+            seldAccept();
+
             productSelGV.PageIndex = e.NewPageIndex;
 
             productSelGV.DataSource = Session["subProductSelDs"];//["dtSources"] as DataTable;  
             productSelGV.DataBind();
         }
 
-        protected void productSelGV_Sorting(object sender, GridViewSortEventArgs e)
-        {
+        //protected void productSelGV_Sorting(object sender, GridViewSortEventArgs e)
+        //{
 
-        }
+        //}
 
         protected void productSelGV_RowDataBound(object sender, GridViewRowEventArgs e)
         {
             if (e.Row.RowType == DataControlRowType.DataRow)
             {
-                CheckBox cb = e.Row.Cells[3].Controls[0] as CheckBox;
+                CheckBox cb = e.Row.Cells[2].Controls[0] as CheckBox;
                 if (cb != null)
                 {
                     cb.Enabled = true;
@@ -93,6 +97,13 @@ namespace xm_mis.Main.contractManager
 
         protected void btnOk_Click(object sender, EventArgs e)
         {
+            seldAccept();
+
+            Response.Redirect("~/Main/contractManager/subContractAdd.aspx");
+        }
+
+        private void seldAccept()
+        {
             DataTable dt = Session["subProductSelDs"] as DataTable;
 
             int index = -1;
@@ -101,14 +112,12 @@ namespace xm_mis.Main.contractManager
             {
                 index = row.DataItemIndex;
 
-                cb = row.Cells[3].Controls[0] as CheckBox;
+                cb = row.Cells[2].Controls[0] as CheckBox;
                 dt.Rows[index]["checkOrNot"] = cb.Checked;
             }
 
             dt.AcceptChanges();
             Session["subProductSelDs"] = dt;
-
-            Response.Redirect("~/Main/contractManager/subContractAdd.aspx");
         }
 
         protected void btnCancel_Click(object sender, EventArgs e)

@@ -12,7 +12,8 @@
             <Columns>
                 <asp:BoundField DataField="realName" HeaderText="员工名字" />
                 <asp:BoundField DataField="usrName" HeaderText="用户名" />
-                <asp:BoundField DataField="usrContact" HeaderText="联系方式" />
+                <asp:BoundField DataField="usrMobile" HeaderText="联系方式" />
+                <asp:BoundField DataField="usrEmail" HeaderText="联系方式" />
                 <asp:BoundField DataField="titleName" HeaderText="职位" />
                 <asp:BoundField DataField="departmentName" HeaderText="所属部门" />
                 <asp:CommandField ShowDeleteButton="True" />
