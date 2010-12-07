@@ -33,8 +33,6 @@ namespace xm_mis.db
             SqlParameter sqlParaCustManTitle = null;
             //custCompyId
             SqlParameter sqlParaCustCompyId = null;
-            //start
-            SqlParameter sqlParaSt = null;
             //newCompId
             SqlParameter sqlParaId = null;
             #endregion
@@ -54,7 +52,6 @@ namespace xm_mis.db
             string custManDepart = dataSet.Tables["tbl_customer_manager"].Rows[0]["custManDepart"].ToString();
             string custManTitle = dataSet.Tables["tbl_customer_manager"].Rows[0]["custManTitle"].ToString();
             int custCompyId = int.Parse(dataSet.Tables["tbl_customer_manager"].Rows[0]["custCompyId"].ToString());
-            DateTime st = DateTime.Now;
 
             sqlParaCustManName = new SqlParameter("@custManName", custManName);
             sqlParaCustManContact = new SqlParameter("@custManContact", custManContact);
@@ -62,7 +59,6 @@ namespace xm_mis.db
             sqlParaCustManDepart = new SqlParameter("@custManDepart", custManDepart);
             sqlParaCustManTitle = new SqlParameter("@custManTitle", custManTitle);
             sqlParaCustCompyId = new SqlParameter("@custCompyId", custCompyId);
-            sqlParaSt = new SqlParameter("@startTime", st);
             sqlParaId = new SqlParameter("@Identity", SqlDbType.Int, 0, "custManId");
             #endregion
 
@@ -74,7 +70,6 @@ namespace xm_mis.db
             sqlCmd.Parameters.Add(sqlParaCustManDepart);
             sqlCmd.Parameters.Add(sqlParaCustManTitle);
             sqlCmd.Parameters.Add(sqlParaCustCompyId);
-            sqlCmd.Parameters.Add(sqlParaSt);
             sqlCmd.Parameters.Add(sqlParaId);
             #endregion
 
@@ -151,8 +146,6 @@ namespace xm_mis.db
             #region sqlPara declare
             //custCompManId
             SqlParameter sqlParaCustCompManId = null;
-            //custCompManEnd
-            SqlParameter sqlParaCustCompManEnd = null;
             #endregion
 
             SqlCommand sqlCmd = null;
@@ -165,16 +158,13 @@ namespace xm_mis.db
 
             #region sqlParaInit
             int custCompManIdTemp = int.Parse(custCompManId);
-            DateTime st = DateTime.Now;
 
             sqlParaCustCompManId = new SqlParameter("@delCustManId", custCompManIdTemp);
-            sqlParaCustCompManEnd = new SqlParameter("@delEndTime", st);
             #endregion
 
             #region sqlParaAdd
             sqlCmd.Parameters.Clear();
             sqlCmd.Parameters.Add(sqlParaCustCompManId);
-            sqlCmd.Parameters.Add(sqlParaCustCompManEnd);
             #endregion
 
             sqlCmd.Connection.Open();

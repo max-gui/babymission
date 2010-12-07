@@ -94,21 +94,21 @@ namespace xm_mis.Main.contractManager {
         protected global::System.Web.UI.WebControls.Button btnAdd;
         
         /// <summary>
-        /// btnAcceptDel 控件。
+        /// btnAccept 控件。
         /// </summary>
         /// <remarks>
         /// 自动生成的字段。
         /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Button btnAcceptDel;
+        protected global::System.Web.UI.WebControls.Button btnAccept;
         
         /// <summary>
-        /// btnDelCancel 控件。
+        /// btnCancel 控件。
         /// </summary>
         /// <remarks>
         /// 自动生成的字段。
         /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Button btnDelCancel;
+        protected global::System.Web.UI.WebControls.Button btnCancel;
     }
 }

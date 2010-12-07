@@ -15,16 +15,18 @@ namespace xm_mis.Main.self_depart_title.selfDep
         {
             if (!(null == Session["totleAuthority"]))
             {
-                int usrAuth = 0;
-                string strUsrAuth = Session["totleAuthority"] as string;
-                usrAuth = int.Parse(strUsrAuth);
-                int flag = 0x1 << 3;
+                AuthAttributes usrAuthAttr = (AuthAttributes)Session["totleAuthority"];
 
-                if ((usrAuth & flag) == 0)
+                bool flag = usrAuthAttr.HasOneFlag(AuthAttributes.selfCompany);
+                if (!flag)
+                {
                     Response.Redirect("~/Main/NoAuthority.aspx");
+                }
             }
             else
             {
+                string url = Request.FilePath;
+                Session["backUrl"] = url;
                 Response.Redirect("~/Account/Login.aspx");
             }
 
@@ -66,9 +68,9 @@ namespace xm_mis.Main.self_depart_title.selfDep
             {
                 strRtn = "部门名称不能为空！";
             }
-            else if (depName.Length > 25)
+            else if (depName.Length > 50)
             {
-                strRtn = "部门名称不能超过25个字！";
+                strRtn = "部门名称不能超过50个字！";
             }
             else if (dt.Rows.Contains(depName))
             {
@@ -78,9 +80,9 @@ namespace xm_mis.Main.self_depart_title.selfDep
             {
                 strRtn = "部门名称不能为空！  ";
             }
-            else if (depName.Equals("部门名称不能超过25个字！"))
+            else if (depName.Equals("部门名称不能超过50个字！"))
             {
-                strRtn = "部门名称不能超过25个字！  ";
+                strRtn = "部门名称不能超过50个字！  ";
             }
             else if (depName.Equals("部门名称不能重复！"))
             {

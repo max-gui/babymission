@@ -101,10 +101,8 @@ namespace xm_mis.db
         public void SelfTitleDel(int titleId)
         {
             #region sqlPara declare
-            //realName
+            //titleId
             SqlParameter sqlParaTitleId = null;
-            //usrContact
-            SqlParameter sqlParaTitleEnd = null;
             #endregion
 
             SqlCommand sqlCmd = null;
@@ -116,16 +114,13 @@ namespace xm_mis.db
             sqlCmd.CommandType = CommandType.StoredProcedure;
 
             #region sqlParaInit
-            DateTime st = DateTime.Now;
 
             sqlParaTitleId = new SqlParameter("@delTitleId", titleId);
-            sqlParaTitleEnd = new SqlParameter("@delEndTime", st);
             #endregion
 
             #region sqlParaAdd
             sqlCmd.Parameters.Clear();
             sqlCmd.Parameters.Add(sqlParaTitleId);
-            sqlCmd.Parameters.Add(sqlParaTitleEnd);
             #endregion
 
             sqlCmd.Connection.Open();
@@ -179,11 +174,9 @@ namespace xm_mis.db
         public string SelfTitleAdd(string titleName)
         {
             #region sqlPara declare
-            //realName
+            //titleId
             SqlParameter sqlParaTitleId = null;
-            //usrContact
-            SqlParameter sqlParaTitleEnd = null;
-            //usrContact
+            //titleName
             SqlParameter sqlParaTitleName = null;
             #endregion
 
@@ -196,17 +189,14 @@ namespace xm_mis.db
             sqlCmd.CommandType = CommandType.StoredProcedure;
 
             #region sqlParaInit
-            DateTime st = DateTime.Now;
 
             sqlParaTitleId = new SqlParameter("@Identity", SqlDbType.Int);
-            sqlParaTitleEnd = new SqlParameter("@startTime", st);
             sqlParaTitleName = new SqlParameter("@titleName", titleName);
             #endregion
 
             #region sqlParaAdd
             sqlCmd.Parameters.Clear();
             sqlCmd.Parameters.Add(sqlParaTitleId);
-            sqlCmd.Parameters.Add(sqlParaTitleEnd);
             sqlCmd.Parameters.Add(sqlParaTitleName);
             #endregion
 

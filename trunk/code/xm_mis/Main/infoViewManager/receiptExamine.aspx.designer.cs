@@ -76,13 +76,31 @@ namespace xm_mis.Main.infoViewManager {
         protected global::System.Web.UI.WebControls.Label lblCustReceiptMax;
         
         /// <summary>
-        /// lblSelfReceipt 控件。
+        /// lblSelfToReceipt 控件。
         /// </summary>
         /// <remarks>
         /// 自动生成的字段。
         /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lblSelfReceipt;
+        protected global::System.Web.UI.WebControls.Label lblSelfToReceipt;
+        
+        /// <summary>
+        /// lblSelfHasReceipt 控件。
+        /// </summary>
+        /// <remarks>
+        /// 自动生成的字段。
+        /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lblSelfHasReceipt;
+        
+        /// <summary>
+        /// lblSelfTotleReceipt 控件。
+        /// </summary>
+        /// <remarks>
+        /// 自动生成的字段。
+        /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lblSelfTotleReceipt;
         
         /// <summary>
         /// txtReceiptExplication 控件。

@@ -8,8 +8,8 @@
 //------------------------------------------------------------------------------
 
 namespace xm_mis.Main.paymentReceiptManager {
-
-
+    
+    
     public partial class mainContractReceiptView {
         
         /// <summary>

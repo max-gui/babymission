@@ -7,24 +7,27 @@ using System.Web.UI.WebControls;
 
 using System.Data;
 using xm_mis.logic;
+using xm_mis.db;
 namespace xm_mis.Main.contractManager
 {
     public partial class subContractEditing : System.Web.UI.Page
     {
         protected void Page_Load(object sender, EventArgs e)
-        {            
+        {
             if (!(null == Session["totleAuthority"]))
             {
-                int usrAuth = 0;
-                string strUsrAuth = Session["totleAuthority"] as string;
-                usrAuth = int.Parse(strUsrAuth);
-                int flag = 0x3 << 4;
+                AuthAttributes usrAuthAttr = (AuthAttributes)Session["totleAuthority"];
 
-                if ((usrAuth & flag) == 0)
+                bool flag = usrAuthAttr.HasOneFlag(AuthAttributes.newContract);
+                if (!flag)
+                {
                     Response.Redirect("~/Main/NoAuthority.aspx");
+                }
             }
             else
             {
+                string url = Request.FilePath;
+                Session["backUrl"] = url;
                 Response.Redirect("~/Account/Login.aspx");
             }
 
@@ -40,7 +43,7 @@ namespace xm_mis.Main.contractManager
 
                 lblMainContractTag.Text = sessionDr["mainContractTag"].ToString();
                 lblProjectTag.Text = sessionDr["projectTag"].ToString();
-                lblCust.Text = sessionDr["contractCompName"].ToString();
+                lblCust.Text = sessionDr["custCompName"].ToString();
                 lblMainContractMoney.Text = sessionDr["cash"].ToString();
                 lblMainContractDateLine.Text = sessionDr["dateLine"].ToString();
                 lblMainContractPayment.Text = sessionDr["paymentMode"].ToString();
@@ -96,16 +99,6 @@ namespace xm_mis.Main.contractManager
             }
         }
 
-        protected void btnDelCancel_Click(object sender, EventArgs e)
-        {
-        
-        }
-
-        protected void btnAcceptDel_Click(object sender, EventArgs e)
-        {
-        
-        }
-
         protected void btnAdd_Click(object sender, EventArgs e)
         {
             Response.Redirect("~/Main/contractManager/subContractAdd.aspx");
@@ -119,62 +112,21 @@ namespace xm_mis.Main.contractManager
             subContractGV.DataBind();
         }
 
-        protected void subContractGV_SelectedIndexChanging(object sender, GridViewSelectEventArgs e)
-        {
-            if (subContractGV.SelectedIndex == -1)
-            {
-                e.Cancel = false;
-                int index = e.NewSelectedIndex;
-
-                subContractGV.EditIndex = index;
-                subContractGV.DataSource = Session["dtSources"];
-                subContractGV.DataBind();
-
-                Button btn = null;
-                btn = (subContractGV.Rows[index].FindControl("btnDel") as Button);
-                btn.Visible = true;
-                btn = (subContractGV.Rows[index].FindControl("btnCancle") as Button);
-                btn.Visible = true;
-            }
-            else
-            {
-                e.Cancel = true;
-            }
-
-            btnAdd.Visible = false;
-        }
-
         protected void subContractGV_Sorting(object sender, GridViewSortEventArgs e)
         {
+            // By default, set the sort direction to ascending.
+            if (subContractGV.SelectedIndex == -1)
+            {
+                DataTable dt = Session["dtSources"] as DataTable;
 
-        }
-
-        protected void btnDel_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        protected void btnCancle_Click(object sender, EventArgs e)
-        {
-            int index = subContractGV.SelectedIndex;
-
-            Button btn = null;
-            btn = sender as Button;
-            btn.Visible = false;
-            btn = (subContractGV.SelectedRow.FindControl("btnDel") as Button);
-            btn.Visible = false;
-            btn = btnDelCancel;
-            btn.Visible = false;
-            btn = btnAcceptDel;
-            btn.Visible = false;
-
-            subContractGV.DataSource = Session["dtSources"];//["dtSources"] as DataTable;
-
-            subContractGV.SelectedIndex = -1;
-            subContractGV.EditIndex = -1;
-            subContractGV.DataBind();
-
-            btnAdd.Visible = true;
+                if (dt != null)
+                {
+                    //Sort the data.
+                    dt.DefaultView.Sort = e.SortExpression.GetSortDirectionExpression(ViewState); //GetSortDirectionExpression(e.SortExpression, ViewState);
+                    subContractGV.DataSource = Session["dtSources"];
+                    subContractGV.DataBind();
+                }
+            }
         }
 
         protected void subContractGV_RowDataBound(object sender, GridViewRowEventArgs e)
@@ -202,6 +154,162 @@ namespace xm_mis.Main.contractManager
                     lsB.DataBind();
                 }
             }
+        }
+
+        protected void toDel_Click(object sender, EventArgs e)
+        {
+            LinkButton lbt = sender as LinkButton;
+
+            subContractGV.SelectedIndex = (lbt.Parent.Parent as GridViewRow).DataItemIndex;
+            subContractGV.Enabled = false;
+            subContractGV.DataSource = Session["dtSources"];
+            subContractGV.DataBind();
+
+            btnAccept.Visible = true;
+            btnCancel.Visible = true;
+            btnAdd.Visible = false;
+        }
+
+        protected void toEdit_Click(object sender, EventArgs e)
+        {
+            int subContractId = int.Parse((sender as LinkButton).CommandArgument);
+            Xm_db xmDataCont = Xm_db.GetInstance();
+            LinkButton lkb = sender as LinkButton;
+
+            var subContractEdit =
+                (from subContract in xmDataCont.Tbl_subContract
+                 where subContract.SubContractId == subContractId &&
+                       subContract.EndTime > DateTime.Now
+                 select subContract).First();
+
+            bool hasSupply = subContractEdit.Tbl_subContrctProduct.All(p => p.HasSupplied == 0);
+            bool applyment = subContractEdit.Tbl_paymentApply.Count(p => p.EndTime > DateTime.Now) == 0;
+
+            bool businessProductCount =
+                (from businessProduct in xmDataCont.Tbl_businessProduct
+                 where businessProduct.Tbl_projectTagInfo.ProjectTagId == subContractEdit.Tbl_mainContract.ProjectTagId &&
+                       businessProduct.EndTime > DateTime.Now
+                 select businessProduct).Count() == 0;
+
+            if (hasSupply && applyment && businessProductCount)
+            {
+                Session["seldSubContractId"] = subContractId.ToString();
+
+                Response.Redirect("~/Main/contractManager/subContractToEdit.aspx");
+            }
+            else
+            {
+                //Label lbl = (lkb.Parent.Parent as GridViewRow).FindControl("lblMessage") as Label;
+                //lbl.Text = "无权更改";
+                //lbl.Visible = true;
+
+                Page.ClientScript.ShowAlertWindow("无权修改", this.GetType());
+            }
+        }
+
+        protected void btnAccept_Click(object sender, EventArgs e)
+        {
+            int index = subContractGV.SelectedIndex;
+            LinkButton lkb = subContractGV.Rows[index].FindControl("toDel") as LinkButton;
+            lkb.Visible = true;
+
+            int subContractId = int.Parse(lkb.CommandArgument);
+
+            Xm_db xmDataCont = Xm_db.GetInstance();
+
+            var subContractEdit =
+                (from subContract in xmDataCont.Tbl_subContract
+                where subContract.SubContractId == subContractId &&
+                      subContract.EndTime > DateTime.Now
+                select subContract).First();
+
+            bool hasSupply = subContractEdit.Tbl_subContrctProduct.All(p => p.HasSupplied == 0);
+            bool applyment = subContractEdit.Tbl_paymentApply.Count(p => p.EndTime > DateTime.Now) == 0;
+
+            bool businessProductCount =
+                (from businessProduct in xmDataCont.Tbl_businessProduct
+                 where businessProduct.Tbl_projectTagInfo.ProjectTagId == subContractEdit.Tbl_mainContract.ProjectTagId &&
+                       businessProduct.EndTime > DateTime.Now
+                 select businessProduct).Count() == 0;
+
+            if (hasSupply && applyment && businessProductCount)
+            {
+                subContractEdit.EndTime = DateTime.Now;
+                subContractEdit.Tbl_mainContract.SupplierOk = bool.FalseString;
+
+                foreach (Tbl_subContrctProduct scp in subContractEdit.Tbl_subContrctProduct)
+                {
+                    scp.EndTime = DateTime.Now;
+                    scp.Tbl_subContract.Tbl_mainContract.Tbl_mainContrctProduct.
+                        TakeWhile(p => p.ProductId == scp.ProductId && p.EndTime > DateTime.Now).
+                        First().HasSupplier = bool.FalseString;
+                }
+
+                try
+                {
+                    xmDataCont.SubmitChanges(System.Data.Linq.ConflictMode.ContinueOnConflict);
+                }
+                catch (System.Data.Linq.ChangeConflictException cce)
+                {
+                    string strEx = cce.Message;
+                    foreach (System.Data.Linq.ObjectChangeConflict occ in xmDataCont.ChangeConflicts)
+                    {
+                        occ.Resolve(System.Data.Linq.RefreshMode.KeepChanges);
+                    }
+
+                    xmDataCont.SubmitChanges();
+                }
+
+                var subContract_supplierView =
+                from subContract_supplier in xmDataCont.View_subContract_supplier
+                where subContract_supplier.EndTime > DateTime.Now &&
+                      subContract_supplier.MainContractId == subContractEdit.MainContractId
+                select subContract_supplier;
+
+                DataTable taskTable = subContract_supplierView.ToDataTable();
+
+                DataTable dtSource = taskTable;
+                Session["dtSources"] = dtSource;
+
+                subContractGV.DataSource = Session["dtSources"];               
+            }
+            else
+            {
+                //Label lbl = (lkb.Parent.Parent as GridViewRow).FindControl("lblMessage") as Label;
+                //lbl.Text = "无权删除";
+                //lbl.Visible = true;
+
+                Page.ClientScript.ShowAlertWindow("无权修改", this.GetType());
+            }
+
+            subContractGV.SelectedIndex = -1;
+            subContractGV.Enabled = true;
+
+            btnAccept.Visible = false;
+            btnCancel.Visible = false;
+
+            btnAdd.Visible = true;
+        }
+
+        protected void btnCancel_Click(object sender, EventArgs e)
+        {
+            //DataTable dtSource = Session["dtSources"] as DataTable;
+
+            subContractGV.SelectedIndex = -1;
+            subContractGV.Enabled = true;
+            //subContractGV.DataSource = dtSource;
+            //subContractGV.DataBind();
+
+            btnAccept.Visible = false;
+            btnCancel.Visible = false;
+
+            btnAdd.Visible = true;
+
+            //int index = subContractGV.SelectedIndex;
+            //GridViewRow gvr = subContractGV.Rows[index];
+
+            //Label lbl = gvr.FindControl("lblMessage") as Label;
+            //lbl.Visible = false;
         }
     }
 }

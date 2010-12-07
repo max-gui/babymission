@@ -7,6 +7,7 @@ using System.Web.UI.WebControls;
 
 using System.Data;
 using xm_mis.logic;
+using xm_mis.db;
 namespace xm_mis.Main.projectTagInfoManager
 {
     public partial class projectSearch : System.Web.UI.Page
@@ -15,30 +16,65 @@ namespace xm_mis.Main.projectTagInfoManager
         {
             if (!(null == Session["totleAuthority"]))
             {
-                int usrAuth = 0;
-                string strUsrAuth = Session["totleAuthority"] as string;
-                usrAuth = int.Parse(strUsrAuth);
-                int flag = 0x1 << 4;
+                //int usrAuth = 0;
+                //string strUsrAuth = Session["totleAuthority"] as string;
+                //usrAuth = int.Parse(strUsrAuth);
+                
+                //int flag = 0x1 << 3;
 
-                if ((usrAuth & flag) == 0)
+                //if ((usrAuth & flag) == 0)
+                //    Response.Redirect("~/Main/NoAuthority.aspx");
+
+                AuthAttributes usrAuthAttr = (AuthAttributes)Session["totleAuthority"];
+                
+                bool flag = usrAuthAttr.HasOneFlag(AuthAttributes.projectTagApply);
+                if (!flag)
+                {
                     Response.Redirect("~/Main/NoAuthority.aspx");
+                }
             }
             else
             {
+                string url = Request.FilePath;
+                Session["backUrl"] = url;
                 Response.Redirect("~/Account/Login.aspx");
             }
 
             if (!IsPostBack)
             {
                 string usrId = Session["usrId"] as string;
+                string projectDetail = "sell";
+                
+                Xm_db xmDataCont = Xm_db.GetInstance();
 
-                DataSet MyDst = new DataSet();
-                ProjectTagProcess myView = new ProjectTagProcess(MyDst);
+                var projectTagEdit =
+                    from projectTag in xmDataCont.View_project_tag
+                    where projectTag.EndTime > DateTime.Now &&
+                          projectTag.ProjectDetail.Equals(projectDetail)
+                    select new 
+                    {   projectTag.ProjectTag, 
+                        projectTag.ProjectSynopsis, 
+                        projectTag.CustCompName, 
+                        projectTag.CustCompAddress, 
+                        projectTag.CustManName, 
+                        projectTag.CustManContact, 
+                        projectTag.CustManEmail, 
+                        projectTag.ApplymentUsrName, 
+                        projectTag.ApplymentUsrMobile, 
+                        projectTag.StartTime 
+                    };
 
-                myView.RealProjTagView(usrId);
-                DataTable taskTable = myView.MyDst.Tables["view_project_tag"];
+                //DataSet MyDst = new DataSet();
+                //ProjectTagProcess myView = new ProjectTagProcess(MyDst);
 
-                Session["ProjectTagProcess"] = myView;
+                //string projectDetail = "sell";
+
+                //myView.RealProjTagList(projectDetail);
+                //DataTable taskTable = myView.MyDst.Tables["view_project_tag"];
+
+                DataTable taskTable = projectTagEdit.Distinct().ToDataTable();
+
+                //Session["ProjectTagProcess"] = myView;
                 Session["dtSources"] = taskTable;
 
 
@@ -58,6 +94,11 @@ namespace xm_mis.Main.projectTagInfoManager
         protected void projectInfoGV_Sorting(object sender, GridViewSortEventArgs e)
         {
 
+        }
+
+        protected void btnAdd_Click(object sender, EventArgs e)
+        {
+            Response.Redirect("~/Main/projectTagInfoManager/projectTagAdd.aspx");
         }
     }
 }

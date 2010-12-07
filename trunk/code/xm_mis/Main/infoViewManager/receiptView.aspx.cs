@@ -15,16 +15,18 @@ namespace xm_mis.Main.infoViewManager
         {
             if (!(null == Session["totleAuthority"]))
             {
-                int usrAuth = 0;
-                string strUsrAuth = Session["totleAuthority"] as string;
-                usrAuth = int.Parse(strUsrAuth);
-                int flag = 0x1 << 6;
+                AuthAttributes usrAuthAttr = (AuthAttributes)Session["totleAuthority"];
 
-                if ((usrAuth & flag) == 0)
+                bool flag = usrAuthAttr.HasOneFlag(AuthAttributes.pay_receiptExamine);
+                if (!flag)
+                {
                     Response.Redirect("~/Main/NoAuthority.aspx");
+                }
             }
             else
             {
+                string url = Request.FilePath;
+                Session["backUrl"] = url;
                 Response.Redirect("~/Account/Login.aspx");
             }
 
@@ -36,52 +38,26 @@ namespace xm_mis.Main.infoViewManager
                 ReceiptApplyProcess receiptApplyView = new ReceiptApplyProcess(MyDst);
 
                 receiptApplyView.RealSelfReceiptView();
-                DataTable taskTable = receiptApplyView.MyDst.Tables["tbl_receiptApply"];
+                DataTable taskTable = receiptApplyView.MyDst.Tables["view_mainReceipt"].DefaultView.ToTable();
                 
-                DataColumn colCustMaxReceipt = new DataColumn("custMaxReceiptPercent", System.Type.GetType("System.String"));
-                DataColumn colSelfReceipt = new DataColumn("selfReceiptPercent", System.Type.GetType("System.String"));
-                DataColumn colAcceptOrNot = new DataColumn("acceptOrNot", System.Type.GetType("System.String"));
                 DataColumn colDone = new DataColumn("Done", System.Type.GetType("System.String"));
-                taskTable.Columns.Add(colCustMaxReceipt);
-                taskTable.Columns.Add(colSelfReceipt);
-                taskTable.Columns.Add(colAcceptOrNot);
                 taskTable.Columns.Add(colDone);
 
-                string strPercent = "%".ToString();
-                string strAccept = "已批准";
-                string strNotAccept = "已驳回";
-                string strUnExamine = "未审批";
                 string strNotDone = "未完成";
-                string strNotDoneTime = "9999/12/31 0:00:00";
-                string strDoneTime = string.Empty;
+                DateTime doneTime = DateTime.Now;
                 foreach (DataRow dr in taskTable.Rows)
                 {
-                    dr["custMaxReceiptPercent"] = dr["custMaxReceipt"].ToString() + strPercent;
-                    dr["selfReceiptPercent"] = dr["receiptPercent"].ToString() + strPercent;
-                    strDoneTime = dr["doneTime"].ToString();
-                    if (strDoneTime.Equals(strNotDoneTime))
+                    doneTime = (DateTime)dr["doneTime"];
+                    if (doneTime > DateTime.Now)
                     {
                         dr["Done"] = strNotDone;
                     }
                     else
                     {
-                        dr["Done"] = strDoneTime;
-                    }
-                    if (dr["isAccept"].ToString().Equals("unExamine"))
-                    {
-                        dr["acceptOrNot"] = strUnExamine;
-                    }
-                    else if (dr["isAccept"].ToString().Equals(bool.FalseString))
-                    {
-                        dr["acceptOrNot"] = strNotAccept;
-                    }
-                    else
-                    {
-                        dr["acceptOrNot"] = strAccept;
-                    }
+                        dr["Done"] = doneTime.ToString();
+                    }                    
                 }
 
-                Session["ReceiptApplyProcess"] = receiptApplyView;
                 Session["dtSources"] = taskTable;
 
                 selfReceiptGV.DataSource = Session["dtSources"];
@@ -121,21 +97,6 @@ namespace xm_mis.Main.infoViewManager
         protected void selfReceiptGV_Sorting(object sender, GridViewSortEventArgs e)
         {
 
-        }
-
-        protected void selfReceiptGV_RowDataBound(object sender, GridViewRowEventArgs e)
-        {
-            //if (e.Row.RowType == DataControlRowType.DataRow)
-            //{
-            //    int index = e.Row.RowIndex;
-
-            //    LinkButton btn = e.Row.FindControl("detailView") as LinkButton;
-
-            //    if (null != btn)
-            //    {
-            //        btn.CommandArgument = index.ToString();
-            //    }
-            //}
         }
     }
 }

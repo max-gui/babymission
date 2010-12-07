@@ -1,0 +1,148 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Web;
+
+using System.Configuration;
+using System.Data;
+using System.Web.Security;
+using System.Web.UI;
+using System.Web.UI.WebControls;
+using System.Web.UI.WebControls.WebParts;
+using System.Web.UI.HtmlControls;
+
+using xm_mis.db;
+namespace xm_mis.logic
+{
+    public class SellProductProcess : SelectLogic
+    {
+        public SellProductProcess(DataSet dataSet)
+            : base(dataSet)
+        {
+            //
+            // TODO: 在此处添加构造函数逻辑
+            //
+            tsp = (tbl_selledProduct)InitDatabaseProc("xm_mis.db.tbl_selledProduct");
+        }
+
+        private tbl_selledProduct tsp = null;
+
+        public override void Process()
+        {
+        }
+
+        //public void DoCheckProductStock()
+        //{
+        //    string productId = MyDst.Tables["tbl_productStock"].Rows[0]["productId"].ToString();
+        //    string productTag = MyDst.Tables["tbl_productStock"].Rows[0]["productTag"].ToString();
+        //    string end = DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss.fff");
+
+        //    MyDst = tsp.SelectView();
+
+        //    string strFilter =
+        //        " productId = " + "'" + productId + "'" +
+        //        " and productTag = " + "'" + productTag + "'" +
+        //        " and endTime > " + "'" + end + "'";
+        //    MyDst.Tables["tbl_productStock"].DefaultView.RowFilter = strFilter;
+
+        //    IntRtn = MyDst.Tables["tbl_productStock"].DefaultView.Count;
+        //}
+
+        //public void RealProductStockCheckManView()
+        //{
+        //    MyDst = tsp.RealProductStockCheckManView();
+
+        //    string end = DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss.fff");
+
+        //    string strFilter =
+        //        " productInSt = " + "productStockSt" +
+        //        " and productStockEd > " + "'" + end + "'";
+        //    MyDst.Tables["view_productStockCheckMan"].DefaultView.RowFilter = strFilter;
+        //}
+
+        //public void RealProductStockCheckView()
+        //{
+        //    MyDst = tps.RealProductStockCheckView();
+
+        //    string end = DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss.fff");
+
+        //    string strFilter =
+        //        " productStockEd > " + "'" + end + "'";
+        //    MyDst.Tables["view_productStockCheck"].DefaultView.RowFilter = strFilter;
+        //}
+
+        //public void ProductInCheck(string productInCheckId, string check, byte[] checkText, string checkTextName, string contentType)
+        //{
+        //    tsp.ProductInCheck(productInCheckId, check, checkText, checkTextName, contentType);
+        //}
+
+        //public void DoCheckCompTag(string compTag)
+        //{
+        //    string strFilter =
+        //        " custCompTag = " + "'" + compTag + "'";
+        //    MyDst.Tables["tbl_customer_company"].DefaultView.RowFilter = strFilter;
+
+        //    IntRtn = MyDst.Tables["tbl_customer_company"].DefaultView.Count;
+        //}
+
+        //public void RealProductView()
+        //{
+        //    MyDst = tpi.SelectView();
+
+        //    string end = DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss.fff");
+
+        //    string strFilter =
+        //        " endTime > " + "'" + end + "'";
+        //    MyDst.Tables["tbl_product"].DefaultView.RowFilter = strFilter;
+        //}
+
+        //public void ProductDel(string productId)
+        //{
+        //    tpi.ProductDel(productId);
+        //}
+
+        public override void Del()
+        {
+            //TAB_DATA_USERDatabase db = (TAB_DATA_USERDatabase)("Database", "DataBase.TAB_DATA_USERDatabase");
+            //TAB_DATA_LOG dbLog = (TAB_DATA_LOG)("Database", "DataBase.TAB_DATA_LOG");
+            //db.Delete(int.Parse(StrRtn), IntRtn, dbLog);
+        }
+
+        public override void Add()
+        {
+            string selledProductId = tsp.SelectAdd(MyDst);
+
+            StrRtn = selledProductId;
+        }
+
+        //public void ProductUpdate(int productId, string productName)
+        //{
+        //    tpi.ProductUpdate(productId, productName);
+        //}
+
+        public override void Updata()
+        {
+            //TAB_DATA_USERDatabase db = (TAB_DATA_USERDatabase)("Database", "DataBase.TAB_DATA_USERDatabase");
+            //TAB_DATA_LOG dbLog = (TAB_DATA_LOG)("Database", "DataBase.TAB_DATA_LOG");
+
+            //db.UpdataUser(this.MyDst, int.Parse(StrRtn), dbLog);
+        }
+
+        public override void PwdEdit()
+        {
+            //TAB_DATA_USERDatabase db = (TAB_DATA_USERDatabase)("Database", "DataBase.TAB_DATA_USERDatabase");
+            //db.UpdataPwd(this.MyDst);
+        }
+
+        public override void View()
+        {
+            //MyDst = tcc.SelectView();
+        }
+
+        public override void Search()
+        {
+            //TAB_DATA_USERDatabase db = (TAB_DATA_USERDatabase)("Database", "DataBase.TAB_DATA_USERDatabase");
+            //this.MyDst = db.SelectComb(int.Parse(StrRtn));
+        }
+    }
+}

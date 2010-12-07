@@ -22,11 +22,11 @@ namespace xm_mis.logic
             //
             // TODO: 在此处添加构造函数逻辑
             //
-            tmc = (tbl_mainContract)InitDatabaseProc("xm_mis.db.tbl_mainContract");
+            tmc = (tbl_mainContract_old)InitDatabaseProc("xm_mis.db.tbl_mainContract_old");
             vmpu = (view_mainContract_project_usr)InitDatabaseProc("xm_mis.db.view_mainContract_project_usr");
         }
 
-        private tbl_mainContract tmc = null;
+        private tbl_mainContract_old tmc = null;
         private view_mainContract_project_usr vmpu = null;
         private string usrId = string.Empty;
 
@@ -72,7 +72,7 @@ namespace xm_mis.logic
         {
             MyDst = vmpu.SelectView();
 
-            string end = DateTime.Now.ToShortDateString();
+            string end = DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss.fff");
 
             string strFilter =
                 " endTime > " + "'" + end + "'" +
@@ -88,13 +88,24 @@ namespace xm_mis.logic
         {
             MyDst = vmpu.SelectView();
 
-            string end = DateTime.Now.ToShortDateString();
+            string end = DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss.fff");
 
             string strFilter =
                 " endTime > " + "'" + end + "'";
             MyDst.Tables["view_mainContract_project_usr"].DefaultView.RowFilter = strFilter;
         }
 
+        public void RealProjectNeedProductView()
+        {
+            MyDst = tmc.RealProjectNeedProductView();
+
+            string end = DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss.fff");
+
+            string strFilter =
+                " subContractEd > " + "'" + end + "'" +
+                " and subContractProductEd > " + "'" + end + "'";
+            MyDst.Tables["view_project_need_product"].DefaultView.RowFilter = strFilter;
+        }
         //public void ProductDel(string productId)
         //{
         //    tmc.ProductDel(productId);

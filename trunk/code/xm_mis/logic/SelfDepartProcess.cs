@@ -81,7 +81,7 @@ namespace xm_mis.logic
         {
             MyDst = tdDB.SelectSelfDepatView(MyDst);
 
-            string end = DateTime.Now.ToShortDateString();
+            string end = DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss.fff");
 
             string strFilter =
                 " endTime > " + "'" + end + "'" +
@@ -101,7 +101,7 @@ namespace xm_mis.logic
         {
             MyDst = tdDB.SelectSelfDepatView(MyDst);
 
-            string end = DateTime.Now.ToShortDateString();
+            string end = DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss.fff");
 
             string strFilter =
                 " endTime > " + "'" + end + "'";

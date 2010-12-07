@@ -7,6 +7,7 @@ using System.Web.UI.WebControls;
 
 using System.Data;
 using xm_mis.logic;
+using xm_mis.db;
 namespace xm_mis.Main.infoViewManager.paymentInfo
 {
     public partial class paymentExamine : System.Web.UI.Page
@@ -15,16 +16,18 @@ namespace xm_mis.Main.infoViewManager.paymentInfo
         {
             if (!(null == Session["totleAuthority"]))
             {
-                int usrAuth = 0;
-                string strUsrAuth = Session["totleAuthority"] as string;
-                usrAuth = int.Parse(strUsrAuth);
-                int flag = 0x1 << 6;
+                AuthAttributes usrAuthAttr = (AuthAttributes)Session["totleAuthority"];
 
-                if ((usrAuth & flag) == 0)
+                bool flag = usrAuthAttr.HasOneFlag(AuthAttributes.pay_receiptExamine);
+                if (!flag)
+                {
                     Response.Redirect("~/Main/NoAuthority.aspx");
+                }
             }
             else
             {
+                string url = Request.FilePath;
+                Session["backUrl"] = url;
                 Response.Redirect("~/Account/Login.aspx");
             }
 
@@ -56,14 +59,17 @@ namespace xm_mis.Main.infoViewManager.paymentInfo
                 lblSubContractDateLine.Text = dr["dateLine"].ToString();
                 lblSubContractPayment.Text = dr["paymentMode"].ToString();
 
-                lblCustPayMax.Text = sessionDr["custMaxPayPercent"].ToString();
-                lblSelfPay.Text = sessionDr["selfPayPercent"].ToString();
+                lblCustPayMax.Text = float.Parse(sessionDr["custMaxPay"].ToString()).ToString("p");
+                lblSelfToPay.Text = float.Parse(sessionDr["toPayCash"].ToString()).ToString("c");
+                lblSelfHasPay.Text = float.Parse(sessionDr["hasPayPercent"].ToString()).ToString("p");
+                lblSelfTotlePay.Text = float.Parse(sessionDr["payPercent"].ToString()).ToString("p");
                 txtPayExplication.Text = sessionDr["paymentExplication"].ToString();
                 string strDone = sessionDr["Done"].ToString();
                 lblDone.Text = strDone;
                 txtPayComment.Text = sessionDr["paymentComment"].ToString();
 
-                if (sessionDr["isAccept"].ToString().Equals("unExamine"))
+                DateTime doneTime = (DateTime)dr["doneTime"];
+                if (doneTime > DateTime.Now)
                 {
                     btnOK.Visible = true;
                     btnNo.Visible = true;
@@ -74,37 +80,69 @@ namespace xm_mis.Main.infoViewManager.paymentInfo
 
         protected void btnOK_Click(object sender, EventArgs e)
         {
-            if (inputCheck())
-            {
-                DataRow sessionDr = Session["seldSelfPayment"] as DataRow;
-
-                string strPayId = sessionDr["paymentId"].ToString();
-                string strOk = bool.TrueString;
-                string strPayComment = txtPayComment.Text.Trim();
-
-                DataSet dst = new DataSet();
-                PaymentApplyProcess pap = new PaymentApplyProcess(dst);
-
-                pap.SelfPaymentExamine(strPayId, strOk, strPayComment);
-
-                Response.Redirect("~/Main/infoViewManager/paymentInfo/paymentView.aspx");
-            }
+            string strOk = bool.TrueString;
+            examine(strOk);
         }
 
         protected void btnNo_Click(object sender, EventArgs e)
+        {
+            string strNot = bool.FalseString;
+            examine(strNot);
+        }
+
+        private void examine(string okOrNot)
         {
             if (inputCheck())
             {
                 DataRow sessionDr = Session["seldSelfPayment"] as DataRow;
 
                 string strPayId = sessionDr["paymentId"].ToString();
-                string strOk = bool.FalseString;
                 string strPayComment = txtPayComment.Text.Trim();
 
                 DataSet dst = new DataSet();
                 PaymentApplyProcess pap = new PaymentApplyProcess(dst);
 
-                pap.SelfPaymentExamine(strPayId, strOk, strPayComment);
+                pap.SelfPaymentExamine(strPayId, okOrNot, strPayComment);
+
+                Xm_db xmDataCont = Xm_db.GetInstance();
+
+                int usrId = int.Parse(sessionDr["usrId"].ToString());
+                var usrInfo =
+                    from usr in xmDataCont.Tbl_usr
+                    where usr.UsrId == usrId &&
+                          usr.EndTime > DateTime.Now
+                    select usr;
+
+                string projetTag = sessionDr["projectTag"].ToString();
+
+                if (okOrNot.Equals(bool.TrueString))
+                {
+                    //int flag = 0x80;
+                    var usr_autority =
+                        from usr in xmDataCont.Tbl_usr
+                        //join auth in xmDataCont.View_usr_autority on usr.UsrId equals auth.UsrId
+                        where (usr.TotleAuthority & (UInt32)AuthAttributes.pay_receiptOk) != 0 &&
+                              usr.EndTime > DateTime.Now
+                        select usr;
+                        //where usr.TotleAuthority.ToAuthAttr().HasOneFlag(AuthAttributes.pay_receiptOk) &&
+                        //      usr.EndTime > DateTime.Now
+                        //select usr;
+
+                    foreach (var usr in usr_autority)
+                    {
+                        BeckSendMail.getMM().NewMail(usr.UsrEmail, 
+                            "mis系统票务通知", 
+                            "付款申请已通过审批，请尽快完成后续工作" + System.Environment.NewLine + Request.Url.toNewUrlForMail("/Main/paymentReceiptManager/paymentOk.aspx"));
+                    }
+
+                    BeckSendMail.getMM().NewMail(usrInfo.First().UsrEmail, 
+                        "mis系统票务通知", 
+                        projetTag + "的付款申请已通过审批，请尽快完成后续工作");
+                }
+                else
+                {
+                    BeckSendMail.getMM().NewMail(usrInfo.First().UsrEmail, "mis系统票务通知", projetTag + "的付款申请暂缓，请尽快完成后续工作");
+                }
 
                 Response.Redirect("~/Main/infoViewManager/paymentInfo/paymentView.aspx");
             }
@@ -131,9 +169,9 @@ namespace xm_mis.Main.infoViewManager.paymentInfo
                 txtBx.Text = "不能为空！";
                 flag = false;
             }
-            else if (strTxt.Length > 25)
+            else if (strTxt.Length > 50)
             {
-                txtBx.Text = "不能超过25个字！";
+                txtBx.Text = "不能超过50个字！";
                 flag = false;
             }
             else if (strTxt.Equals("不能为空！"))
@@ -141,9 +179,9 @@ namespace xm_mis.Main.infoViewManager.paymentInfo
                 txtBx.Text = "不能为空！  ";
                 flag = false;
             }
-            else if (strTxt.Equals("不能超过25个字！"))
+            else if (strTxt.Equals("不能超过50个字！"))
             {
-                txtBx.Text = "不能超过25个字！  ";
+                txtBx.Text = "不能超过50个字！  ";
                 flag = false;
             }
 

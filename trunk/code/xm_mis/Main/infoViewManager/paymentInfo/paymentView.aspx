@@ -8,13 +8,20 @@
         CellPadding="4" GridLines="Horizontal" HorizontalAlign="Center" 
         onpageindexchanging="selfPaymentGV_PageIndexChanging" 
         onsorting="selfPaymentGV_Sorting" style="margin-left: 0px" 
-        onrowdatabound="selfPaymentGV_RowDataBound" 
         onrowcommand="selfPaymentGV_RowCommand">
         <Columns>
-            <asp:BoundField DataField="custMaxPayPercent" HeaderText="客户已付款" />
-            <asp:BoundField DataField="selfPayPercent" HeaderText="申请付款额" />
+            <asp:BoundField DataField="projectTag" HeaderText="项目编号" />
+        <asp:BoundField DataField="realName" HeaderText="我方项目经理" />
+        <asp:BoundField DataField="custCompName" HeaderText="客户公司" />
+        <asp:BoundField DataField="supplierName" HeaderText="供应商" />
+        <asp:BoundField DataField="mainContractTag" HeaderText="主合同编号" />
+        <asp:BoundField DataField="subContractTag" HeaderText="副合同编号" />
+        <asp:BoundField DataField="custMaxPay" HeaderText="客户已付款" DataFormatString="{0:p}" />
+            <asp:BoundField DataField="toPayCash" HeaderText="申请付款额" DataFormatString="{0:c}" />
+            <asp:BoundField DataField="hasPayPercent" HeaderText="已付款额" DataFormatString="{0:p}" />
+            <asp:BoundField DataField="payPercent" HeaderText="总计付款额" DataFormatString="{0:p}" />
             <asp:BoundField DataField="paymentExplication" HeaderText="申请内容" />
-            <asp:BoundField DataField="acceptOrNot" HeaderText="是否批准" />
+            <asp:BoundField DataField="paymentApplyResult" HeaderText="是否批准" />
             <asp:BoundField DataField="paymentComment" HeaderText="审批意见" />
             <asp:BoundField DataField="Done" HeaderText="完成日期" />
             <asp:TemplateField ShowHeader="False">

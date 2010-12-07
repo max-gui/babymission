@@ -44,7 +44,7 @@ namespace xm_mis.logic
         {
             MyDst = tsc.SelectView();
 
-            string end = DateTime.Now.ToShortDateString();
+            string end = DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss.fff");
 
             string strFilter =
                 " endTime > " + "'" + end + "'";

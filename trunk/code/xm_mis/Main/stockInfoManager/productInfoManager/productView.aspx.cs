@@ -15,16 +15,18 @@ namespace xm_mis.Main.stockInfoManager.productInfoManager
         {
             if (!(null == Session["totleAuthority"]))
             {
-                int usrAuth = 0;
-                string strUsrAuth = Session["totleAuthority"] as string;
-                usrAuth = int.Parse(strUsrAuth);
-                int flag = 0x1 << 1;
+                AuthAttributes usrAuthAttr = (AuthAttributes)Session["totleAuthority"];
 
-                if ((usrAuth & flag) == 0)
+                bool flag = usrAuthAttr.HasOneFlag(AuthAttributes.stockManager);
+                if (!flag)
+                {
                     Response.Redirect("~/Main/NoAuthority.aspx");
+                }
             }
             else
             {
+                string url = Request.FilePath;
+                Session["backUrl"] = url;
                 Response.Redirect("~/Account/Login.aspx");
             }
 
@@ -61,9 +63,9 @@ namespace xm_mis.Main.stockInfoManager.productInfoManager
             {
                 strRtn = "不能为空！";
             }
-            else if (depValue.Length > 25)
+            else if (depValue.Length > 50)
             {
-                strRtn = "不能超过25个字！";
+                strRtn = "不能超过50个字！";
             }
             else if (dt.Rows.Contains(depValue))
             {
@@ -73,9 +75,9 @@ namespace xm_mis.Main.stockInfoManager.productInfoManager
             {
                 strRtn = "不能为空！  ";
             }
-            else if (depValue.Equals("不能超过25个字！"))
+            else if (depValue.Equals("不能超过50个字！"))
             {
-                strRtn = "不能超过25个字！  ";
+                strRtn = "不能超过50个字！  ";
             }
             else if (depValue.Equals("不能重复！"))
             {
@@ -89,61 +91,61 @@ namespace xm_mis.Main.stockInfoManager.productInfoManager
             return strRtn;
         }
 
-        protected void btnDelCancel_Click(object sender, EventArgs e)
-        {
-            Button btn = null;
-            btn = btnAcceptDel;
-            btn.Visible = false;
-            btn = sender as Button;
-            btn.Visible = false;
-            btn = btnAdd;
-            btn.Visible = true;
+        //protected void btnDelCancel_Click(object sender, EventArgs e)
+        //{
+        //    Button btn = null;
+        //    btn = btnAcceptDel;
+        //    btn.Visible = false;
+        //    btn = sender as Button;
+        //    btn.Visible = false;
+        //    btn = btnAdd;
+        //    btn.Visible = true;
 
-            productGV.DataSource = Session["dtSources"];//["dtSources"] as DataTable;
+        //    productGV.DataSource = Session["dtSources"];//["dtSources"] as DataTable;
 
-            productGV.SelectedIndex = -1;
-            productGV.EditIndex = -1;
-            productGV.DataBind();
+        //    productGV.SelectedIndex = -1;
+        //    productGV.EditIndex = -1;
+        //    productGV.DataBind();
 
-            productGV.Enabled = true;
-        }
+        //    productGV.Enabled = true;
+        //}
 
-        protected void btnAcceptDel_Click(object sender, EventArgs e)
-        {
-            int dataIndex = productGV.SelectedRow.DataItemIndex;
-            DataTable dt = (DataTable)Session["dtSources"];
-            string productId = dt.DefaultView[dataIndex].Row["productId"].ToString();
+        //protected void btnAcceptDel_Click(object sender, EventArgs e)
+        //{
+        //    int dataIndex = productGV.SelectedRow.DataItemIndex;
+        //    DataTable dt = (DataTable)Session["dtSources"];
+        //    string productId = dt.DefaultView[dataIndex].Row["productId"].ToString();
 
-            Button btn = null;
-            btn = (productGV.SelectedRow.FindControl("btnUpdate") as Button);
-            btn.Visible = false;
-            btn = (productGV.SelectedRow.FindControl("btnCancle") as Button);
-            btn.Visible = false;
-            btn = (productGV.SelectedRow.FindControl("btnDel") as Button);
-            btn.Visible = false;
-            btn = sender as Button;
-            btn.Visible = false;
-            btn = btnDelCancel;
-            btn.Visible = false;
+        //    Button btn = null;
+        //    btn = (productGV.SelectedRow.FindControl("btnUpdate") as Button);
+        //    btn.Visible = false;
+        //    btn = (productGV.SelectedRow.FindControl("btnCancle") as Button);
+        //    btn.Visible = false;
+        //    btn = (productGV.SelectedRow.FindControl("btnDel") as Button);
+        //    btn.Visible = false;
+        //    btn = sender as Button;
+        //    btn.Visible = false;
+        //    btn = btnDelCancel;
+        //    btn.Visible = false;
 
-            ProductProcess pp = Session["ProductProcess"] as ProductProcess;
+        //    ProductProcess pp = Session["ProductProcess"] as ProductProcess;
 
-            pp.ProductDel(productId);
+        //    pp.ProductDel(productId);
 
-            pp.RealProductView();
+        //    pp.RealProductView();
 
-            DataTable taskTable = pp.MyDst.Tables["tbl_product"];
+        //    DataTable taskTable = pp.MyDst.Tables["tbl_product"];
 
-            Session["dtSources"] = pp.MyDst.Tables["tbl_product"] as DataTable;
-            productGV.DataSource = Session["dtSources"];
+        //    Session["dtSources"] = pp.MyDst.Tables["tbl_product"] as DataTable;
+        //    productGV.DataSource = Session["dtSources"];
 
-            productGV.SelectedIndex = -1;
-            productGV.EditIndex = -1;
-            productGV.DataBind();
+        //    productGV.SelectedIndex = -1;
+        //    productGV.EditIndex = -1;
+        //    productGV.DataBind();
 
-            productGV.Enabled = true;
-            btnAdd.Visible = true;
-        }
+        //    productGV.Enabled = true;
+        //    btnAdd.Visible = true;
+        //}
 
         protected void btnAdd_Click(object sender, EventArgs e)
         {
@@ -170,8 +172,8 @@ namespace xm_mis.Main.stockInfoManager.productInfoManager
                 productGV.DataBind();
 
                 Button btn = null;
-                btn = (productGV.Rows[index].FindControl("btnDel") as Button);
-                btn.Visible = true;
+                //btn = (productGV.Rows[index].FindControl("btnDel") as Button);
+                //btn.Visible = true;
                 btn = (productGV.Rows[index].FindControl("btnUpdate") as Button);
                 btn.Visible = true;
                 btn = (productGV.Rows[index].FindControl("btnCancle") as Button);
@@ -194,27 +196,27 @@ namespace xm_mis.Main.stockInfoManager.productInfoManager
 
         }
 
-        protected void btnDel_Click(object sender, EventArgs e)
-        {
-            productGV.Enabled = false;
+        //protected void btnDel_Click(object sender, EventArgs e)
+        //{
+        //    productGV.Enabled = false;
 
-            Button btn = null;
-            btn = (productGV.SelectedRow.FindControl("btnUpdate") as Button);
-            btn.Visible = false;
-            btn = (productGV.SelectedRow.FindControl("btnCancle") as Button);
-            btn.Visible = false;
-            btn = (productGV.SelectedRow.FindControl("btnCustManEdit") as Button);
-            btn.Visible = false;
-            btn = sender as Button;
-            btn.Visible = false;
+        //    Button btn = null;
+        //    btn = (productGV.SelectedRow.FindControl("btnUpdate") as Button);
+        //    btn.Visible = false;
+        //    btn = (productGV.SelectedRow.FindControl("btnCancle") as Button);
+        //    btn.Visible = false;
+        //    btn = (productGV.SelectedRow.FindControl("btnCustManEdit") as Button);
+        //    btn.Visible = false;
+        //    btn = sender as Button;
+        //    btn.Visible = false;
 
-            btn = btnAcceptDel;
-            btn.Visible = true;
-            btn = btnDelCancel;
-            btn.Visible = true;
-            btn = btnAdd;
-            btn.Visible = false;
-        }
+        //    btn = btnAcceptDel;
+        //    btn.Visible = true;
+        //    btn = btnDelCancel;
+        //    btn.Visible = true;
+        //    btn = btnAdd;
+        //    btn.Visible = false;
+        //}
 
         protected void btnUpdate_Click(object sender, EventArgs e)
         {
@@ -258,12 +260,12 @@ namespace xm_mis.Main.stockInfoManager.productInfoManager
                 btn.Visible = false;
                 btn = (productGV.SelectedRow.FindControl("btnCancle") as Button);
                 btn.Visible = false;
-                btn = (productGV.SelectedRow.FindControl("btnDel") as Button);
-                btn.Visible = false;
-                btn = btnDelCancel;
-                btn.Visible = false;
-                btn = btnAcceptDel;
-                btn.Visible = false;
+                //btn = (productGV.SelectedRow.FindControl("btnDel") as Button);
+                //btn.Visible = false;
+                //btn = btnDelCancel;
+                //btn.Visible = false;
+                //btn = btnAcceptDel;
+                //btn.Visible = false;
 
                 productGV.SelectedIndex = -1;
                 productGV.EditIndex = -1;
@@ -291,12 +293,12 @@ namespace xm_mis.Main.stockInfoManager.productInfoManager
             btn.Visible = false;
             btn = sender as Button;
             btn.Visible = false;
-            btn = (productGV.SelectedRow.FindControl("btnDel") as Button);
-            btn.Visible = false;
-            btn = btnDelCancel;
-            btn.Visible = false;
-            btn = btnAcceptDel;
-            btn.Visible = false;
+            //btn = (productGV.SelectedRow.FindControl("btnDel") as Button);
+            //btn.Visible = false;
+            //btn = btnDelCancel;
+            //btn.Visible = false;
+            //btn = btnAcceptDel;
+            //btn.Visible = false;
 
             productGV.DataSource = Session["dtSources"];//["dtSources"] as DataTable;
 

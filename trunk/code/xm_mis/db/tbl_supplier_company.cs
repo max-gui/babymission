@@ -25,8 +25,6 @@ namespace xm_mis.db
             SqlParameter sqlParaSupplierName = null;
             //supplierAddr
             SqlParameter sqlParaSupplierAddr = null;
-            //start
-            SqlParameter sqlParaSt = null;
             //newSupplierId
             SqlParameter sqlParaId = null;
             #endregion
@@ -42,11 +40,9 @@ namespace xm_mis.db
             #region sqlParaInit
             string sn = dataSet.Tables["tbl_supplier_company"].Rows[0]["supplierName"].ToString().Trim();
             string sa = dataSet.Tables["tbl_supplier_company"].Rows[0]["supplierAddress"].ToString().Trim();
-            DateTime st = DateTime.Now;
 
             sqlParaSupplierName = new SqlParameter("@supplierName", sn);
             sqlParaSupplierAddr = new SqlParameter("@supplierAddress", sa);
-            sqlParaSt = new SqlParameter("@startTime", st);
             sqlParaId = new SqlParameter("@Identity", SqlDbType.Int);
             #endregion
 
@@ -54,7 +50,6 @@ namespace xm_mis.db
             sqlCmd.Parameters.Clear();
             sqlCmd.Parameters.Add(sqlParaSupplierName);
             sqlCmd.Parameters.Add(sqlParaSupplierAddr);
-            sqlCmd.Parameters.Add(sqlParaSt);
             sqlCmd.Parameters.Add(sqlParaId);
             #endregion
 
@@ -117,8 +112,6 @@ namespace xm_mis.db
             #region sqlPara declare
             //supplierId
             SqlParameter sqlParaSupplierId = null;
-            //supplierEnd
-            SqlParameter sqlParaSupplierEnd = null;
             #endregion
 
             SqlCommand sqlCmd = null;
@@ -131,16 +124,13 @@ namespace xm_mis.db
 
             #region sqlParaInit
             int supplierIdTemp = int.Parse(supplierId);
-            DateTime st = DateTime.Now;
 
             sqlParaSupplierId = new SqlParameter("@delSupplierId", supplierIdTemp);
-            sqlParaSupplierEnd = new SqlParameter("@delEndTime", st);
             #endregion
 
             #region sqlParaAdd
             sqlCmd.Parameters.Clear();
             sqlCmd.Parameters.Add(sqlParaSupplierId);
-            sqlCmd.Parameters.Add(sqlParaSupplierEnd);
             #endregion
 
             sqlCmd.Connection.Open();

@@ -31,13 +31,13 @@ namespace xm_mis.Main.contractManager {
         protected global::System.Web.UI.WebControls.TextBox txtMainContractTag;
         
         /// <summary>
-        /// txtCustmor 控件。
+        /// ddlCustComp 控件。
         /// </summary>
         /// <remarks>
         /// 自动生成的字段。
         /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtCustmor;
+        protected global::System.Web.UI.WebControls.DropDownList ddlCustComp;
         
         /// <summary>
         /// txtMoney 控件。
@@ -92,6 +92,15 @@ namespace xm_mis.Main.contractManager {
         /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox txtPayment;
+        
+        /// <summary>
+        /// txtProjAddr 控件。
+        /// </summary>
+        /// <remarks>
+        /// 自动生成的字段。
+        /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox txtProjAddr;
         
         /// <summary>
         /// btnOk 控件。

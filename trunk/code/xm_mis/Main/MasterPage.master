@@ -24,13 +24,14 @@
         <DynamicSelectedStyle BackColor="#5D7B9D" />
         <Items>
             <asp:MenuItem Text="公共信息" Value="公共信息">
-                <asp:MenuItem Text="项目号信息" Value="projectTagInfo"></asp:MenuItem>
-            </asp:MenuItem>
-            <asp:MenuItem Text="个人信息更改" Value="个人信息更改">
-                <asp:MenuItem Text="密码修改" Value="selfPwdModify"></asp:MenuItem>
-                <asp:MenuItem Text="联系方式修改" Value="selfContectModify"></asp:MenuItem>
+                <asp:MenuItem Text="项目号一览" Value="projectTagInfo"></asp:MenuItem>
             </asp:MenuItem>
             <asp:MenuItem Text="用户管理" Value="用户管理">
+                <asp:MenuItem Text="个人信息修改" Value="个人信息修改">
+                    <asp:MenuItem Text="密码修改" Value="selfPwdModify"></asp:MenuItem>
+                    <asp:MenuItem Text="联系电话修改" Value="selfContectModify"></asp:MenuItem>
+                    <asp:MenuItem Text="邮件地址修改" Value="userSelfEmailModify"></asp:MenuItem>
+                </asp:MenuItem>
                 <asp:MenuItem Text="用户信息管理" Value="usrInfoModify"></asp:MenuItem>
                 <asp:MenuItem Text="用户权限管理" Value="usrAuth"></asp:MenuItem>
                 <asp:MenuItem Text="更改用户所属部门和职务" Value="usrDepartTitle"></asp:MenuItem>
@@ -44,19 +45,36 @@
                 <asp:MenuItem Text="供应商信息管理" Value="supplierEdit"></asp:MenuItem>
             </asp:MenuItem>
             <asp:MenuItem Text="项目信息管理" Value="项目信息管理">
-                <asp:MenuItem Text="项目信息查询" Value="projectSearch"></asp:MenuItem>
-                <asp:MenuItem Text="新项目号申请" Value="newProject"></asp:MenuItem>
+                <asp:MenuItem Text="项目号申请" Value="projectSearch"></asp:MenuItem>
+                <asp:MenuItem Text="项目进度查询" Value="projectStepSearch"></asp:MenuItem>
+                <asp:MenuItem Text="送修申请" Value="returnedSearch"></asp:MenuItem>
+                <asp:MenuItem Text="送修审批" Value="returnOk"></asp:MenuItem>
+                <%--<asp:MenuItem Text="送修申请" Value="newReturn"></asp:MenuItem>--%>
+                <asp:MenuItem Text="借用申请" Value="borrowedSearch"></asp:MenuItem>
+                <asp:MenuItem Text="借用审批" Value="borrowOk"></asp:MenuItem>
+                <%--<asp:MenuItem Text="借用申请" Value="newBorrow"></asp:MenuItem>--%>
             </asp:MenuItem>
             <asp:MenuItem Text="合同信息管理" Value="合同信息管理">
-                <asp:MenuItem Text="合同信息查询" Value="contractView"></asp:MenuItem>
-                <asp:MenuItem Text="新建合同" Value="addContract"></asp:MenuItem>
-                <asp:MenuItem Text="编辑副合同信息" Value="subContractEdit"></asp:MenuItem>
+                <asp:MenuItem Text="新建合同" Value="subContractEdit"></asp:MenuItem>
+                <%--<asp:MenuItem Text="新建合同" Value="addContract"></asp:MenuItem>
+                <asp:MenuItem Text="编辑副合同信息" Value="subContractEdit"></asp:MenuItem>--%>
             </asp:MenuItem>
             <asp:MenuItem Text="付款与开票管理" Value="付款与开票管理">
-                <asp:MenuItem Text="付款与开票查询" Value="mainContractReceiptView"></asp:MenuItem>
+                <asp:MenuItem Text="付款与开票" Value="mainContractReceiptView"></asp:MenuItem>
+                <asp:MenuItem Text="确认付款" Value="paymentOk"></asp:MenuItem>
+                <asp:MenuItem Text="确认开票" Value="receiptOk"></asp:MenuItem>
             </asp:MenuItem>
             <asp:MenuItem Text="库存管理" Value="库存管理">
                 <asp:MenuItem Text="货物品种管理" Value="productView"></asp:MenuItem>
+                <asp:MenuItem Text="货物入库管理" Value="productIn"></asp:MenuItem>
+                <asp:MenuItem Text="货物检验管理" Value="productCheckView"></asp:MenuItem>
+                <asp:MenuItem Text="货物属性管理" Value="productStockDetail"></asp:MenuItem>
+                <asp:MenuItem Text="货物库存管理" Value="productStockView"></asp:MenuItem>                
+                <asp:MenuItem Text="出库管理" Value="productStockOut">
+                    <asp:MenuItem Text="销售产品匹配" Value="sellProductStockOutList"></asp:MenuItem>
+                    <asp:MenuItem Text="送修产品匹配" Value="returnProductStockOutList"></asp:MenuItem>                
+                    <asp:MenuItem Text="产品出库确认" Value="productStockOutAccept"></asp:MenuItem>                
+                </asp:MenuItem>                    
             </asp:MenuItem>
             <asp:MenuItem Text="项目相关性息" Value="项目相关性息">
                 <asp:MenuItem Text="票务信息" Value="receiptView"></asp:MenuItem>

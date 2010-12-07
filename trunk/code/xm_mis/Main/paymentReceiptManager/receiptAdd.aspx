@@ -7,6 +7,9 @@
         供应商已开票：&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
         <asp:Label ID="lblSubContractReceipt" runat="server" 
             Text="lblSubContractReceipt"></asp:Label>
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 我方已开票：&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        <asp:Label ID="lblMainContractReceipt" runat="server" 
+            Text="lblMainContractReceipt"></asp:Label>
     </p>
     <p>
         我方将开票：&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
@@ -20,7 +23,7 @@
             Visible="False" />
     </p>
     <p>
-        开票申请内容：&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        申请内容：&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
         <asp:TextBox ID="txtReceiptExplication" runat="server" Height="65px" 
             ontextchanged="txtReceiptExplication_TextChanged" TextMode="MultiLine" 
             Width="312px"></asp:TextBox>

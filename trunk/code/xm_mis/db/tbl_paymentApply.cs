@@ -24,8 +24,6 @@ namespace xm_mis.db
             #region sqlPara declare
             //mainContractId
             SqlParameter sqlParaMainContractId = null;
-            //now
-            SqlParameter sqlParaNow = null;
             //payPercent
             SqlParameter sqlParaPayPercent = null;
             #endregion
@@ -43,14 +41,12 @@ namespace xm_mis.db
             DateTime st = DateTime.Now;
 
             sqlParaMainContractId = new SqlParameter("@mainContractId", mcId);
-            sqlParaNow = new SqlParameter("@now", st);
-            sqlParaPayPercent = new SqlParameter("@payPercent", SqlDbType.Int);
+            sqlParaPayPercent = new SqlParameter("@payPercent", SqlDbType.Real);
             #endregion
 
             #region sqlParaAdd
             sqlCmd.Parameters.Clear();
             sqlCmd.Parameters.Add(sqlParaMainContractId);
-            sqlCmd.Parameters.Add(sqlParaNow);
             sqlCmd.Parameters.Add(sqlParaPayPercent);
             #endregion
 
@@ -113,6 +109,54 @@ namespace xm_mis.db
             sqlCmd.Connection.Close();
         }
 
+        public void SelfPaymentDone(DataSet dataSet)
+        {
+            #region sqlPara declare
+            //paymentId
+            SqlParameter sqlParaPaymentId = null;
+            //payPercent
+            SqlParameter sqlParaPayPercent = null;
+            //subContractId
+            SqlParameter sqlParaSubContractId = null;
+            //projectTagId
+            SqlParameter sqlParaProjectTagId = null;
+            #endregion
+
+            SqlCommand sqlCmd = null;
+
+            string strSQL = "selfPayment_done";
+
+            sqlCmd = this.SqlCom;
+            sqlCmd.CommandText = strSQL;
+            sqlCmd.CommandType = CommandType.StoredProcedure;
+
+            #region sqlParaInit
+            string paymentId = dataSet.Tables["addTable"].Rows[0]["paymentId"].ToString();
+            string payPercent = dataSet.Tables["addTable"].Rows[0]["payPercent"].ToString();
+            string subContractId = dataSet.Tables["addTable"].Rows[0]["subContractId"].ToString();
+            string projectTagId = dataSet.Tables["addTable"].Rows[0]["projectTagId"].ToString();
+
+            sqlParaPaymentId = new SqlParameter("@paymentId", paymentId);
+            sqlParaPayPercent = new SqlParameter("@payPercent", payPercent);
+            sqlParaSubContractId = new SqlParameter("@subContractId", subContractId);
+            sqlParaProjectTagId = new SqlParameter("@projectTagId", projectTagId);
+            #endregion
+
+            #region sqlParaAdd
+            sqlCmd.Parameters.Clear();
+            sqlCmd.Parameters.Add(sqlParaPaymentId);
+            sqlCmd.Parameters.Add(sqlParaPayPercent);
+            sqlCmd.Parameters.Add(sqlParaSubContractId);
+            sqlCmd.Parameters.Add(sqlParaProjectTagId);
+            #endregion
+
+            sqlCmd.Connection.Open();
+
+            sqlCmd.ExecuteNonQuery();
+
+            sqlCmd.Connection.Close();
+        }
+
         public string SelectAdd(DataSet dataSet)
         {
             #region sqlPara declare
@@ -124,8 +168,6 @@ namespace xm_mis.db
             SqlParameter sqlParaPayPercent = null;
             //paymentExplication
             SqlParameter sqlParaPaymentExplication = null;
-            //startTime
-            SqlParameter sqlParaStartTime = null;
             //Identity
             SqlParameter sqlParaId = null;
             #endregion
@@ -143,13 +185,11 @@ namespace xm_mis.db
             string custMaxPay = dataSet.Tables["tbl_paymentApply"].Rows[0]["custMaxPay"].ToString();
             string payPercent = dataSet.Tables["tbl_paymentApply"].Rows[0]["payPercent"].ToString();
             string paymentExplication = dataSet.Tables["tbl_paymentApply"].Rows[0]["paymentExplication"].ToString();
-            DateTime st = DateTime.Now;
 
             sqlParaSubContractId = new SqlParameter("@subContractId", subContractId);
             sqlParaCustMaxPay = new SqlParameter("@custMaxPay", custMaxPay);
             sqlParaPayPercent = new SqlParameter("@payPercent", payPercent);
             sqlParaPaymentExplication = new SqlParameter("@paymentExplication", paymentExplication);
-            sqlParaStartTime = new SqlParameter("@startTime", st);
             sqlParaId = new SqlParameter("@Identity", SqlDbType.Int);
             #endregion
 
@@ -159,7 +199,6 @@ namespace xm_mis.db
             sqlCmd.Parameters.Add(sqlParaCustMaxPay);
             sqlCmd.Parameters.Add(sqlParaPayPercent);
             sqlCmd.Parameters.Add(sqlParaPaymentExplication);
-            sqlCmd.Parameters.Add(sqlParaStartTime);
             sqlCmd.Parameters.Add(sqlParaId);
             #endregion
 
@@ -258,7 +297,7 @@ namespace xm_mis.db
             string strSQL =
                 "SELECT " +
                 "* " +
-                "FROM tbl_paymentApply ";
+                "FROM view_subPayment ";
 
             sqlCmd = this.SqlCom;
             sqlCmd.CommandText = strSQL;
@@ -269,7 +308,7 @@ namespace xm_mis.db
             SqlDA.SelectCommand = sqlCmd;
 
             DataSet myDataSet = new DataSet();
-            userDataAdapter.Fill(myDataSet, "tbl_paymentApply");
+            userDataAdapter.Fill(myDataSet, "view_subPayment");
 
             return myDataSet;
         }

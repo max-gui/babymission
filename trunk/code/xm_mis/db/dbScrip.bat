@@ -1,0 +1,1 @@
+sqlmetal /server:localhost /database:xm_db /namespace:xm_mis.db /code:xm_db.cs /views /functions /sprocs /language:csharp

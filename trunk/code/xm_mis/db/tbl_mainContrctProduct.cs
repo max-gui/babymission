@@ -28,8 +28,6 @@ namespace xm_mis.db
             SqlParameter sqlParaProductId = null;
             //productNum
             SqlParameter sqlParapProductNum = null;
-            //startTime
-            SqlParameter sqlParaStartTime = null;
             //Identity
             SqlParameter sqlParaId = null;
             #endregion
@@ -47,12 +45,10 @@ namespace xm_mis.db
             int mainContractId = 0;
             string productId = string.Empty;
             string productNum = string.Empty;
-            DateTime st = DateTime.Now;
 
             sqlParaMainContractId = new SqlParameter("@mainContractId", mainContractId);
             sqlParaProductId = new SqlParameter("@productId", productId);
             sqlParapProductNum = new SqlParameter("@productNum", productNum);
-            sqlParaStartTime = new SqlParameter("@startTime", st);
             sqlParaId = new SqlParameter("@Identity", SqlDbType.Int);
             foreach (DataRow dr in dataSet.Tables["tbl_mainContrctProduct"].Rows)
             {
@@ -70,7 +66,6 @@ namespace xm_mis.db
                 sqlCmd.Parameters.Add(sqlParaMainContractId);
                 sqlCmd.Parameters.Add(sqlParaProductId);
                 sqlCmd.Parameters.Add(sqlParapProductNum);
-                sqlCmd.Parameters.Add(sqlParaStartTime);
                 sqlCmd.Parameters.Add(sqlParaId);
                 #endregion
 

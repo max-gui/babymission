@@ -9,22 +9,20 @@ using System.Data.SqlClient;
 using System.Data;
 namespace xm_mis.db
 {
-    public class tbl_projectTagInfo : DataBase
+    public class tbl_projectTagInfo_old : DataBase
     {
-        public tbl_projectTagInfo()
+        public tbl_projectTagInfo_old()
         {
             //
             //TODO: 在此处添加构造函数逻辑
             //
         }
 
-        public string CompProjectCount(DateTime dateCount, string custCompId)
+        public string CompProjectCount(string custCompId)
         {
             #region sqlPara declare
             //custCompId
             SqlParameter sqlParaCustCompId = null;
-            //dateCount
-            SqlParameter sqlParaDateCount = null;
             //projectCount
             SqlParameter sqlParaProjectCount = null;
             #endregion
@@ -39,17 +37,14 @@ namespace xm_mis.db
 
             #region sqlParaInit
             int ccId = int.Parse(custCompId);
-            DateTime st = DateTime.Now;
 
             sqlParaCustCompId = new SqlParameter("@custCompyId", ccId);
-            sqlParaDateCount = new SqlParameter("@now", dateCount);
             sqlParaProjectCount = new SqlParameter("@countRtn", SqlDbType.Int);
             #endregion
 
             #region sqlParaAdd
             sqlCmd.Parameters.Clear();
             sqlCmd.Parameters.Add(sqlParaCustCompId);
-            sqlCmd.Parameters.Add(sqlParaDateCount);
             sqlCmd.Parameters.Add(sqlParaProjectCount);
             #endregion
 
@@ -78,10 +73,10 @@ namespace xm_mis.db
             SqlParameter sqlParaManId = null;
             //projectTag
             SqlParameter sqlParaProjTag = null;
-            //startTime
-            SqlParameter sqlParaSt = null;
-            //Identity
-            SqlParameter sqlParaIdentity = null;
+            //projectDetail
+            SqlParameter sqlParaProjectDetail = null;
+            //projectTagId
+            SqlParameter sqlParaProjectTagId = null;
             #endregion
 
             SqlCommand sqlCmd = null;
@@ -97,14 +92,14 @@ namespace xm_mis.db
             string projectSynopsis = dataSet.Tables["tbl_projectTagInfo"].Rows[0]["projectSynopsis"].ToString().Trim();
             string custManId = dataSet.Tables["tbl_projectTagInfo"].Rows[0]["custManId"].ToString().Trim();
             string projectTag = dataSet.Tables["tbl_projectTagInfo"].Rows[0]["projectTag"].ToString().Trim();
-            DateTime startTime = DateTime.Now;
+            string projectDetail = "sell";
 
             sqlParaUsrId = new SqlParameter("@usrId", usrId);
             sqlParaSynopsis = new SqlParameter("@projectSynopsis", projectSynopsis);
             sqlParaManId = new SqlParameter("@custManId", custManId);
             sqlParaProjTag = new SqlParameter("@projectTag", projectTag);
-            sqlParaSt = new SqlParameter("@startTime", startTime);
-            sqlParaIdentity = new SqlParameter("@Identity", SqlDbType.Int);
+            sqlParaProjectDetail = new SqlParameter("@projectDetail", projectDetail);
+            sqlParaProjectTagId = new SqlParameter("@projectTagId", SqlDbType.Int);
             #endregion
 
             #region sqlParaAdd
@@ -113,12 +108,12 @@ namespace xm_mis.db
             sqlCmd.Parameters.Add(sqlParaSynopsis);
             sqlCmd.Parameters.Add(sqlParaManId);
             sqlCmd.Parameters.Add(sqlParaProjTag);
-            sqlCmd.Parameters.Add(sqlParaSt);
-            sqlCmd.Parameters.Add(sqlParaIdentity);
+            sqlCmd.Parameters.Add(sqlParaProjectDetail);
+            sqlCmd.Parameters.Add(sqlParaProjectTagId);
             #endregion
 
             #region sqlDirection
-            sqlParaIdentity.Direction = ParameterDirection.Output;
+            sqlParaProjectTagId.Direction = ParameterDirection.Output;
             #endregion
 
             sqlCmd.Connection.Open();
@@ -127,7 +122,7 @@ namespace xm_mis.db
 
             sqlCmd.Connection.Close();
 
-            string projId = sqlParaIdentity.Value.ToString();
+            string projId = sqlParaProjectTagId.Value.ToString();
             return projId;
         }
 
@@ -215,7 +210,7 @@ namespace xm_mis.db
         //    sqlCmd.Connection.Close();
         //}
 
-        public DataSet SelectView()
+        public DataSet RealProjTagList()
         {
             SqlCommand sqlCmd = null;
 
@@ -233,6 +228,29 @@ namespace xm_mis.db
 
             DataSet myDataSet = new DataSet();
             projTagDataAdapter.Fill(myDataSet, "view_project_tag");
+
+            return myDataSet;
+        }
+
+        public DataSet projectTag_view()
+        {
+            SqlCommand sqlCmd = null;
+
+            string strSQL = "projectTag_view";
+
+            sqlCmd = this.SqlCom;
+            sqlCmd.CommandText = strSQL;
+            sqlCmd.CommandType = CommandType.StoredProcedure;
+
+            #region sqlParaAdd
+            sqlCmd.Parameters.Clear();
+            #endregion
+
+            SqlDataAdapter userDataAdapter = this.SqlDA;
+            SqlDA.SelectCommand = sqlCmd;
+
+            DataSet myDataSet = new DataSet();
+            userDataAdapter.Fill(myDataSet, "projectTag_view");
 
             return myDataSet;
         }

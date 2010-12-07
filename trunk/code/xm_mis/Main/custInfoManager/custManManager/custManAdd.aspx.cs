@@ -15,16 +15,18 @@ namespace xm_mis.Main.custInfoManager.custManManager
         {
             if (!(null == Session["totleAuthority"]))
             {
-                int usrAuth = 0;
-                string strUsrAuth = Session["totleAuthority"] as string;
-                usrAuth = int.Parse(strUsrAuth);
-                int flag = 0x3 << 4;
+                AuthAttributes usrAuthAttr = (AuthAttributes)Session["totleAuthority"];
 
-                if ((usrAuth & flag) == 0)
+                bool flag = usrAuthAttr.HasOneFlag(AuthAttributes.custManager);
+                if (!flag)
+                {
                     Response.Redirect("~/Main/NoAuthority.aspx");
+                }
             }
             else
             {
+                string url = Request.FilePath;
+                Session["backUrl"] = url;
                 Response.Redirect("~/Account/Login.aspx");
             }
 
@@ -185,63 +187,63 @@ namespace xm_mis.Main.custInfoManager.custManManager
 
             return flag;
         }
-        protected bool txtContact_TextCheck()
-        {
-            bool flag = true;
-            if (string.IsNullOrWhiteSpace(txtContact.Text.ToString().Trim()))
-            {
-                lblContact.Text = "*必填项!";
-                //Session["flagContact"] = bool.FalseString.ToString().Trim();
-                flag = false;
-            }
-            else if (txtContact.Text.ToString().Trim().Length != 11)
-            {
-                lblContact.Text = "手机号码应为11位!";
-                //Session["flagContact"] = bool.FalseString.ToString().Trim();
-                flag = false;
-            }
-            else
-            {
-                long sc = 0;
-                try
-                {
-                    sc = long.Parse(txtContact.Text.ToString().Trim());
-                    lblContact.Text = string.Empty;
-                    //Session["flagContact"] = bool.TrueString.ToString().Trim();
-                }
-                catch (FormatException e)
-                {
-                    lblContact.Text = "手机号码只能包含数字!";
-                    //Session["flagContact"] = bool.FalseString.ToString().Trim();
-                    Console.WriteLine("{0} Exception caught.", e);
-                    flag = false;
-                }
-            } 
+        //protected bool txtContact_TextCheck()
+        //{
+        //    bool flag = true;
+        //    if (string.IsNullOrWhiteSpace(txtContact.Text.ToString().Trim()))
+        //    {
+        //        lblContact.Text = "*必填项!";
+        //        //Session["flagContact"] = bool.FalseString.ToString().Trim();
+        //        flag = false;
+        //    }
+        //    else if (txtContact.Text.ToString().Trim().Length != 11)
+        //    {
+        //        lblContact.Text = "手机号码应为11位!";
+        //        //Session["flagContact"] = bool.FalseString.ToString().Trim();
+        //        flag = false;
+        //    }
+        //    else
+        //    {
+        //        long sc = 0;
+        //        try
+        //        {
+        //            sc = long.Parse(txtContact.Text.ToString().Trim());
+        //            lblContact.Text = string.Empty;
+        //            //Session["flagContact"] = bool.TrueString.ToString().Trim();
+        //        }
+        //        catch (FormatException e)
+        //        {
+        //            lblContact.Text = "手机号码只能包含数字!";
+        //            //Session["flagContact"] = bool.FalseString.ToString().Trim();
+        //            Console.WriteLine("{0} Exception caught.", e);
+        //            flag = false;
+        //        }
+        //    } 
             
-            return flag;
-        }
-        protected bool txtEmail_TextCheck()
-        {
-            string strLblEmail = txtEmail.Text.ToString().Trim();
+        //    return flag;
+        //}
+        //protected bool txtEmail_TextCheck()
+        //{
+        //    string strLblEmail = txtEmail.Text.ToString().Trim();
 
-            bool flag = true;
-            if (string.IsNullOrWhiteSpace(strLblEmail))
-            {
-                lblEmail.Text = "*必填项!";
-                flag = false;
-            }
-            else if (!strLblEmail.Contains("@") || strLblEmail.StartsWith("@") || strLblEmail.EndsWith("@"))
-            {
-                lblEmail.Text = "邮件格式不对!";
-                flag = false;
-            }
-            else
-            {
-                lblEmail.Text = string.Empty;
-            }
+        //    bool flag = true;
+        //    if (string.IsNullOrWhiteSpace(strLblEmail))
+        //    {
+        //        lblEmail.Text = "*必填项!";
+        //        flag = false;
+        //    }
+        //    else if (!strLblEmail.Contains("@") || strLblEmail.StartsWith("@") || strLblEmail.EndsWith("@"))
+        //    {
+        //        lblEmail.Text = "邮件格式不对!";
+        //        flag = false;
+        //    }
+        //    else
+        //    {
+        //        lblEmail.Text = string.Empty;
+        //    }
 
-            return flag;
-        }
+        //    return flag;
+        //}
 
         protected bool inputCheck()
         {
@@ -262,14 +264,14 @@ namespace xm_mis.Main.custInfoManager.custManManager
             {
                 flag = false;
             }
-            else if (!txtContact_TextCheck())
-            {
-                flag = false;
-            }
-            else if (!txtEmail_TextCheck())
-            {
-                flag = false;
-            }
+            //else if (!txtContact_TextCheck())
+            //{
+            //    flag = false;
+            //}
+            //else if (!txtEmail_TextCheck())
+            //{
+            //    flag = false;
+            //}
 
             return flag;
         }

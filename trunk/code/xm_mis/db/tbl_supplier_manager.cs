@@ -33,8 +33,6 @@ namespace xm_mis.db
             SqlParameter sqlParaSupplierManTitle = null;
             //supplierCompyId
             SqlParameter sqlParaSupplierId = null;
-            //start
-            SqlParameter sqlParaSt = null;
             //newCompId
             SqlParameter sqlParaId = null;
             #endregion
@@ -54,7 +52,6 @@ namespace xm_mis.db
             string supplierManDepart = dataSet.Tables["tbl_customer_manager"].Rows[0]["supplierManDepart"].ToString();
             string supplierManTitle = dataSet.Tables["tbl_customer_manager"].Rows[0]["supplierManTitle"].ToString();
             int supplierId = int.Parse(dataSet.Tables["tbl_customer_manager"].Rows[0]["supplierId"].ToString());
-            DateTime st = DateTime.Now;
 
             sqlParaSupplierManName = new SqlParameter("@supplierManName", supplierManName);
             sqlParaSupplierManContact = new SqlParameter("@supplierManContact", supplierManContact);
@@ -62,7 +59,6 @@ namespace xm_mis.db
             sqlParaSupplierManDepart = new SqlParameter("@supplierManDepart", supplierManDepart);
             sqlParaSupplierManTitle = new SqlParameter("@supplierManTitle", supplierManTitle);
             sqlParaSupplierId = new SqlParameter("@supplierId", supplierId);
-            sqlParaSt = new SqlParameter("@startTime", st);
             sqlParaId = new SqlParameter("@Identity", SqlDbType.Int);
             #endregion
 
@@ -74,7 +70,6 @@ namespace xm_mis.db
             sqlCmd.Parameters.Add(sqlParaSupplierManDepart);
             sqlCmd.Parameters.Add(sqlParaSupplierManTitle);
             sqlCmd.Parameters.Add(sqlParaSupplierId);
-            sqlCmd.Parameters.Add(sqlParaSt);
             sqlCmd.Parameters.Add(sqlParaId);
             #endregion
 
@@ -149,8 +144,6 @@ namespace xm_mis.db
             #region sqlPara declare
             //supplierManId
             SqlParameter sqlParaSupplierManId = null;
-            //supplierManEnd
-            SqlParameter sqlParaSupplierManEnd = null;
             #endregion
 
             SqlCommand sqlCmd = null;
@@ -163,16 +156,13 @@ namespace xm_mis.db
 
             #region sqlParaInit
             int supplierManIdTemp = int.Parse(supplierManId);
-            DateTime st = DateTime.Now;
 
             sqlParaSupplierManId = new SqlParameter("@delSupplierManId", supplierManIdTemp);
-            sqlParaSupplierManEnd = new SqlParameter("@delEndTime", st);
             #endregion
 
             #region sqlParaAdd
             sqlCmd.Parameters.Clear();
             sqlCmd.Parameters.Add(sqlParaSupplierManId);
-            sqlCmd.Parameters.Add(sqlParaSupplierManEnd);
             #endregion
 
             sqlCmd.Connection.Open();

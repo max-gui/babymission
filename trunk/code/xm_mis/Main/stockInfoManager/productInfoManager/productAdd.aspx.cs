@@ -15,16 +15,18 @@ namespace xm_mis.Main.stockInfoManager.productInfoManager
         {
             if (!(null == Session["totleAuthority"]))
             {
-                int usrAuth = 0;
-                string strUsrAuth = Session["totleAuthority"] as string;
-                usrAuth = int.Parse(strUsrAuth);
-                int flag = 0x1 << 1;
+                AuthAttributes usrAuthAttr = (AuthAttributes)Session["totleAuthority"];
 
-                if ((usrAuth & flag) == 0)
+                bool flag = usrAuthAttr.HasOneFlag(AuthAttributes.stockManager);
+                if (!flag)
+                {
                     Response.Redirect("~/Main/NoAuthority.aspx");
+                }
             }
             else
             {
+                string url = Request.FilePath;
+                Session["backUrl"] = url;
                 Response.Redirect("~/Account/Login.aspx");
             }
         }
@@ -46,7 +48,7 @@ namespace xm_mis.Main.stockInfoManager.productInfoManager
 
                 DataColumn productName = new DataColumn("productName", System.Type.GetType("System.String"));
 
-                DataTable productTable = new DataTable("tbl_product");
+                DataTable productTable = new DataTable("addTable");
 
                 productTable.Columns.Add(productName);
 
@@ -59,27 +61,28 @@ namespace xm_mis.Main.stockInfoManager.productInfoManager
 
                 ProductProcess pp = new ProductProcess(dataSet);
 
-                pp.DoCheckProductName();
-                int rowRtn = pp.IntRtn;
-                if (0 == rowRtn)
+                //pp.DoCheckProductName();
+                //int rowRtn = pp.IntRtn;
+                //if (0 == rowRtn)
+                //{
+                    //using (DataTable dt =
+                    //            pp.MyDst.Tables["tbl_product"].DefaultView.ToTable("addTable"))
+                    //{
+                    //    DataRow dr = dt.NewRow();
+                    //    dr["productName"] = pn;
+
+                    //    dt.Rows.Add(dr);
+                    //    pp.MyDst.Tables.Add(dt);
+
+                string error = pp.Add_includeError();
+
+                if (string.IsNullOrEmpty(error))
                 {
-                    using (DataTable dt =
-                                pp.MyDst.Tables["tbl_product"].DefaultView.ToTable("addTable"))
-                    {
-                        DataRow dr = dt.NewRow();
-                        dr["productName"] = pn;
-
-                        dt.Rows.Add(dr);
-                        pp.MyDst.Tables.Add(dt);
-
-                        pp.Add();
-
-                        Response.Redirect("~/Main/stockInfoManager/productInfoManager/productView.aspx");
-                    }
+                    Response.Redirect("~/Main/stockInfoManager/productInfoManager/productView.aspx");
                 }
                 else
                 {
-                    lblName.Text = "产品已存在!";
+                    lblName.Text = error;
                 }
             }
         }

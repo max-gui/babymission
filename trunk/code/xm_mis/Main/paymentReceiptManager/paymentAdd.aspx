@@ -7,6 +7,10 @@
         客户已付款：&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
         <asp:Label ID="lblMainContractPay" runat="server" 
             Text="lblMainContractPay"></asp:Label>
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+        我方已付款：&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        <asp:Label ID="lblSubContractPay" runat="server" 
+            Text="lblSubContractPay"></asp:Label>
     </p>
     <p>
         我方将付款：&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<asp:DropDownList ID="ddlSelfPay" runat="server">
@@ -19,7 +23,7 @@
             Visible="False" />
     </p>
     <p>
-        开票申请内容：&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        申请内容：&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
         <asp:TextBox ID="txtPayExplication" runat="server" Height="65px" 
             ontextchanged="txtPayExplication_TextChanged" TextMode="MultiLine" 
             Width="312px"></asp:TextBox>

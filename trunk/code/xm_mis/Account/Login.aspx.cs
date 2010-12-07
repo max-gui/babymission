@@ -8,12 +8,29 @@ using System.Web.UI.WebControls;
 
 using System.Data;
 using xm_mis.logic;
+using xm_mis.db;
+using xm_mis.Main;
 namespace xm_mis.Account
 {
     public partial class Login : System.Web.UI.Page
     {
         protected void Page_Load(object sender, EventArgs e)
         {
+            if (!IsPostBack)
+            {
+                string url = Session["backUrl"] as string;
+
+                Session.Clear();
+                if (!string.IsNullOrEmpty(url))
+                {
+                    Session["backUrl"] = url;
+                }
+                else
+                {
+                }
+            }
+
+            //BeckSendMail.getMM().NewMail("vampiler@163.com", "mis系统票务通知", "开票申请已通过审批，请尽快完成后续工作" + Request.Url.AbsoluteUri + "/Main/paymentReceiptManager/receiptOk.aspx");
             //RegisterHyperLink.NavigateUrl = "Register.aspx?ReturnUrl=" + HttpUtility.UrlEncode(Request.QueryString["ReturnUrl"]);
         }
 
@@ -57,7 +74,14 @@ namespace xm_mis.Account
             #endregion
 
 
+            //Xm_db xmDataCont = Xm_db.GetInstance();
 
+            //var a =
+            //    from b in xmDataCont.Tbl_usr
+            //    where b.RealName.Equals("joker")
+            //    select b;
+
+            //int usrId = a.First().Tbl_usr_title.Where(p => p.UsrId == a.First().UsrId).Count(p => p.Tbl_title.EndTime > DateTime.Now);
 
             UserProcess myLogin = new UserProcess(dataSet);
 
@@ -69,8 +93,14 @@ namespace xm_mis.Account
                 using (DataTable dt =
                             myLogin.MyDst.Tables["tbl_usr"].DefaultView.ToTable())
                 {
+                    string strUsrAuth = dt.Rows[0]["totleAuthority"].ToString();
+                    AuthAttributes usrAuthAttr;
+                    Enum.TryParse<AuthAttributes>(strUsrAuth, out usrAuthAttr);
+
+                    //Session["totleAuthority"] =
+                    //    dt.Rows[0]["totleAuthority"].ToString();
                     Session["totleAuthority"] =
-                        dt.Rows[0]["totleAuthority"].ToString();
+                        usrAuthAttr;
                     Session["usrId"] =
                         dt.Rows[0]["usrId"].ToString();
 
@@ -78,10 +108,14 @@ namespace xm_mis.Account
                         dt.Rows[0]["realName"].ToString();
                     FormsAuthentication.SetAuthCookie(strRealName, false);
 
+                    string backUrl = Session["backUrl"] as string;
                     string continueUrl = "~/Main/DefaultMainSite.aspx";//Request.QueryString["ReturnUrl"];
-                    if (String.IsNullOrEmpty(continueUrl))
+                    if (!String.IsNullOrEmpty(backUrl))
                     {
-                        continueUrl = "~/";
+                        continueUrl = backUrl;
+                    }
+                    else
+                    {
                     }
                     Response.Redirect(continueUrl);
                     //aspxName = myLogin.StrRtn + "Main.aspx";

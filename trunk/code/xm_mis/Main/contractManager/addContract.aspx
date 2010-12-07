@@ -14,8 +14,8 @@
     <asp:TextBox ID="txtMainContractTag" runat="server" AutoPostBack="True" 
         ontextchanged="txtMainContractTag_TextChanged"></asp:TextBox>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 需方：&nbsp;&nbsp;&nbsp; 
-    <asp:TextBox ID="txtCustmor" runat="server" AutoPostBack="True" 
-        ontextchanged="txtCustmor_TextChanged" Enabled="False"></asp:TextBox>
+    <asp:DropDownList ID="ddlCustComp" runat="server">
+    </asp:DropDownList>
 </p>
     <p>
         合同额：&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
@@ -33,7 +33,7 @@
         BorderColor="#336666" BorderStyle="Double" BorderWidth="3px" Caption="出售产品信息" 
         CellPadding="4" GridLines="Horizontal" HorizontalAlign="Center" 
     style="margin-left: 0px" onpageindexchanging="mainProductGV_PageIndexChanging" 
-        onrowdatabound="mainProductGV_RowDataBound" onsorting="mainProductGV_Sorting">
+        onrowdatabound="mainProductGV_RowDataBound">
         <Columns>
             <asp:BoundField DataField="productName" HeaderText="产品名称" ReadOnly="True" />
             <asp:TemplateField HeaderText="产品数量">
@@ -76,6 +76,9 @@
     <p>
         付款方式：<asp:TextBox ID="txtPayment" runat="server" Height="65px" 
             ontextchanged="txtPayment_TextChanged" TextMode="MultiLine" Width="312px"></asp:TextBox>
+</p>
+    <p>
+        发货地址：<asp:TextBox ID="txtProjAddr" runat="server" Width="627px"></asp:TextBox>
 </p>
     <p>
     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;

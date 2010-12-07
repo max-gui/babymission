@@ -24,27 +24,23 @@ namespace xm_mis.db
             #region sqlPara declare
             //mainContractId
             SqlParameter sqlParaMainContractId = null;
-            //supplierId
-            SqlParameter sqlParaSupplierIdName = null;
             //subContractTag
             SqlParameter sqlParaSubContractTag = null;
+            //supplierId
+            SqlParameter sqlParaSupplierIdName = null;
             //cash
             SqlParameter sqlParaCash = null;
             //dateLine
             SqlParameter sqlParaDateLine = null;
             //paymentMode
             SqlParameter sqlParaPaymentMode = null;
-            //startTime
-            SqlParameter sqlParaStartTime = null;
-            //subContractId
-            SqlParameter sqlParaSubContractId = null;
-            //contractRelationId
-            SqlParameter sqlParaContractRelationId = null;
+            //Identity
+            SqlParameter sqlParaIdentity = null;
             #endregion
 
             SqlCommand sqlCmd = null;
 
-            string strSQL = "subContract_Insert";
+            string strSQL = "tbl_subContract_Insert";
 
             sqlCmd = this.SqlCom;
             sqlCmd.CommandText = strSQL;
@@ -52,23 +48,20 @@ namespace xm_mis.db
 
             #region sqlParaInit
             int mainContractId = int.Parse(dataSet.Tables["tbl_subContract"].Rows[0]["mainContractId"].ToString());
-            string contSupplierId = dataSet.Tables["tbl_subContract"].Rows[0]["supplierId"].ToString();
             string subContTag = dataSet.Tables["tbl_subContract"].Rows[0]["subContractTag"].ToString();
+            string contSupplierId = dataSet.Tables["tbl_subContract"].Rows[0]["supplierId"].ToString();
 
             string cash = dataSet.Tables["tbl_subContract"].Rows[0]["cash"].ToString();
             DateTime dateLine = DateTime.Parse(dataSet.Tables["tbl_subContract"].Rows[0]["dateLine"].ToString());
             string paymentMode = dataSet.Tables["tbl_subContract"].Rows[0]["paymentMode"].ToString();
-            DateTime st = DateTime.Now;
 
             sqlParaMainContractId = new SqlParameter("@mainContractId", mainContractId);
-            sqlParaSupplierIdName = new SqlParameter("@supplierId", contSupplierId);
             sqlParaSubContractTag = new SqlParameter("@subContractTag", subContTag);
+            sqlParaSupplierIdName = new SqlParameter("@supplierId", contSupplierId);
             sqlParaCash = new SqlParameter("@cash", cash);
             sqlParaDateLine = new SqlParameter("@dateLine", dateLine);
             sqlParaPaymentMode = new SqlParameter("@paymentMode", paymentMode);
-            sqlParaStartTime = new SqlParameter("@startTime", st);
-            sqlParaSubContractId = new SqlParameter("@subContractId", SqlDbType.Int);
-            sqlParaContractRelationId = new SqlParameter("@contractRelationId", SqlDbType.Int);
+            sqlParaIdentity = new SqlParameter("@Identity", SqlDbType.Int);
             #endregion
 
             #region sqlParaAdd
@@ -79,14 +72,11 @@ namespace xm_mis.db
             sqlCmd.Parameters.Add(sqlParaCash);
             sqlCmd.Parameters.Add(sqlParaDateLine);
             sqlCmd.Parameters.Add(sqlParaPaymentMode);
-            sqlCmd.Parameters.Add(sqlParaStartTime);
-            sqlCmd.Parameters.Add(sqlParaSubContractId);
-            sqlCmd.Parameters.Add(sqlParaContractRelationId);
+            sqlCmd.Parameters.Add(sqlParaIdentity);
             #endregion
 
             #region sqlDirection
-            sqlParaSubContractId.Direction = ParameterDirection.Output;
-            sqlParaContractRelationId.Direction = ParameterDirection.Output;
+            sqlParaIdentity.Direction = ParameterDirection.Output;
             #endregion
 
             sqlCmd.Connection.Open();
@@ -95,8 +85,7 @@ namespace xm_mis.db
 
             sqlCmd.Connection.Close();
 
-            string subContractId = sqlParaSubContractId.Value.ToString();
-            string contractRelationId = sqlParaContractRelationId.Value.ToString();
+            string subContractId = sqlParaIdentity.Value.ToString();
 
             return subContractId;
         }

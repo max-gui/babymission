@@ -7,12 +7,10 @@
         AllowSorting="True" AutoGenerateColumns="False" BackColor="White" 
         BorderColor="#336666" BorderStyle="Double" BorderWidth="3px" Caption="产品信息" 
         CellPadding="4" GridLines="Horizontal" HorizontalAlign="Center" 
-        onpageindexchanging="productSelGV_PageIndexChanging" 
-        onsorting="productSelGV_Sorting" style="margin-left: 0px" 
+        onpageindexchanging="productSelGV_PageIndexChanging" style="margin-left: 0px" 
         onrowdatabound="productSelGV_RowDataBound">
         <Columns>
             <asp:BoundField DataField="productName" HeaderText="产品名称" />
-            <asp:BoundField DataField="productStoreNum" HeaderText="库存数量" />
             <asp:CheckBoxField DataField="checkOrNot" HeaderText="所需产品" />
         </Columns>
         <EditRowStyle BackColor="#CCFFCC" BorderStyle="Solid" Font-Names="宋体" />

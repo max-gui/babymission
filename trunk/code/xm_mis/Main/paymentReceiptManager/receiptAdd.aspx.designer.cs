@@ -8,9 +8,9 @@
 //------------------------------------------------------------------------------
 
 namespace xm_mis.Main.paymentReceiptManager {
-
-
-    public partial class receiptAdd    {
+    
+    
+    public partial class receiptAdd {
         
         /// <summary>
         /// lblSubContractReceipt 控件。
@@ -20,6 +20,15 @@ namespace xm_mis.Main.paymentReceiptManager {
         /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
         /// </remarks>
         protected global::System.Web.UI.WebControls.Label lblSubContractReceipt;
+        
+        /// <summary>
+        /// lblMainContractReceipt 控件。
+        /// </summary>
+        /// <remarks>
+        /// 自动生成的字段。
+        /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lblMainContractReceipt;
         
         /// <summary>
         /// ddlSelfReceipt 控件。

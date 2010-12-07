@@ -57,7 +57,7 @@ namespace xm_mis.logic
         {
             MyDst = tp.SelectView();
 
-            string end = DateTime.Now.ToShortDateString();
+            string end = DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss.fff");
 
             string strFilter =
                 " endTime > " + "'" + end + "'";
@@ -78,9 +78,17 @@ namespace xm_mis.logic
 
         public override void Add()
         {
-            string productId = tp.SelectAdd(MyDst);
+            
+        }
+
+        public string Add_includeError()
+        {
+            string error = string.Empty;
+            string productId = tp.SelectAdd(MyDst, ref error);
 
             StrRtn = productId;
+
+            return error;
         }
 
         public void ProductUpdate(int productId, string productName)

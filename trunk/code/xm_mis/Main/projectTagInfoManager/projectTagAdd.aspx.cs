@@ -15,16 +15,18 @@ namespace xm_mis.Main.projectTagInfoManager
         {
             if (!(null == Session["totleAuthority"]))
             {
-                int usrAuth = 0;
-                string strUsrAuth = Session["totleAuthority"] as string;
-                usrAuth = int.Parse(strUsrAuth);
-                int flag = 0x1 << 4;
+                AuthAttributes usrAuthAttr = (AuthAttributes)Session["totleAuthority"];
 
-                if ((usrAuth & flag) == 0)
+                bool flag = usrAuthAttr.HasOneFlag(AuthAttributes.projectTagApply);
+                if (!flag)
+                {
                     Response.Redirect("~/Main/NoAuthority.aspx");
+                }
             }
             else
             {
+                string url = Request.FilePath;
+                Session["backUrl"] = url;
                 Response.Redirect("~/Account/Login.aspx");
             }
 
@@ -111,13 +113,13 @@ namespace xm_mis.Main.projectTagInfoManager
                 ptp.MyDst = dataSet;
                 
                 ptp.Add();
-                Response.Redirect("~/Main/DefaultMainSite.aspx");
+                Response.Redirect("~/Main/projectTagInfoManager/projectSearch.aspx");
             }
         }
 
         protected void btnCancel_Click(object sender, EventArgs e)
         {
-            Response.Redirect("~/Main/DefaultMainSite.aspx");
+            Response.Redirect("~/Main/projectTagInfoManager/projectSearch.aspx");
         }
 
         protected void ddlCustComp_SelectedIndexChanged(object sender, EventArgs e)
@@ -159,7 +161,7 @@ namespace xm_mis.Main.projectTagInfoManager
             //string custManId = ddlCustMan.SelectedValue.ToString();
 
             ProjectTagProcess ptp = Session["ProjectTagProcess"] as ProjectTagProcess;
-            string custCompProCount = ptp.compProjectCount(dtDate, custCompId);
+            string custCompProCount = ptp.compProjectCount(custCompId);
 
             string splitTemp = "-";
             string newTag = custCompTag + dtDate.Year.ToString() + splitTemp + custCompProCount;

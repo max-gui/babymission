@@ -15,16 +15,18 @@ namespace xm_mis.Main.contractManager
         {
             if (!(null == Session["totleAuthority"]))
             {
-                int usrAuth = 0;
-                string strUsrAuth = Session["totleAuthority"] as string;
-                usrAuth = int.Parse(strUsrAuth);
-                int flag = 0x5 << 4;
+                AuthAttributes usrAuthAttr = (AuthAttributes)Session["totleAuthority"];
 
-                if ((usrAuth & flag) == 0)
+                bool flag = usrAuthAttr.HasOneFlag(AuthAttributes.newContract);
+                if (!flag)
+                {
                     Response.Redirect("~/Main/NoAuthority.aspx");
+                }
             }
             else
             {
+                string url = Request.FilePath;
+                Session["backUrl"] = url;
                 Response.Redirect("~/Account/Login.aspx");
             }
 
@@ -60,7 +62,7 @@ namespace xm_mis.Main.contractManager
                     subContractRow["supplierId"] = -1;
                     subContractRow["subContractTag"] = string.Empty;
                     subContractRow["cash"] = string.Empty;
-                    subContractRow["dateLine"] = DateTime.Now.ToShortDateString();
+                    subContractRow["dateLine"] = DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss.fff");
                     subContractRow["paymentMode"] = string.Empty;
                     subContractTable.Rows.Add(subContractRow);
 
@@ -187,13 +189,16 @@ namespace xm_mis.Main.contractManager
 
                 scpp.Add();
 
+                Session.Remove("subContractTable");
+                Session.Remove("subProductSelDs");
+                Session.Remove("ddlProjectDtS");
                 Response.Redirect("~/Main/DefaultMainSite.aspx");
             }
         }
 
         protected void calendarSupplier_SelectionChanged(object sender, EventArgs e)
         {
-            btnDate.Text = calendarSupplier.SelectedDate.ToShortDateString();
+            btnDate.Text = calendarSupplier.SelectedDate.ToString();
 
             calendarSupplier.Visible = false;
         }
@@ -227,9 +232,9 @@ namespace xm_mis.Main.contractManager
                 txtBx.Text = "不能为空！";
                 flag = false;
             }
-            else if (strTxt.Length > 25)
+            else if (strTxt.Length > 50)
             {
-                txtBx.Text = "不能超过25个字！";
+                txtBx.Text = "不能超过50个字！";
                 flag = false;
             }
             else if (strTxt.Equals("不能为空！"))
@@ -237,9 +242,9 @@ namespace xm_mis.Main.contractManager
                 txtBx.Text = "不能为空！  ";
                 flag = false;
             }
-            else if (strTxt.Equals("不能超过25个字！"))
+            else if (strTxt.Equals("不能超过50个字！"))
             {
-                txtBx.Text = "不能超过25个字！  ";
+                txtBx.Text = "不能超过50个字！  ";
                 flag = false;
             }
 
@@ -375,6 +380,9 @@ namespace xm_mis.Main.contractManager
 
         protected void btnNo_Click(object sender, EventArgs e)
         {
+            Session.Remove("subContractTable");
+            Session.Remove("subProductSelDs");
+            Session.Remove("ddlProjectDtS");
             Response.Redirect("~/Main/contractManager/subContractEditing.aspx");
         }
 
